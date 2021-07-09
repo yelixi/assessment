@@ -9,7 +9,7 @@ corrector：仅可批改自己负责的那部分题目
 issuer：负责自定义并发布题目
 member：回答题目
 
-### 2.功能
+### 2. 功能
 root：
 	- 新增用户(corrector issuer member)
 	- 删除用户

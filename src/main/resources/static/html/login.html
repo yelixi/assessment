@@ -8,6 +8,7 @@
     <title>Please sign in</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -22,7 +23,19 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         </p>
         <input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="button" id="btn">Sign in</button>
     </form>
 </div>
-</body></html>
+</body>
+<script>
+    $("#btn").click(function (){
+        $.ajax({
+            url  : '/login?username='+$("#username").val()+'&password='+$("#password").val(),
+            type : 'post'
+        }).done(function(data){
+            if(data.code===200)
+                window.location.href='/home'
+        });
+    })
+</script>
+</html>
