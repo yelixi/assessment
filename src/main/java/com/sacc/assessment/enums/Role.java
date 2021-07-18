@@ -21,5 +21,7 @@ public enum Role {
     CORRECTOR,
 
     //普通成员
-    MEMBER
+    MEMBER,
+
+    ;
 }

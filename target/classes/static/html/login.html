@@ -28,31 +28,13 @@
 </div>
 </body>
 <script>
-    /*$("#btn").click(function (){
-        $.post("/login?username="+$("#username").val()+"&password="+$("#password").val(),function (res,data,code){
-            /!*if (code===200)
-                window.location.href="/home";*!/
-            console.log(res.toString());
-            console.log("data="+data+",code="+code);
-        })
-    })*/
     $("#btn").click(function (){
         $.ajax({
             url  : '/login?username='+$("#username").val()+'&password='+$("#password").val(),
             type : 'post'
-        }).done(function(data, statusText, xhr){
-            let status = xhr.status;                //200
-            //let head = xhr.getAllResponseHeaders();
-            console.log("data="+data)
-            console.log(data.code)
-            console.log(data.data)
-            console.log("statusText="+statusText)
-            console.log("xhr="+xhr)
-           /* console.log(xhr.status)
-            console.log(xhr.getAllResponseHeaders())*/
-
-            /*if(status===200)
-                window.location.href="/home"*/
+        }).done(function(data){
+            if(data.code===200)
+                window.location.href='/home'
         });
     })
 </script>

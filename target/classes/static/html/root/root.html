@@ -5,6 +5,7 @@
     <title>root</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
 <form class="form-signin" method="post" action="/root/register">
@@ -22,7 +23,33 @@
         <input type="text" id="role" name="role" class="form-control" placeholder="Role" required autofocus>
     </p>
     <input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
-    <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+    <button class="btn btn-lg btn-primary btn-block" type="button" id="btn">注册</button>
 </form>
 </body>
+<script>
+    $("#btn").click(function (){
+        //alert("点了我")
+        let formData = JSON.stringify({
+            "username":$("#username").val(),
+            "password":$("#password").val(),
+            "role":$("#role").val()
+        })
+        $.ajax({
+            url:"/root/register",
+            type:"post",
+            contentType:"application/json",
+            data:formData,
+            dataType:"json"
+        }).done(function (data){
+            if(data.code===200) {
+                alert("注册成功")
+                $("#username").val("")
+                $("#password").val("")
+                $("#role").val("")
+            }
+            else
+                alert(data.message)
+        })
+    })
+</script>
 </html>

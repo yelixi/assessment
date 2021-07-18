@@ -1,6 +1,9 @@
 package com.sacc.assessment.service;
 
 import com.sacc.assessment.entity.User;
+import com.sacc.assessment.enums.Role;
+
+import java.util.List;
 
 /**
  * Created by 林夕
@@ -9,4 +12,10 @@ import com.sacc.assessment.entity.User;
 public interface UserService {
 
     boolean register(User user);
+
+    boolean deleteUser(String username);
+
+    List<User> getAllUser();
+
+    boolean updateRole(String username, Role role);
 }

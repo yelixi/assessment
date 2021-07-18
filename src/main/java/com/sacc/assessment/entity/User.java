@@ -1,5 +1,6 @@
 package com.sacc.assessment.entity;
 
+import com.sacc.assessment.enums.Role;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
@@ -16,6 +17,9 @@ import javax.persistence.Id;
 public class User {
 
     @Id
+    @GeneratedValue
+    private Integer id;
+
     @NotNull
     private String username;
 
@@ -24,5 +28,5 @@ public class User {
 
     //权限
     @NotNull
-    private String role;
+    private Role role;
 }
