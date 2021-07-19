@@ -22,18 +22,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+/*开启方法权限认证*/
+@EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final TigerLogoutSuccessHandler logoutSuccessHandler = new TigerLogoutSuccessHandler("/");
 
     public static final String[] NO_AUTH_LIST={
-            "/**"
+            "/**",
+            "/test",
+            "/static/**",
     };
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter("username")
+        http.csrf().disable().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter(
+                "username").permitAll()
                 //失败处理
                 .failureHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, e.getMessage())))
                 //成功处理

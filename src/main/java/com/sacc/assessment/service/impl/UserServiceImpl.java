@@ -63,4 +63,17 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         userRepository.save(u);
         return true;
     }
+
+    /*@Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userRepository.findByStudentId(s);
+        if(user == null){
+            throw new UsernameNotFoundException(s);
+        }
+        //TODO: 获取角色，用户菜单
+
+        return new UserInfo(user);
+
+
+    }*/
 }
