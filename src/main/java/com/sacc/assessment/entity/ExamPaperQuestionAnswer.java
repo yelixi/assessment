@@ -10,49 +10,58 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * @Describe: 问题实体类
+ * @Describe: 单份用户试卷答案实体
  * @Author: tyf
  * @CreateTime: 2021/7/19
  **/
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Data
-public class Question {
+public class ExamPaperQuestionAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+
     /**
-     * 自增ID
+     * 试卷ID
      */
-    private Integer id;
+    private Long examPaperId;
+
+    /**
+     * 用户提交试卷ID
+     */
+    private Long examPaperAnswerId;
 
     /**
      * 题目类型
      */
-    private QuestionType type;
+    private QuestionType questionType;
 
     /**
-     * 题目分数
+     * 题目满分
      */
-    private Double score;
+    private Double QuestionScore;
 
     /**
-     * 正确答案
+     * 问题内容
      */
-    private String correctAnswer;
+    private Long questionTextContentId;
 
     /**
-     * 题干信息
+     * 填空简答做题内容
      */
-    private Long infoTextContentId;
+    private Long answerTextContentId;
 
     /**
-     * 创建人
+     * 是否正确
      */
-    private Long creatUser;
+    private boolean isRight;
 
     /**
-     * 创建时间
+     * 做题人
      */
+    private Long creatStudentId;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -61,6 +70,5 @@ public class Question {
      */
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
 
 }
