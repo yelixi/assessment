@@ -28,27 +28,38 @@ public class Question {
     /**
      * 题目类型
      */
+    @Column(nullable = false)
     private QuestionType type;
 
     /**
      * 题目分数
      */
+    @Column(nullable = false)
     private Double score;
 
     /**
      * 正确答案
      */
+    @Column(nullable = false)
     private String correctAnswer;
 
     /**
      * 题干信息
      */
-    private Long infoTextContentId;
+    @Column(nullable = false)
+    private Integer infoTextContentId;
 
     /**
      * 创建人
      */
     private Long creatUser;
+
+    /**
+     * 是否弃用
+     */
+    @Column(nullable = false)
+    private boolean isDeleted;
+
 
     /**
      * 创建时间

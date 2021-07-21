@@ -6,6 +6,7 @@ import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.repository.UserRepository;
 import com.sacc.assessment.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,15 +27,15 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     @Resource
     private PasswordEncoder passwordEncoder;
 
-    @Resource
+    @Autowired
     private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.error("username="+username);
-        User u = userRepository.queryUserByUsername(username);
+        log.error("username=" + username);
+        List<User> u = userRepository.findByUsername(username);
         log.error(u.toString());
-        return new UserDetail(u);
+        return new UserDetail(u.get(0));
     }
 
     @Override
@@ -58,22 +59,10 @@ public class UserServiceImpl implements UserDetailsService,UserService {
 
     @Override
     public boolean updateRole(String username, Role role) {
-        User u = userRepository.queryUserByUsername(username);
-        u.setRole(role);
-        userRepository.save(u);
+        List<User> u = userRepository.findByUsername(username);
+        u.get(0).setRole(role);
+        userRepository.save(u.get(0));
         return true;
     }
-
-    /*@Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByStudentId(s);
-        if(user == null){
-            throw new UsernameNotFoundException(s);
-        }
-        //TODO: 获取角色，用户菜单
-
-        return new UserInfo(user);
-
-
-    }*/
 }
+

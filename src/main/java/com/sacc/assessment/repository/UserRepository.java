@@ -6,13 +6,15 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by 林夕
  * Date 2021/6/15 10:29
  */
 public interface UserRepository extends JpaRepository<User,Integer>, JpaSpecificationExecutor<User> {
 
-    User queryUserByUsername(String username);
+    List<User> findByUsername(String username);
 
     @Modifying
     @Transactional
