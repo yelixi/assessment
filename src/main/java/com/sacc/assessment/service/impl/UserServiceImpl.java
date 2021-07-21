@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     @Resource
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override
