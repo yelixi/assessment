@@ -13,16 +13,17 @@ import java.time.LocalDateTime;
  * @Author: tyf
  * @CreateTime: 2021/7/19
  **/
-@Entity(name = "issue")
+@Entity()
 @EntityListeners(AuditingEntityListener.class)
 @Data
 public class TextContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-
-
-
+    /**
+     * 内容
+     */
+    private String content;
 
     /**
      * 创建更新时间
