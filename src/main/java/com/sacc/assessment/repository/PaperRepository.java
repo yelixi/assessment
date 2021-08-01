@@ -1,4 +1,4 @@
-package com.sacc.assessment.mapper;
+package com.sacc.assessment.repository;
 
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.Question;

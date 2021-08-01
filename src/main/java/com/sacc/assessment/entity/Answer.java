@@ -10,23 +10,23 @@ import java.time.LocalDateTime;
 
 /**
  * Created by 林夕
- * Date 2021/7/18 15:29
+ * Date 2021/8/1 15:14
+ * 回答表单
  */
+
 @Entity
 @Data
-public class Apply {
+public class Answer {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    private Integer problemId;
+    private String answer;
 
     private Integer userId;
 
-    private Integer examId;
-
-    private String content;
+    private Integer questionId;
 
     @OneToOne
     private Score score;
@@ -34,6 +34,4 @@ public class Apply {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-
 }

@@ -33,7 +33,7 @@ public class Question {
     /**
      * 题目分数
      */
-    private Double score;
+    private Integer score;
 
     /**
      * 正确答案
@@ -43,12 +43,12 @@ public class Question {
     /**
      * 题干信息
      */
-    private Long infoTextContentId;
+    private String infoTextContent;
 
     /**
      * 创建人
      */
-    private Long creatUser;
+    private Integer creatUser;
 
     /**
      * 创建时间

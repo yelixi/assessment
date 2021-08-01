@@ -1,6 +1,6 @@
 package com.sacc.assessment.service.impl;
 
-import com.sacc.assessment.mapper.PaperRepository;
+import com.sacc.assessment.repository.PaperRepository;
 import com.sacc.assessment.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -20,13 +20,22 @@ public class Score {
     @GeneratedValue
     private Integer id;
 
+    /**
+     * 分数
+     */
     private Integer grade;
 
+    /**
+     * 批改人id
+     */
     private Integer correctorId;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
+    /**
+     * 批改人评价
+     */
     private String comment;
 }
