@@ -1,6 +1,11 @@
 package com.sacc.assessment.service;
 
-import org.springframework.stereotype.Service;
+import com.sacc.assessment.entity.Question;
+import com.sacc.assessment.entity.TextContent;
+import org.springframework.data.domain.Page;
+import org.springframework.lang.Nullable;
+
+import java.util.List;
 
 /**
  * @Describe: 类描述
@@ -12,7 +17,14 @@ public interface QuestionService {
      * 发布试题
      * @return 成功与否
      */
-    boolean putProblems();
+    Question insertQuestion(Question question, String Username);
 
+    Boolean updateQuestion(Question question, TextContent textContent);
+
+    Question selectQuestion(Integer id);
+
+    Page<Question> page();
+
+    List<Question> findAll();
 
 }

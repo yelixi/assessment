@@ -25,7 +25,6 @@ import java.util.List;
 @Slf4j
 public class RootController {
 
-    @Autowired
     private UserService userService;
 
     @ResponseBody

@@ -28,6 +28,7 @@ public class Question {
     /**
      * 题目类型
      */
+    @Column(nullable = false)
     private QuestionType type;
 
     /**
@@ -49,6 +50,13 @@ public class Question {
      * 创建人
      */
     private Integer creatUser;
+
+    /**
+     * 是否弃用
+     */
+    @Column(nullable = false)
+    private boolean isDeleted;
+
 
     /**
      * 创建时间

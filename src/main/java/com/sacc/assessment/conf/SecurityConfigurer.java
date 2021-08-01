@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Date 2021/6/14 15:48
  */
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 /*开启方法权限认证*/
 @EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {

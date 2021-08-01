@@ -2,6 +2,7 @@ package com.sacc.assessment.controller;
 
 import com.sacc.assessment.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * @Author: tyf
  * @CreateTime: 2021/7/19
  **/
+@PreAuthorize("hasRole('ISSUER')")
 @RestController
 @RequestMapping("/papers")
 public class PaperController {
