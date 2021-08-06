@@ -1,9 +1,8 @@
 package com.sacc.assessment.service;
 
 import com.sacc.assessment.entity.Question;
-import com.sacc.assessment.entity.TextContent;
 import org.springframework.data.domain.Page;
-import org.springframework.lang.Nullable;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -19,12 +18,14 @@ public interface QuestionService {
      */
     Question insertQuestion(Question question, String Username);
 
-    Boolean updateQuestion(Question question, TextContent textContent);
+    Boolean updateQuestion(Question question);
 
     Question selectQuestion(Integer id);
 
-    Page<Question> page();
+    Page<Question> findAll(Pageable pageable);
 
     List<Question> findAll();
+
+
 
 }

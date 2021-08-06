@@ -24,6 +24,7 @@ public class PaperController {
     @GetMapping("/")
     public void getPaper(){
 
+
     }
 
     @GetMapping("/{id}")

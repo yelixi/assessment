@@ -3,9 +3,12 @@ package com.sacc.assessment.controller;
 import com.sacc.assessment.entity.Question;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.service.QuestionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,7 +20,7 @@ import java.util.List;
  * @Author: tyf
  * @CreateTime: 2021/7/19
  **/
-@RestController
+@Controller
 @RequestMapping("/questions")
 public class QuestionController {
 
@@ -30,11 +33,29 @@ public class QuestionController {
      */
     @Secured({"ROLE_ISSUER","ROLE_ROOT"})
     @GetMapping("/")
-    public RestResult<List<Question>> getQuestions(){
-        return RestResult.success(questionService.findAll());
+    public String getQuestions(Model model,
+                               @RequestParam(required = false,defaultValue = "0",name = "page") Integer page ,
+                               @RequestParam(required = false,defaultValue = "10",name = "pagesize") Integer pageSize){
+        if (page == null) page = 1;
+        if(page <= -1) page++;
+        if(pageSize == null) pageSize = 10;
+        //默认一页10，按照题目序号升序。
+        PageRequest pageRequest = PageRequest.of(page,pageSize,Sort.by(Sort.Direction.ASC,"id"));
+        Page<Question> questionPage = questionService.findAll(pageRequest);
+        int totalPages = questionPage.getTotalPages();
+        //拿出集合
+        List<Question> questions = questionPage.getContent();
+        model.addAttribute("questionLists",questions);
+        model.addAttribute("TotalPages",totalPages);
+        model.addAttribute("TotalElements", questionPage.getTotalElements());
+        model.addAttribute("Number", questionPage.getNumber()-1);
+        model.addAttribute("NumberOfElements",questionPage.getNumberOfElements());
+        model.addAttribute("page", page);
+        return "../static/html/issuer/questions.html";
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public RestResult<Question> getQuestions(@PathVariable Integer id){
         Question question = questionService.selectQuestion(id);
         if(question == null){
@@ -44,6 +65,7 @@ public class QuestionController {
     }
 
     @PostMapping("/")
+    @ResponseBody
     @Secured({"ROLE_ISSUER","ROLE_ROOT"})
     public RestResult<Question> addQuestions(@RequestBody Question question, Principal principal){
         Question insertedQuestion = questionService.insertQuestion(question, principal.getName());
@@ -52,16 +74,19 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseBody
     @Secured({"ROLE_ISSUER","ROLE_ROOT"})
     public RestResult<Boolean> deleteQuestions(@PathVariable Integer id){
         Question question = questionService.selectQuestion(id);
         question.setDeleted(true);
-        return RestResult.success(questionService.updateQuestion(question, null));
+        return RestResult.success(questionService.updateQuestion(question));
     }
 
     @PutMapping("/{id}")
+    @ResponseBody
     @Secured({"ROLE_ISSUER","ROLE_ROOT"})
-    public void alterQuestions(@PathVariable Long id){
-
+    public RestResult<Boolean> alterQuestions(@PathVariable Integer id, @RequestBody Question questions,
+                                              Principal principal){
+        return RestResult.success(questionService.updateQuestion(questions));
     }
 }

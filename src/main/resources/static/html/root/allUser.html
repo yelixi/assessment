@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-<table>
-    <tr>
-        <td>username</td>
-        <td>role</td>
-    </tr>
-    <tr th:each="user,loopStatus :${userList}">
-        <td th:text="${user.username}" th:id="'td'+${loopStatus.count}"></td>
-        <td th:text="${user.role}"></td>
-        <td><button th:id="'btn'+${loopStatus.count}" class="btn">删除</button></td>
-    </tr>
-</table>
+<div class="container">
+    <h2>用户列表</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user,loopStatus :${userList}">
+                <td th:text="${user.username}" th:id="'td'+${loopStatus.count}"></td>
+                <td th:text="${user.role}"></td>
+                <td><button th:id="'btn'+${loopStatus.count}" class="btn">删除</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 <script th:inline="javascript">
     for(let i=1;i<=$(".btn").length;i++){
