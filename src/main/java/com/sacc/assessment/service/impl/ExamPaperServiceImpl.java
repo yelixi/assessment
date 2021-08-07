@@ -77,4 +77,9 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     public ExamPaper getExam(Integer examId) {
         return examPaperRepository.getOne(examId);
     }
+
+    @Override
+    public List<ExamPaper> getAllExam() {
+        return examPaperRepository.findAll();
+    }
 }

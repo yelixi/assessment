@@ -61,9 +61,4 @@ public class RootController {
     public String updateRole(){
         return "../static/html/root/updateRole.html";
     }
-
-    @GetMapping("/home")
-    public String home(){
-        return "../static/html/root/root.html";
-    }
 }

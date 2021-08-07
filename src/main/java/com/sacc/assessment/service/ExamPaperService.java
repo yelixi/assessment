@@ -19,4 +19,6 @@ public interface ExamPaperService {
     ExamPaper getExamPaper(Integer examPaperId, UserDetail userDetail);
 
     ExamPaper getExam(Integer examId);
+
+    List<ExamPaper> getAllExam();
 }
