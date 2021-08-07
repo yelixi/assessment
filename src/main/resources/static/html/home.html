@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p2>Home</p2>
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div th:switch="${ROLE.name()}">
+<!--            <p th:case="'ROOT'"  >gsgsg</p>-->
+            <div th:case="'ISSUER'">
+                <nav  th:replace="issuer/issuer_fragments.html::menu(1)" ></nav>
+            </div>
+            <div th:case="'ROOT'">
+                <nav th:replace="root/root_fragments.html::menu(1)" ></nav>
+            </div>
+            <div th:case="'MEMBER'">
+                <nav  th:replace="member/member_fragments.html::menu(1)" ></nav>
+            </div>
+            <div th:case="CORRECTOR">
+                <nav  th:replace="corrector/corrector_fragments.html::menu(1)" ></nav>
+            </div>
+
+        </div>
+<!--        <nav th:replace="root/root_fragments.html::menu(1)" th:if="${ROLE == 'ROOT'}"></nav>-->
+<!--        <nav th:replace="issuer/issuer_fragments.html::menu(1)" th:if="${ROLE == 'ISSUER'}"></nav>-->
+<!--        <nav th:replace="member/member_fragments.html::menu(1)" th:if="${ROLE == 'MEMBER'}"></nav>-->
+<!--        <nav th:replace="corrector/corrector_fragments.html::menu(1)" th:if="${ROLE == 'CORRECTOR'}"></nav>-->
+        <p>你好！！测试</p>
+    </body>
+
 </html>

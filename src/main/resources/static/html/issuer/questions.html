@@ -40,10 +40,11 @@
 		</style>
 	</head>
 	<body>
+		<nav th:replace="issuer/issuer_fragments.html :: menu(2)"></nav>
 
 		<div class="container">
 
-			<h1  align="center" style="font-family:'Microsoft YaHei UI', 'Arial' ; font-size: 40px">----------------------ALL QUESTIONS----------------------</h1>
+<!--			<h1  align="center" style="font-family:'Microsoft YaHei UI', 'Arial' ; font-size: 40px">&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;ALL QUESTIONS&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</h1>-->
 			<div th:align="left">
 				<button type="button" class="btn btn-success btn-lg" onclick="addQuestion()">添加问题</button>
 			</div>
@@ -112,7 +113,7 @@
 						<label for="question-type">题目类型</label>
 						<select  id= "question-type" class="form-control" >
 							<option th:value="MULTIPLE_CHOICE">多选</option>
-							<option th:value="INGLE_CHOICE">单选</option>
+							<option th:value="SINGLE_CHOICE">单选</option>
 							<option th:value="FILL_BLANK">填空</option>
 							<option th:value="JUDGE">判断</option>
 						</select>
@@ -306,7 +307,9 @@
 		/*窗口关闭函数*/
         function closeWin() {
             document.getElementById('lightToEdit').style.display = 'none';
+            document.getElementById('lightToAdd').style.display = 'none';
             document.getElementById('fade').style.display = 'none';
+
             location.reload();
         }
 	</script>

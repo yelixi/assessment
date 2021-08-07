@@ -7,10 +7,7 @@ import com.sacc.assessment.service.ExamPaperService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,10 +18,16 @@ import java.util.List;
  */
 @PreAuthorize("hasRole('ISSUER')")
 @Controller
+@RequestMapping("/issuer")
 public class IssuerController {
 
     @Resource
     private ExamPaperService examPaperService;
+
+    @GetMapping("/")
+    public String home(){
+        return "/issuer/index";
+    }
 
     @ResponseBody
     @PostMapping("/createExam")
