@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>exam</title>
+</head>
+<body>
+<div class="exam" th:id="${exam.getId()}">
+    <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}">
+        <p th:text="${question.getInfoTextContent()}"></p>
+        <label>
+            <input class="answer">
+        </label>
+    </div>
+    <button type="button">提交</button>
+</div>
+</body>
+</html>
