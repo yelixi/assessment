@@ -19,26 +19,27 @@
 				</div>
 				<div>
 					<ul class="nav navbar-nav">
-						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/issuer/}">首页</a></li>
-						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/questions/}" >问题管理</a></li>
-						<li th:classappend="${n == 3} ? 'active'"><a  href="#" th:href="@{/questions/}" >试卷管理</a></li>
-						<li th:classappend="${n == 4} ? 'active'"><a  href="#" th:href="@{/questions/}" >用户成绩</a></li>
+						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/home/root}">首页</a></li>
+<!--						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/root/getAllUser}" >用户管理</a></li>-->
+
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								试卷管理
+								用户管理
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">jmeter</a></li>
-								<li><a href="#">EJB</a></li>
-								<li><a href="#">Jasper Report</a></li>
 								<li class="divider"></li>
-								<li><a href="#">分离的链接</a></li>
+								<li><a th:href="@{/root/addUser}">新增用户</a></li>
 								<li class="divider"></li>
-								<li><a href="#">另一个分离的链接</a></li>
+								<li><a href="#" th:href="@{/root/getAllUser}">查看所有用户</a></li>
+								<li class="divider"></li>
 							</ul>
 						</li>
-						<li th:classappend="${n == 4} ? 'active'"><a  href="#" th:href="@{/questions/}" >个人信息</a></li>
+
+						<li th:classappend="${n == 3} ? 'active'"><a  href="#" >试卷管理</a></li>
+						<li th:classappend="${n == 4} ? 'active'"><a  href="#"  >问题管理</a></li>
+						<li th:classappend="${n == 5} ? 'active'"><a  href="#"  >用户成绩</a></li>
+						<li th:classappend="${n == 4} ? 'active'"><a  href="#"  >个人信息</a></li>
 					</ul>
 				</div>
 			</div>

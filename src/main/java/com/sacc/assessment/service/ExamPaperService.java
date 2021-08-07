@@ -2,6 +2,8 @@ package com.sacc.assessment.service;
 
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.model.UserDetail;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ public interface ExamPaperService {
 
     boolean updateExam(ExamPaper examPaper);
 
-    List<ExamPaper> getMyAllExamPaper(UserDetail userDetail);
+    Page<ExamPaper> getMyAllExamPaper(UserDetail userDetail, Pageable pageable);
 
     ExamPaper getExamPaper(Integer examPaperId, UserDetail userDetail);
 

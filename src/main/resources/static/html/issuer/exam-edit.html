@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>试卷创建</title>
+
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+	</head>
+
+
+	<body>
+		<nav th:replace="../static/html/issuer/issuer_fragments.html::menu(3)"></nav>
+		<div class="container">
+			<form class="form" method="post" role="form" >
+				<h1  id="add-title">查看考试</h1>
+				<br>
+				<div class="form-group">
+					<label for="exam-id">考试编号</label>
+					<input type="text" id="exam-id" class="form-control" placeholder="这里什么都没有" disabled th:value="${exam.id}">
+				</div>
+				<div class="form-group">
+					<label for="exam-name">考试名称</label>
+					<input type="text" id="exam-name" class="form-control" placeholder="这里什么都没有" required autofocus th:value="${exam.name}">
+				</div>
+				<div class="form-group">
+					<label for="exam-questions">题目选择</label>
+					<input type="text" id="exam-questions" class="form-control" placeholder="这里什么都没有" required autofocus th:value="${exam.name}">
+				</div>
+				<div class="form-group">
+					<label for="exam-start-time" >开始时间</label>
+					<div class='input-group date' id='exam-start-time'>
+						<input type='text' class="form-control" id="start_time" th:value="${#temporals.format(exam.startTime,'yyyy-MM-dd HH:mm')}" />
+						<span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+					</div>
+<!--					<input type="text" id="exam-start-time" class="form-control" placeholder="这里什么都没有" required autofocus }">-->
+				</div>
+				<div class="form-group">
+					<label for="exam-end-time" >结束时间</label>
+					<!--指定 date标记-->
+					<div class='input-group date' id='exam-end-time'>
+						<input type='text' class="form-control" id="end_time" th:value="${#temporals.format(exam.endTime,'yyyy-MM-dd HH:mm')}" />
+						<span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+					</div>
+<!--					<input type="text" id= "exam-end-time" class="form-control" placeholder="这里什么都没有" required autofocus  th:value="${#temporals.format(exam.endTime,'yyyy-MM-dd HH:ss')}">-->
+				</div>
+				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+				<button class="btn btn-lg btn-primary btn-block" type="button" id="exam-update-btn">保存问题</button>
+			</form>
+		</div>
+
+
+
+
+	</body>
+	<script>
+		//FIXME:时间转换一下。
+		$("#exam-update-btn").click(function () {
+		    var st =  $("#start_time").val();
+		    var et =  $("#end_time").val();
+		    let formData = JSON.stringify({
+                "id"        : $("#exam-id").val(),
+		        "name"      : $("#exam-name").val(),
+			    "questions" : [],
+                "startTime" : $("#start_time").val(),
+                "endTime"   : $("#end_time").val()
+		    });
+		    console.log($("#exam-id").val());
+		    console.log(formData);
+		    // console.log(moment().format());
+			console.log(st);
+            $.ajax({
+                url: "/issuer/updateExam",
+                type:"post",
+                contentType:"application/json",
+                data:formData,
+                dataType:"json"
+            }).done(function (data) {
+                console.log(data.code);
+                if (data.code == 200)  {alert("保存成功"); location.reload();}
+                else alert("保存失败！");
+            })
+        })
+
+
+        $('#exam-start-time').datetimepicker({
+            format: 'YYYY-MM-DD hh:mm:ss',
+            locale: moment.locale('zh-cn')
+        });
+        $('#exam-end-time').datetimepicker({
+            format: 'YYYY-MM-DD hh:mm:ss',
+            locale: moment.locale('zh-cn')
+        });
+	</script>
+</html>
