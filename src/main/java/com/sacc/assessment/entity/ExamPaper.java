@@ -34,6 +34,26 @@ public class ExamPaper {
      */
     private Integer userId;
 
+    /**
+     * 试卷名称
+     */
+    private String name;
+
+    /**
+     * 考试开始时间
+     */
+    private LocalDateTime startTime;
+
+    /**
+     * 考试结束时间
+     */
+    private LocalDateTime endTime;
+
+    /**
+     * 考试持续时间(单位：分钟)
+     */
+    private Integer examTime;
+
     @CreatedDate
     private LocalDateTime createdAt;
 

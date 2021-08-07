@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         log.error("username=" + username);
         List<User> u = userRepository.findByUsername(username);
         log.error(u.toString());
+        u.get(0).setPassword("******");
         return new UserDetail(u.get(0));
     }
 
