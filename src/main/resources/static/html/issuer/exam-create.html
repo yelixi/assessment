@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>试卷创建</title>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+
+	<body>
+		<nav th:replace="../static/html/issuer/issuer_fragments.html::menu(3)"></nav>
+		<div class="container">
+			<form class="form" method="post" role="form" >
+				<h1  id="add-title">创建一场新的考试</h1>
+				<br>
+				<div class="form-group">
+					<label for="exam-name">考试名称</label>
+					<input type="text" id="exam-name" class="form-control" placeholder="考试名称" required autofocus>
+				</div>
+				<div class="form-group">
+					<label for="exam-questions">题目选择</label>
+					<input type="text" id="exam-questions" class="form-control" placeholder="考试名称" required autofocus>
+				</div>
+				<div class="form-group">
+					<label for="exam-start-time" >开始时间</label>
+					<input type="text" id="exam-start-time" class="form-control" placeholder="题目大意" required autofocus>
+				</div>
+				<div class="form-group">
+					<label for="exam-end-time" >结束时间</label>
+					<input type="text" id= "exam-end-time" class="form-control" placeholder="答案" required>
+				</div>
+				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+				<button class="btn btn-lg btn-primary btn-block" type="button" id="question-add-btn">保存问题</button>
+			</form>
+		</div>
+	</body>
+	<script>
+
+	</script>
+</html>
