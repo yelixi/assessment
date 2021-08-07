@@ -4,6 +4,9 @@ spring:
     url: jdbc:mysql://49.234.79.216:3306/ass?characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: ass
     password: root
+
+  thymeleaf:
+    cache: false
   jpa:
     hibernate:
       ddl-auto: update
