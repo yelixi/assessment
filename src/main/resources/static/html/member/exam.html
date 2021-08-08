@@ -6,13 +6,39 @@
 </head>
 <body>
 <div class="exam" th:id="${exam.getId()}">
-    <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}">
+    <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question">
         <p th:text="${question.getInfoTextContent()}"></p>
         <label>
             <input class="answer">
         </label>
     </div>
-    <button type="button">提交</button>
+    <button type="button" id="btn">提交</button>
 </div>
 </body>
+<script>
+    $("#btn").click(function (){
+        let answer = [];
+        let question = $(".question")
+        //let ans = $(".answer")
+        for (let i=0;i<question.length;i++){
+            answer[i]=JSON.stringify({
+                "questionId": question[i].id,
+                "answer": question[i].answer.val()
+            })
+        }
+        let bodyForm = JSON.stringify({
+            "examPaperId": $(".exam").id,
+            "answers": JSON.stringify(answer),
+        })
+        $.ajax({
+            url: "/uploadAnswer",
+            type: "post",
+            body: bodyForm
+        }).done(function (data){
+            if(data.code===200)
+                alert("提交成功")
+                window.location.href="/home/member"
+        })
+    })
+</script>
 </html>

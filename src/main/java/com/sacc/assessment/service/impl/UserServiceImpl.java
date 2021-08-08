@@ -7,6 +7,7 @@ import com.sacc.assessment.repository.UserRepository;
 import com.sacc.assessment.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +36,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         log.error("username=" + username);
         List<User> u = userRepository.findByUsername(username);
         log.error(u.toString());
-        u.get(0).setPassword("******");
         return new UserDetail(u.get(0));
     }
 
@@ -64,6 +64,12 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         u.get(0).setRole(role);
         userRepository.save(u.get(0));
         return true;
+    }
+
+    public static User login(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setPassword("*******");
+        return user;
     }
 }
 

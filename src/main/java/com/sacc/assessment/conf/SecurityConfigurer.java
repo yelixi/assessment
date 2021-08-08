@@ -4,6 +4,8 @@ package com.sacc.assessment.conf;
 
 import com.sacc.assessment.handler.TigerLogoutSuccessHandler;
 import com.sacc.assessment.model.RestResult;
+import com.sacc.assessment.service.UserService;
+import com.sacc.assessment.service.impl.UserServiceImpl;
 import com.sacc.assessment.util.ResponseUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +44,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 //失败处理
                 .failureHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, e.getMessage())))
                 //成功处理
-                .successHandler((req ,resp, e)-> ResponseUtil.restResponse(resp,HttpStatus.OK,RestResult.success(SecurityContextHolder.getContext().getAuthentication().getPrincipal())))
+                .successHandler((req ,resp, e)-> ResponseUtil.restResponse(resp,HttpStatus.OK,RestResult.success(UserServiceImpl.login())))
                 .permitAll()
                 .and().exceptionHandling()
                 //请求登录处理，改变默认跳转登录页
