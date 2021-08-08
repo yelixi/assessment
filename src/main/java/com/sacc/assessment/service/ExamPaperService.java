@@ -1,5 +1,6 @@
 package com.sacc.assessment.service;
 
+import com.sacc.assessment.entity.Answer;
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.model.UserDetail;
 import org.springframework.data.domain.Page;
@@ -23,4 +24,6 @@ public interface ExamPaperService {
     ExamPaper getExam(Integer examId);
 
     List<ExamPaper> getAllExam();
+
+    List<Answer> answerList(Integer questionId, Integer examPageId);
 }

@@ -10,7 +10,7 @@ import lombok.Data;
 public class ScoreForm {
     private Integer examPaperAnswerId;
 
-    private Integer AnswerId;
+    private Integer answerId;
 
     private Integer grade;
 

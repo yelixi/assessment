@@ -9,4 +9,6 @@ import com.sacc.assessment.model.UserDetail;
  */
 public interface ExamPaperAnswerService {
     boolean uploadAnswer(ExamPaperAnswer examPaperAnswer, UserDetail userDetail);
+
+    ExamPaperAnswer findOne(Integer examPaperAnswerId);
 }

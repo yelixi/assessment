@@ -7,7 +7,6 @@ import com.sacc.assessment.form.ScoreForm;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperAnswerRepository;
-import com.sacc.assessment.repository.ScoreRepository;
 import com.sacc.assessment.service.ScoreService;
 import org.springframework.stereotype.Service;
 

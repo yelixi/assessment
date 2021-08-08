@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table th:id="${answerList.get(0).examPageId}" class="tab">
+    <tr>
+        <td>分数</td>
+        <td>评价</td>
+        <td>是否已批改</td>
+    </tr>
+    <tr th:each="answer:${answerList}">
+        <td th:unless="${answer.score}==null" th:text="${answer.score.grade}">""</td>
+        <td th:text="${answer.score.comment}"></td>
+        <td th:if="${answer.score}==null" th:text="否">是</td>
+        <button type="button" th:id="${answer.id}" onclick="get(this.id)">批改</button>
+    </tr>
+</table>
+</body>
+<script>
+    function get(answerId){
+        window.location.href="/getAnswer?answerId="+answerId+"&examPageId="+$(".tab").id
+    }
+</script>
+</html>

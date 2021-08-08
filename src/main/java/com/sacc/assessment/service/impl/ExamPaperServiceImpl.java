@@ -1,7 +1,9 @@
 package com.sacc.assessment.service.impl;
 
+import com.sacc.assessment.entity.Answer;
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.Question;
+import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperRepository;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.ExamPaperService;
@@ -27,6 +29,9 @@ public class ExamPaperServiceImpl implements ExamPaperService {
 
     @Resource
     private ExamPaperRepository examPaperRepository;
+
+    @Resource
+    private AnswerRepository answerRepository;
 
     @Override
     public boolean createExam(ExamPaper examPaper, UserDetail userDetail) {
@@ -87,5 +92,10 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     @Override
     public List<ExamPaper> getAllExam() {
         return examPaperRepository.findAll();
+    }
+
+    @Override
+    public List<Answer> answerList(Integer questionId, Integer examPageId) {
+        return answerRepository.findAllByQuestionIdAndExamPageId(questionId,examPageId);
     }
 }

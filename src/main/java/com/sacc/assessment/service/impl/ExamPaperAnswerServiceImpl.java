@@ -35,4 +35,9 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
         examPaperAnswerRepository.save(examPaperAnswer);
         return true;
     }
+
+    @Override
+    public ExamPaperAnswer findOne(Integer examPaperAnswerId) {
+        return examPaperAnswerRepository.getOne(examPaperAnswerId);
+    }
 }

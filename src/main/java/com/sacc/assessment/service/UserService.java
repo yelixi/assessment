@@ -18,4 +18,6 @@ public interface UserService {
     List<User> getAllUser();
 
     boolean updateRole(String username, Role role);
+
+    User getUser(Integer userId);
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:id="${examPageId}" class="body">
+<div>
+    <p th:text="${username}"></p>
+</div>
+<div>
+    <p th:text="${question.infoTextContent}"></p>
+</div>
+<div th:id="paperAnswer" class="a">
+    <p th:text="${answer.answer}" th:id="${answer.id}" class="answer"></p>
+</div>
+<div>
+    <label for="score">
+        <input id="score">
+    </label>
+</div>
+<div>
+    <label for="comment">
+        <input id="comment">
+    </label>
+</div>
+<div>
+    <button type="button" th:id="${pre}" class="pre">上一个</button>
+    <button type="button" id="btn">提交</button>
+    <button type="button" th:id="${next}" class="next">下一个</button>
+</div>
+</body>
+<script>
+    $("#btn").click(function (){
+        let form = JSON.stringify({
+            "examPaperAnswerId": $(".a").id,
+            "answerId": $(".answer").id,
+            "grade": $("#score").val(),
+            "comment": $("#comment").val()
+        })
+        $.ajax({
+            url: "/correction",
+            type: "post",
+            body: form
+        }).done(function (data){
+            if(data.code===200)
+                alert("成功")
+        })
+    })
+    $(".pre").click(function (){
+        let preId = $(".pre").id
+        if(preId===-1)
+            alert("这已经是第一个了")
+        else
+            window.location.href="/getAnswer?answerId="+preId+"&examPageId="+$(".body").id
+    })
+    $(".next").click(function (){
+        let nextId = $(".next").id
+        if(nextId===-1)
+            alert("这已经是最后一个了")
+        else
+            window.location.href="/getAnswer?answerId="+nextId+"&examPageId="+$(".body").id
+    })
+</script>
+</html>

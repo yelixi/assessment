@@ -68,6 +68,11 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         return true;
     }
 
+    @Override
+    public User getUser(Integer userId) {
+        return userRepository.getOne(userId);
+    }
+
     public static User login(){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setPassword("*******");

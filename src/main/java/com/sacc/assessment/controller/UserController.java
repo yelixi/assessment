@@ -64,7 +64,9 @@ public class UserController {
 
     @PreAuthorize("hasRole('CORRECTOR')")
     @GetMapping("/home/corrector")
-    public String correctorHome(){
+    public String correctorHome(Model model){
+        List<ExamPaper> examPaperList = examPaperService.getAllExam();
+        model.addAttribute("examList",examPaperList);
         return "../static/html/corrector/correctorHome.html";
     }
 

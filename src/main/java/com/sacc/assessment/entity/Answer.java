@@ -28,6 +28,11 @@ public class Answer {
 
     private Integer questionId;
 
+    /**
+     * 试卷id
+     */
+    private Integer examPageId;
+
     @OneToOne
     private Score score;
 

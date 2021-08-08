@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+<table>
+    <tr>
+        <td>考试名称</td>
+        <td>起始时间</td>
+        <td>结束时间</td>
+        <td>考试时间</td>
+    </tr>
+    <tr th:each="exam:${examList}">
+        <td th:text="${exam.name}"></td>
+        <td th:text="${exam.startTime}"></td>
+        <td th:text="${exam.endTime}"></td>
+        <td th:text="${exam.examTime}"></td>
+        <td><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >批改</button></td>
+    </tr>
+</table>
 </body>
+<script>
+    function getExam(buttonId){
+        window.location.href="/corrector/getExam?examId="+buttonId
+    }
+</script>
 </html>
