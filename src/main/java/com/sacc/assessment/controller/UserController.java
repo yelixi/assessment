@@ -4,15 +4,21 @@ import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.User;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.service.ExamPaperService;
+import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.UserService;
+import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.security.Principal;
 
 import java.util.List;
 

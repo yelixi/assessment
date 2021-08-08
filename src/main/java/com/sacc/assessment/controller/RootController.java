@@ -44,6 +44,10 @@ public class RootController {
         return RestResult.success(userService.deleteUser(username));
     }
 
+    @GetMapping("/addUser")
+    public String addUser(){
+        return "../static/html/root/addUser.html";
+    }
 
     @GetMapping("/getAllUser")
     public String getAllUser(Model model){

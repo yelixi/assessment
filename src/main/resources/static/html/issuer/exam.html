@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Exams</title>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<style>
+            .black_overlay{
+
+                display: none;
+                position: absolute;
+                top: 0%;
+                left: 0%;
+                width: 100%;
+                height: 100%;
+                background-color: #c8c8c8;
+                z-index:1001;
+                -moz-opacity: 0.8;
+                opacity:.80;
+                filter: alpha(opacity=78);
+            }
+            .pop_win {
+
+                display: none;
+                position: absolute;
+                top: 10%;
+                left: 23%;
+                width: 55%;
+                height: 75%;
+                padding: 10px;
+                /*border-radius: 36px 38px 49px 40px / 53px 47px 51px 54px;*/
+                border: 2px solid cornflowerblue;
+                background-color: white;
+                z-index:9999;
+                overflow: auto;
+            }
+		</style>
+	</head>
+	<body>
+		<nav th:replace="../static/html/issuer/issuer_fragments.html::menu(3)"></nav>
+		<div class="container">
+			<!--			<h1  align="center" style="font-family:'Microsoft YaHei UI', 'Arial' ; font-size: 40px">&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;ALL QUESTIONS&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</h1>-->
+			<div th:align="left">
+				<a th:href="@{/issuer/createExam}"><button type="button" class="btn btn-success btn-lg"  >创建考试</button></a>
+			</div>
+			<!--表格-->
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>试卷编号</th>
+						<th>试卷名称</th>
+						<th>开始时间</th>
+						<th>结束时间</th>
+						<th>创建时间</th>
+						<th>更新时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="exam : ${examLists}">
+						<td th:text="${exam.id}">100</td>
+						<td th:text="${exam.name}">题干</td>
+						<td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd HH:ss')}">猴年马月</td>
+						<td th:text="${#temporals.format(exam.endTime,'yyyy-MM-dd HH:ss')}">猴年马月</td>
+						<td th:text="${#temporals.format(exam.createdAt,'yyyy-MM-dd HH:ss')}">猴年马月</td>
+						<td th:text="${#temporals.format(exam.updatedAt,'yyyy-MM-dd HH:ss')}">猴年马月</td>
+						<td><a th:href="@{'/issuer/updateExam/'+${exam.id}}"><button type="button" class="btn btn-success" >查看详情</button></a></td>
+<!--						<td><button type="button" class="btn btn-info"  onclick="editQuestion(this.id)" >修改</button></td>-->
+<!--						<td><button type="button" class="btn btn-danger"  onclick="deleteQuestion(this.id)">删除</button></td>-->
+					</tr>
+				</tbody>
+			</table>
+
+			<div align="center">
+				<ul class="pagination">
+					<li><a th:href="@{/issuer/getMyAllExamPaper(page=0,pagesize=15)}">首页</a></li>
+					<li>
+						<a  th:if="${page} eq 0"} onclick="startPage()">上一页</a>
+						<a th:href="@{/issuer/getMyAllExamPaper(page=${page}-1,pagesize=15)}" th:if="${page} ne 0">上一页</a>
+					</li>
+					<li >
+						<a th:href="@{/issuer/getMyAllExamPaper(page=${page}+1,pagesize=15)}" th:if="${page} ne ${TotalPages}-1">下一页</a>
+						<a  th:if="${page} eq ${TotalPages}-1" onclick="endPage()">下一页</a>
+					</li>
+					<li><a th:href="@{/issuer/getMyAllExamPaper(page=${TotalPages}-1,pagesize=15)}">末页</a></li>
+				</ul>
+			</div>
+
+
+		</div>
+	</body>
+
+
+	<script th:inline="javascript">
+        //表单校验函数
+        function validateForm() {
+            var x=document.forms["myForm"]["fname"].value;
+            if (x==null || x=="")
+            {
+                alert("姓必须填写");
+                return false;
+            }
+        }
+
+        //起始页提醒
+        function startPage(){
+            alert("对不起，已经是第一页！");
+        }
+
+        //结束页提醒
+        function endPage(){
+            alert("对不起，已经达到最后一页！");
+        }
+
+        //编辑按钮操作
+        function editQuestion(editButtonId){
+            console.log(questionId);
+            var questionId = editButtonId.substr(8);
+            console.log(questionId);
+            $.getJSON("/questions/"+ questionId, function (result) {
+                popWinToEdit(result);
+            })
+        }
+
+        //添加按钮操作
+        function addExamPaper(){
+        }
+
+	</script>
+</html>

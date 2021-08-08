@@ -36,11 +36,13 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         log.error("username=" + username);
         List<User> u = userRepository.findByUsername(username);
         log.error(u.toString());
+//        u.get(0).setPassword("******");
         return new UserDetail(u.get(0));
     }
 
     @Override
     public boolean register(User user) {
+        System.out.println(passwordEncoder.getClass().getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;

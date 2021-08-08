@@ -8,10 +8,13 @@ import com.sacc.assessment.service.ExamPaperService;
 import com.sacc.assessment.util.GetNullPropertyNamesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -39,6 +42,9 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     @Override
     public boolean updateExam(ExamPaper examPaper) {
         ExamPaper exam = examPaperRepository.getOne(examPaper.getId());
+        exam.setStartTime(examPaper.getStartTime());
+        exam.setEndTime(examPaper.getEndTime());
+        exam.setName(examPaper.getName());
         exam.setCreatedAt(examPaper.getCreatedAt());
         exam.setUserId(examPaper.getUserId());
         for(Question question: exam.getQuestions()){
@@ -64,8 +70,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     }
 
     @Override
-    public List<ExamPaper> getMyAllExamPaper(UserDetail userDetail) {
-        return examPaperRepository.findAllByUserId(userDetail.getId());
+    public Page<ExamPaper> getMyAllExamPaper(UserDetail userDetail, Pageable pageable) {
+        return examPaperRepository.findAllByUserId(userDetail.getId(),pageable);
     }
 
     @Override

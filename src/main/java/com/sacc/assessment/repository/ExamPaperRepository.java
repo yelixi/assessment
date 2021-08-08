@@ -1,6 +1,8 @@
 package com.sacc.assessment.repository;
 
 import com.sacc.assessment.entity.ExamPaper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
  */
 public interface ExamPaperRepository extends JpaRepository<ExamPaper,Integer> {
 
-    List<ExamPaper> findAllByUserId(Integer userId);
+    Page<ExamPaper> findAllByUserId(Integer userId, Pageable pageable);
 
     ExamPaper findByIdAndUserId(Integer id,Integer userId);
 }
