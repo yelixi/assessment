@@ -24,6 +24,8 @@ public interface QuestionService {
 
     Page<Question> findAll(Pageable pageable);
 
+    void deleteQuesionById(Integer id);
+
     List<Question> findAll();
 
 

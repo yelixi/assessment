@@ -79,7 +79,9 @@ public class QuestionController {
     public RestResult<Boolean> deleteQuestions(@PathVariable Integer id){
         Question question = questionService.selectQuestion(id);
         question.setDeleted(true);
-        return RestResult.success(questionService.updateQuestion(question));
+        questionService.deleteQuesionById(id);
+        return RestResult.success(200 ,Boolean.TRUE);
+//        return RestResult.success(questionService.updateQuestion(question));
     }
 
     @PutMapping("/{id}")

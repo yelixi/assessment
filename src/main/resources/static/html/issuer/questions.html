@@ -8,8 +8,7 @@
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<style>
-            .black_overlay{
-
+            .black_overlay {
                 display: none;
                 position: absolute;
                 top: 0%;
@@ -17,13 +16,13 @@
                 width: 100%;
                 height: 100%;
                 background-color: #c8c8c8;
-                z-index:1001;
+                z-index: 1001;
                 -moz-opacity: 0.8;
-                opacity:.80;
+                opacity: .80;
                 filter: alpha(opacity=78);
             }
-            .pop_win {
 
+            .pop_win {
                 display: none;
                 position: absolute;
                 top: 10%;
@@ -34,7 +33,7 @@
                 /*border-radius: 36px 38px 49px 40px / 53px 47px 51px 54px;*/
                 border: 2px solid cornflowerblue;
                 background-color: white;
-                z-index:9999;
+                z-index: 9999;
                 overflow: auto;
             }
 		</style>
@@ -42,7 +41,6 @@
 	<body>
 		<nav th:replace="../static/html/issuer/issuer_fragments.html::menu(2)"></nav>
 		<div class="container">
-<!--			<h1  align="center" style="font-family:'Microsoft YaHei UI', 'Arial' ; font-size: 40px">&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;ALL QUESTIONS&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</h1>-->
 			<div th:align="left">
 				<button type="button" class="btn btn-success btn-lg" onclick="addQuestion()">添加问题</button>
 			</div>
@@ -63,7 +61,7 @@
 					<tr th:each="question : ${questionLists}">
 						<td th:text="${question.id}">100</td>
 						<div th:switch="${question.type.name()}">
-							<td th:case= "JUDGE">判断题</td>
+							<td th:case="JUDGE">判断题</td>
 							<td th:case="FILL_BLANK">填空题</td>
 							<td th:case="SINGLE_CHOICE">单选题</td>
 							<td th:case="MULTIPLE_CHOICE">多选题</td>
@@ -73,10 +71,18 @@
 						<td th:text="${question.correctAnswer}">答案</td>
 						<td th:text="${question.score}">100</td>
 						<td th:text="${#temporals.format(question.updatedAt,'yyyy-MM-dd HH:ss')}"></td>
-						<td th:text="否" th:unless="${question.deleted}" >否</td>
-						<td th:text="是" th:if="${question.deleted}" >否</td>
-						<td><button type="button" class="btn btn-info" th:id="'edit-btn'+${question.id}" onclick="editQuestion(this.id)" >修改</button></td>
-						<td><button type="button" class="btn btn-danger" th:id="'delete-btn'+${question.id}" onclick="deleteQuestion(this.id)">删除</button></td>
+						<td th:text="否" th:unless="${question.deleted}">否</td>
+						<td th:text="是" th:if="${question.deleted}">否</td>
+						<td>
+							<button type="button" class="btn btn-info" th:id="'edit-btn'+${question.id}"
+							        onclick="editQuestion(this.id)">修改
+							</button>
+						</td>
+						<td>
+							<button type="button" class="btn btn-danger" th:id="'delete-btn'+${question.id}"
+							        onclick="deleteQuestion(this.id)">删除
+							</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -85,12 +91,13 @@
 				<ul class="pagination">
 					<li><a th:href="@{/questions/(page=0,pagesize=15)}">首页</a></li>
 					<li>
-						<a  th:if="${page} eq 0"} onclick="startPage()">上一页</a>
+						<a th:if="${page} eq 0" } onclick="startPage()">上一页</a>
 						<a th:href="@{/questions/(page=${page}-1,pagesize=15)}" th:if="${page} ne 0">上一页</a>
 					</li>
-					<li >
-						<a th:href="@{/questions/(page=${page}+1,pagesize=15)}" th:if="${page} ne ${TotalPages}-1">下一页</a>
-						<a  th:if="${page} eq ${TotalPages}-1" onclick="endPage()">下一页</a>
+					<li>
+						<a th:href="@{/questions/(page=${page}+1,pagesize=15)}"
+						   th:if="${page} ne ${TotalPages}-1">下一页</a>
+						<a th:if="${page} eq ${TotalPages}-1" onclick="endPage()">下一页</a>
 					</li>
 					<li><a th:href="@{/questions/(page=${TotalPages}-1,pagesize=15)}">末页</a></li>
 				</ul>
@@ -101,15 +108,15 @@
 				<button type="button" class="btn btn-danger" style="float: right" onclick="closeWin()">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
-				<form class="form" method="post" role="form" >
-					<h2  id="edit-title">问题编辑</h2>
+				<form class="form" method="post" role="form">
+					<h2 id="edit-title">问题编辑</h2>
 					<div class="form-group">
 						<label for="question-edit-id">题目编号</label>
-						<input readonly="readonly" id="question-edit-id" type="text" class="form-control" >
+						<input readonly="readonly" id="question-edit-id" type="text" class="form-control">
 					</div>
 					<div class="form-group">
 						<label for="question-type">题目类型</label>
-						<select  id= "question-type" class="form-control" >
+						<select id="question-type" class="form-control">
 							<option th:value="MULTIPLE_CHOICE">多选</option>
 							<option th:value="SINGLE_CHOICE">单选</option>
 							<option th:value="FILL_BLANK">填空</option>
@@ -117,25 +124,25 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="question-info" >题干</label>
-						<input type="text" id="question-info"  class="form-control" placeholder="题干" required autofocus>
+						<label for="question-info">题干</label>
+						<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>
 					</div>
 					<div class="form-group">
-						<label for="answer" >答案</label>
+						<label for="answer">答案</label>
 						<input type="text" id="answer" class="form-control" placeholder="答案" required>
 					</div>
 					<div class="form-group">
-						<label for="score" >分值</label>
-						<input type="text" id="score"  class="form-control" placeholder="Score" required>
+						<label for="score">分值</label>
+						<input type="text" id="score" class="form-control" placeholder="Score" required>
 					</div>
 					<div class="form-group">
 						<label for="delete">是否弃用</label>
-						<select  id= "delete" class="form-control" >
+						<select id="delete" class="form-control">
 							<option>是</option>
 							<option>否</option>
 						</select>
 					</div>
-					<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
+					<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
 					<button class="btn btn-lg btn-primary btn-block" type="button" id="question-edit-btn">提交</button>
 				</form>
 			</div>
@@ -146,32 +153,33 @@
 				<button type="button" class="btn btn-danger" style="float: right" onclick="closeWin()">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
-				<form class="form" method="post" role="form" >
-					<h2  id="add-title">问题添加</h2>
+				<form class="form" method="post" role="form">
+					<h2 id="add-title">问题添加</h2>
 					<div class="form-group">
 						<label for="question-type">题目类型</label>
-						<select  id= "question-add-type" class="form-control" >
+						<select id="question-add-type" class="form-control">
 							<option th:value="MULTIPLE_CHOICE">多选</option>
-							<option th:value="INGLE_CHOICE">单选</option>
+							<option th:value="SINGLE_CHOICE">单选</option>
 							<option th:value="FILL_BLANK">填空</option>
 							<option th:value="JUDGE">判断</option>
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="question-add-info" >题干</label>
-						<input type="text" id="question-add-info"  class="form-control" placeholder="题目大意" required autofocus>
+						<label for="question-add-info">题干</label>
+						<input type="text" id="question-add-info" class="form-control" placeholder="题目大意" required
+						       autofocus>
 					</div>
 					<div class="form-group">
-						<label for="answer" >答案</label>
+						<label for="answer">答案</label>
 						<input type="text" id="question-add-answer" class="form-control" placeholder="答案" required>
 					</div>
 					<div class="form-group">
-						<label for="score" >分值</label>
-						<input type="text" id="question-add-score"  class="form-control" placeholder="分数" required>
+						<label for="score">分值</label>
+						<input type="text" id="question-add-score" class="form-control" placeholder="分数" required>
 					</div>
 					<div class="form-group">
 						<label for="delete">是否直接启用</label>
-						<select  id= "canUse" class="form-control" >
+						<select id="canUse" class="form-control">
 							<option>是</option>
 							<option>否</option>
 						</select>
@@ -186,76 +194,75 @@
 
 
 	<script th:inline="javascript">
-		//表单校验函数
+        //表单校验函数
         function validateForm() {
-            var x=document.forms["myForm"]["fname"].value;
-            if (x==null || x=="")
-            {
+            var x = document.forms["myForm"]["fname"].value;
+            if (x == null || x == "") {
                 alert("姓必须填写");
                 return false;
             }
         }
 
-		//起始页提醒
-		function startPage(){
-		    alert("对不起，已经是第一页！");
-		}
+        //起始页提醒
+        function startPage() {
+            alert("对不起，已经是第一页！");
+        }
 
-		//结束页提醒
-		function endPage(){
-		    alert("对不起，已经达到最后一页！");
-		}
+        //结束页提醒
+        function endPage() {
+            alert("对不起，已经达到最后一页！");
+        }
 
-		//编辑按钮操作
-		function editQuestion(editButtonId){
-		    console.log(questionId);
+        //编辑按钮操作
+        function editQuestion(editButtonId) {
+            console.log(questionId);
             var questionId = editButtonId.substr(8);
             console.log(questionId);
-            $.getJSON("/questions/"+ questionId, function (result) {
+            $.getJSON("/questions/" + questionId, function (result) {
                 popWinToEdit(result);
             })
-		}
+        }
 
-		//添加按钮操作
-		function addQuestion(){
-		   popWinToAdd();
-		}
+        //添加按钮操作
+        function addQuestion() {
+            popWinToAdd();
+        }
 
-		//删除按钮操作
-		function deleteQuestion(deleteButtonId){
+        //删除按钮操作
+        function deleteQuestion(deleteButtonId) {
             var questionId = deleteButtonId.substr(10);
             console.log(questionId);
             $.ajax({
-                url:"/questions/"+ questionId,
-                type:"delete"
+                url: "/questions/" + questionId,
+                type: "delete"
             }).done(function (result) {
                 alert("已经弃用该问题！")
                 location.reload();
             })
-		}
+        }
 
-		//编辑窗口提交操作
+        //编辑窗口提交操作
         $("#question-edit-btn").click(function () {
             // alert("点了我！")
-	        let formData = JSON.stringify({
+            let formData = JSON.stringify({
                 "id": $("#question-edit-id").val(),
                 "infoTextContent": $("#question-info").val(),
                 "score": $("#score").val(),
                 "type": $("#question-type").val(),
                 "correctAnswer": $("#answer").val(),
-                "deleted": $("#delete").val() == "是" ? true:false,
-	        })
-	        // console.log(typeof formData.id);
-	        $.ajax({
-		        url: "/questions/1",
-		        type:"put",
-                contentType:"application/json",
-                data:formData,
-                dataType:"json"
-	        }).done(function (data) {
-		        console.log(data.code);
-		        if (data.code == 200)  alert("修改成功");
-		        else alert("修改失败！");
+                "deleted": $("#delete").val() == "是" ? true : false,
+            })
+            // console.log(typeof formData.id);
+            $.ajax({
+                url: "/questions/1",
+                type: "put",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
+            }).done(function (data) {
+                console.log(data.code);
+                if (data.code == 200) alert("修改成功");
+                else alert("修改失败！");
             })
         })
 
@@ -267,47 +274,46 @@
                 "score": $("#question-add-score").val(),
                 "type": $("#question-add-type").val(),
                 "correctAnswer": $("#question-add-answer").val(),
-                "deleted": $("#canUse").val() == "是" ? false:true
+                "deleted": $("#canUse").val() == "是" ? false : true
             })
             $.ajax({
                 url: "/questions/",
-                type:"post",
-                contentType:"application/json",
-                data:formData,
-                dataType:"json"
+                type: "post",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
             }).done(function (data) {
                 console.log(data.code);
-                if (data.code == 200)  alert("保存成功");
+                if (data.code == 200) alert("保存成功");
                 else alert("保存失败！");
             })
         })
 
-		/*窗口弹出添加函数*/
-		function popWinToAdd(){
-            document.getElementById('lightToAdd').style.display='block';
-            document.getElementById('fade').style.display='block';
-		}
+        /*窗口弹出添加函数*/
+        function popWinToAdd() {
+            document.getElementById('lightToAdd').style.display = 'block';
+            document.getElementById('fade').style.display = 'block';
+        }
 
-		/*窗口弹出编辑函数*/
-        function popWinToEdit(question){
+        /*窗口弹出编辑函数*/
+        function popWinToEdit(question) {
             /*数据回显*/
-            document.getElementById("edit-title").innerText="编辑问题"+ question.data.id ;
+            document.getElementById("edit-title").innerText = "编辑问题" + question.data.id;
             $("#question-edit-id").val(question.data.id);
             $("#question-edit-btn").val(question.data.type);
             $("#question-info").val(question.data.infoTextContent);
             $("#answer").val(question.data.correctAnswer);
             $("#score").val(question.data.score);
-            $("#delete").val((question.data.deleted) ? "是":"否");
-            document.getElementById('lightToEdit').style.display='block';
-            document.getElementById('fade').style.display='block'
+            $("#delete").val((question.data.deleted) ? "是" : "否");
+            document.getElementById('lightToEdit').style.display = 'block';
+            document.getElementById('fade').style.display = 'block'
         }
 
-		/*窗口关闭函数*/
+        /*窗口关闭函数*/
         function closeWin() {
             document.getElementById('lightToEdit').style.display = 'none';
             document.getElementById('lightToAdd').style.display = 'none';
             document.getElementById('fade').style.display = 'none';
-
             location.reload();
         }
 	</script>

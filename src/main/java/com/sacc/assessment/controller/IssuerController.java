@@ -1,5 +1,6 @@
 package com.sacc.assessment.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.model.UserDetail;
@@ -53,7 +54,7 @@ public class IssuerController {
     @GetMapping("/updateExam/{examId}")
     public String updateExam(@PathVariable Integer examId, Model model, Authentication authentication){
         ExamPaper exam = examPaperService.getExam(examId);
-        model.addAttribute("exam", exam);
+        model.addAttribute("exam", JSON.toJSON(exam));
         return "../static/html/issuer/exam-edit.html";
     }
 

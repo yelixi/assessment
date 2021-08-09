@@ -79,4 +79,9 @@ public class QuestionServiceImpl implements QuestionService {
     public Page<Question> findAll(Pageable pageable) {
         return questionRepository.findAll(pageable);
     }
+
+    @Override
+    public void deleteQuesionById(Integer id) {
+        questionRepository.deleteById(id);
+    }
 }
