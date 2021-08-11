@@ -243,6 +243,7 @@
 
         //编辑窗口提交操作
         $("#question-edit-btn").click(function () {
+            var question_id = $("#question-edit-id").val();
             // alert("点了我！")
             let formData = JSON.stringify({
                 "id": $("#question-edit-id").val(),
@@ -254,15 +255,18 @@
             })
             // console.log(typeof formData.id);
             $.ajax({
-                url: "/questions/1",
+                url: "/questions/"+ question_id,
                 type: "put",
                 contentType: "application/json",
                 data: formData,
                 dataType: "json"
             }).done(function (data) {
                 console.log(data.code);
-                if (data.code == 200) alert("修改成功");
-                else alert("修改失败！");
+                if (data.code == 200) {
+                    alert("修改问题成功");
+                    location.reload();
+                }
+                else alert("修改问题失败！");
             })
         })
 
@@ -284,8 +288,11 @@
                 dataType: "json"
             }).done(function (data) {
                 console.log(data.code);
-                if (data.code == 200) alert("保存成功");
-                else alert("保存失败！");
+                if (data.code == 200){
+                    alert("添加问题成功");
+                    location.reload();
+                }
+                else alert("保存问题失败！");
             })
         })
 

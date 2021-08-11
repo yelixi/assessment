@@ -2,27 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>试卷创建</title>
+		<title>试卷编辑</title>
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<!--基础js-->
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+		<!--DateTimepicker-->
+		<script src="https://cdn.bootcss.com/moment.js/2.24.0/moment-with-locales.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-
-		<link href="https://cdn.jsdelivr.net/gh/Talv/x-editable@develop/dist/bootstrap4-editable/css/bootstrap-editable.css" rel="stylesheet">
-
-		<script src="https://cdn.jsdelivr.net/gh/Talv/x-editable@develop/dist/bootstrap4-editable/js/bootstrap-editable.min.js"></script>
-		<script src="https://unpkg.com/bootstrap-table@1.15.4/dist/extensions/editable/bootstrap-table-editable.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 
 	</head>
 	<style>
-        #question-table tr:nth-child(even){
-            background:#f4f8fb;
+        #question-table tr:nth-child(even) {
+            background: #f4f8fb;
         }
-        .black_overlay{
+
+        .black_overlay {
 
             display: none;
             position: absolute;
@@ -31,11 +30,12 @@
             width: 100%;
             height: 100%;
             background-color: #c8c8c8;
-            z-index:1001;
+            z-index: 1001;
             -moz-opacity: 0.8;
-            opacity:.80;
+            opacity: .80;
             filter: alpha(opacity=78);
         }
+
         .pop_win {
 
             display: none;
@@ -48,7 +48,7 @@
             /*border-radius: 36px 38px 49px 40px / 53px 47px 51px 54px;*/
             border: 2px solid cornflowerblue;
             background-color: white;
-            z-index:9999;
+            z-index: 9999;
             overflow: auto;
         }
 	</style>
@@ -58,31 +58,31 @@
 
 
 		<div class="container">
-			<form class="form" method="post" role="form" >
-				<h1  id="add-title">查看考试</h1>
+			<form class="form" method="post" role="form">
+				<h1 id="add-title">查看考试</h1>
 				<br>
 				<div class="form-group">
 					<label for="exam-id">考试编号</label>
-					<input type="text" id="exam-id" class="form-control" placeholder="这里什么都没有" disabled >
+					<input type="text" id="exam-id" class="form-control" placeholder="这里什么都没有" disabled>
 				</div>
 				<div class="form-group">
 					<label for="exam-name">考试名称</label>
 					<input type="text" id="exam-name" class="form-control" placeholder="这里什么都没有" required autofocus>
 				</div>
 				<div class="form-group">
-					<label for="exam-start-time" >开始时间</label>
-					<div class='input-group date' id='exam-start-time'>
-						<input type='text' class="form-control" id="start_time"  />
+					<label for="exam-start-time">开始时间</label>
+					<div class='input-group date form-date form_datetime' id='exam-start-time'>
+						<input type='text' class="form-control" id="start_time"/>
 						<span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="exam-end-time" >结束时间</label>
+					<label for="exam-end-time">结束时间</label>
 					<!--指定 date标记-->
 					<div class='input-group date' id='exam-end-time'>
-						<input type='text' class="form-control" id="end_time"  />
+						<input type='text' class="form-control form_datetime" id="end_time"/>
 						<span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -91,17 +91,19 @@
 				<input type="hidden" th:value="${exam}" id="exam-questions"/>
 
 
-				<div class="form-group"  id="question-container" >
+				<div class="form-group" id="question-container">
 					<label for="exam-questions">题目选择</label>
-					<a href="#" class="btn btn-info btn-default" onclick="popWinToAdd()">
+					<a href="#" class="btn btn-success btn-default" onclick="popWinToAdd()">
 						<span class="glyphicon glyphicon-plus"></span> 问题添加
 					</a>
-					<table id="question-table" class="table"  search="true" data-editable="true" >
+					<table id="question-table" class="table" search="true">
 					</table>
 				</div>
 
 				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-				<button class="btn btn-lg btn-primary btn-block" type="button" id="exam-update-btn" onclick="update()">保存问题</button>
+				<button class="btn btn-lg btn-primary btn-block" type="button" id="exam-update-btn" onclick="update()">
+					保存问题
+				</button>
 			</form>
 		</div>
 
@@ -110,15 +112,15 @@
 			<button type="button" class="btn btn-danger" style="float: right" onclick="closeWin()">
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
-			<form class="form" method="post" role="form" >
-				<h2  id="edit-title">问题编辑</h2>
+			<form class="form" method="post" role="form">
+				<h2 id="edit-title">问题编辑</h2>
 				<div class="form-group">
 					<label for="question-edit-id">题目编号</label>
-					<input readonly="readonly" id="question-edit-id" type="text" class="form-control" >
+					<input readonly="readonly" id="question-edit-id" type="text" class="form-control">
 				</div>
 				<div class="form-group">
 					<label for="question-type">题目类型</label>
-					<select  id= "question-type" class="form-control" >
+					<select id="question-type" class="form-control">
 						<option th:value="MULTIPLE_CHOICE">多选</option>
 						<option th:value="SINGLE_CHOICE">单选</option>
 						<option th:value="FILL_BLANK">填空</option>
@@ -126,25 +128,25 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="question-info" >题干</label>
-					<input type="text" id="question-info"  class="form-control" placeholder="题干" required autofocus>
+					<label for="question-info">题干</label>
+					<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>
 				</div>
 				<div class="form-group">
-					<label for="answer" >答案</label>
+					<label for="answer">答案</label>
 					<input type="text" id="answer" class="form-control" placeholder="答案" required>
 				</div>
 				<div class="form-group">
-					<label for="score" >分值</label>
-					<input type="text" id="score"  class="form-control" placeholder="Score" required>
+					<label for="score">分值</label>
+					<input type="text" id="score" class="form-control" placeholder="Score" required>
 				</div>
 				<div class="form-group">
 					<label for="delete">是否弃用</label>
-					<select  id= "delete" class="form-control" >
+					<select id="delete" class="form-control">
 						<option>是</option>
 						<option>否</option>
 					</select>
 				</div>
-				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
+				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
 				<button class="btn btn-lg btn-primary btn-block" type="button" id="question-edit-btn">提交</button>
 			</form>
 		</div>
@@ -154,7 +156,7 @@
 				<span class="glyphicon glyphicon-remove"></span>
 			</button>
 			<form class="form" method="post" role="form">
-				<h2 >试卷问题添加</h2>
+				<h2>试卷问题添加</h2>
 				<div class="form-group">
 					<label for="question-type">题目类型</label>
 					<select id="question-add-type" class="form-control">
@@ -178,7 +180,7 @@
 					<input type="text" id="question-add-score" class="form-control" placeholder="分数" required>
 				</div>
 				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-				<button class="btn btn-lg btn-primary btn-block" type="button" id="question-add-btn" >保存试卷</button>
+				<button class="btn btn-lg btn-primary btn-block" type="button" id="question-add-btn">保存试卷</button>
 			</form>
 		</div>
 		<div id="fade" class="black_overlay"></div>
@@ -186,59 +188,59 @@
 
 	</body>
 	<script>
-        var  examValue = $("#exam-questions").val();
+        /*数据回显*/
+        var examValue = $("#exam-questions").val();
         let exam = JSON.parse(examValue);
         $("#exam-id").val(exam.id);
         $("#exam-name").val(exam.name);
         $("#start_time").val(exam.startTime);
         $("#end_time").val(exam.endTime);
+
+        /*表格初始化*/
         $('#question-table').bootstrapTable({
-	        uniqueId: 'id',
-	        striped: true,
-	        search:true,
+            uniqueId: 'id',
+            striped: true,
+            search: true,
             showRefresh: true,
-            showColumns:true,
-	        data: exam.questions,
+            showColumns: true,
+            data: exam.questions,
             columns: [{
                 field: 'id',
                 title: '题目编号',
                 sortable: true,
                 sortOrder: "asc",
-	            align: "center",
+                align: "center",
                 width: 30
             }, {
                 field: 'infoTextContent',
                 title: '问题题干',
-	            sortable: true,
-	            sortOrder: "asc",
-	            width: 360
-            },{
-                field: 'type',
-                title: '题目类型',
-	            width: 120,
                 sortable: true,
                 sortOrder: "asc",
-	            align: "center"
+                width: 360
+            }, {
+                field: 'type',
+                title: '题目类型',
+                width: 120,
+                sortable: true,
+                sortOrder: "asc",
+                align: "center"
             }, {
                 field: 'score',
                 title: '分数',
                 sortable: true,
                 sortOrder: "asc",
-	            width: 60,
-	            align: "center"
-            },{
-	            field: 'id',
-	            title: '操作',
-	            width: 120,
-	            align: 'center',
-	            formatter: actionFormatter,
+                width: 60,
+                align: "center"
+            }, {
+                field: 'id',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                formatter: actionFormatter,
             }]
         });
 
-        function addQuestion(){
-
-        }
-
+        /*图标初始化*/
         function actionFormatter(value, row, index) {
             var id = value;
             var result = "";
@@ -248,8 +250,8 @@
         }
 
         //问题表格中的查看按钮
-        function ViewQuestionById(questionId){
-            $.getJSON('/questions/'+questionId,function (result) {
+        function ViewQuestionById(questionId) {
+            $.getJSON('/questions/' + questionId, function (result) {
                 popWinToEdit(result);
             })
         }
@@ -267,40 +269,44 @@
         }
 
         //问题表格中的删除按钮
-        function DeleteQuestionByIds(questionId){
-            exam.questions = arrRemoveJson(exam.questions, 'id',questionId);
-            $.ajax({
-	            url: '/questions/'+questionId,
-	            type:"delete"
-            }).done(function (data) {
-	            location.reload();
-            })
+        function DeleteQuestionByIds(questionId) {
+            if (confirm("确定是否删除该问题?")) {
+                exam.questions = arrRemoveJson(exam.questions, 'id', questionId);
+                $.ajax({
+                    url: '/questions/' + questionId,
+                    type: "delete"
+                }).done(function (data) {
+                    location.reload();
+                })
+            }
+
         }
 
-		//更新函数
+        //更新函数
         function update() {
-            var st =  $("#start_time").val();
-            var et =  $("#end_time").val();
+            var st = $("#start_time").val();
+            var et = $("#end_time").val();
             let formData = JSON.stringify({
-                "id"        : $("#exam-id").val(),
-                "name"      : $("#exam-name").val(),
-                "questions" : exam.questions,
-                "startTime" : $("#start_time").val(),
-                "endTime"   : $("#end_time").val()
+                "id": $("#exam-id").val(),
+                "name": $("#exam-name").val(),
+                "questions": exam.questions,
+                "startTime": $("#start_time").val(),
+                "endTime": $("#end_time").val()
             });
             $.ajax({
                 url: "/issuer/updateExam",
-                type:"post",
-                contentType:"application/json",
-                data:formData,
-                dataType:"json"
+                type: "post",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
             }).done(function (data) {
                 console.log(data.code);
-                if (data.code == 200)  {alert("保存成功"); location.reload();}
-                else alert("保存失败！");
+                if (data.code == 200) {
+                    alert("保存成功");
+                    location.reload();
+                } else alert("保存失败！");
             })
         }
-
 
         $('#exam-start-time').datetimepicker({
             format: 'YYYY-MM-DD hh:mm:ss',
@@ -310,7 +316,6 @@
             format: 'YYYY-MM-DD hh:mm:ss',
             locale: moment.locale('zh-cn')
         });
-
 
         //编辑窗口提交操作
         $("#question-add-btn").click(function () {
@@ -323,12 +328,39 @@
                 "deleted": $("#canUse").val() == "是" ? false : true
             });
             let s = JSON.stringify(exam.questions);
-            s = s.substr(0,s.length-1)+ ',' + questionToAdd + ']';
+            if (s.length == 2) s = s.substr(0, s.length - 1) + questionToAdd + ']';
+            else s = s.substr(0, s.length - 1) + ',' + questionToAdd + ']';
             exam.questions = JSON.parse(s);
             update();
-            // console.log(s);
             closeWin();
-            // console.log(JSON.stringify(JSON.stringify(exam.questions)));
+        })
+
+        //编辑窗口提交操作
+        $("#question-edit-btn").click(function () {
+            var question_id = $("#question-edit-id").val();
+            // alert("点了我！")
+            let formData = JSON.stringify({
+                "id": $("#question-edit-id").val(),
+                "infoTextContent": $("#question-info").val(),
+                "score": $("#score").val(),
+                "type": $("#question-type").val(),
+                "correctAnswer": $("#answer").val(),
+                "deleted": $("#delete").val() == "是" ? true : false,
+            })
+            // console.log(typeof formData.id);
+            $.ajax({
+                url: "/questions/" + question_id,
+                type: "put",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
+            }).done(function (data) {
+                console.log(data.code);
+                if (data.code == 200) {
+                    alert("修改成功");
+                    location.reload();
+                } else alert("修改失败！");
+            })
         })
 
         /*窗口弹出添加修改函数*/
@@ -338,19 +370,19 @@
         }
 
         /*窗口弹出编辑函数*/
-        function popWinToEdit(question){
-            /*数据回显*/
-            document.getElementById("edit-title").innerText="编辑问题"+ question.data.id ;
+        function popWinToEdit(question) {
+            document.getElementById("edit-title").innerText = "编辑问题" + question.data.id;
             $("#question-edit-id").val(question.data.id);
-            $("#question-edit-btn").val(question.data.type);
+            $("#question-type").val(question.data.type);
             $("#question-info").val(question.data.infoTextContent);
             $("#answer").val(question.data.correctAnswer);
             $("#score").val(question.data.score);
-            $("#delete").val((question.data.deleted) ? "是":"否");
-            document.getElementById('lightToEdit').style.display='block';
-            document.getElementById('fade').style.display='block'
+            $("#delete").val((question.data.deleted) ? "是" : "否");
+            document.getElementById('lightToEdit').style.display = 'block';
+            document.getElementById('fade').style.display = 'block'
         }
-        function flash(){
+
+        function flash() {
             console.log("faf");
             $('#bootstrap-table').bootstrapTable('destroy');
             $('#question-table').bootstrapTable('refresh');
@@ -359,14 +391,9 @@
         /*窗口关闭函数*/
         function closeWin() {
             document.getElementById('lightToEdit').style.display = 'none';
-            document.getElementById('lightToAdd').style.display='none';
+            document.getElementById('lightToAdd').style.display = 'none';
             document.getElementById('fade').style.display = 'none';
-
             $('#question-table').bootstrapTable('refresh');
-            // location.reload();
         }
-
-
-
 	</script>
 </html>

@@ -32,7 +32,7 @@ public class IssuerController {
 
     @ResponseBody
     @PostMapping("/createExam")
-    public RestResult<Boolean> createExam(@RequestBody ExamPaper examPaper, Authentication authentication){
+    public RestResult<ExamPaper> createExam(@RequestBody ExamPaper examPaper, Authentication authentication){
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
         return RestResult.success(examPaperService.createExam(examPaper,userDetail));
     }

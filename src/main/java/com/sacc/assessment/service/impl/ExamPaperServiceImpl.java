@@ -34,14 +34,14 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     private AnswerRepository answerRepository;
 
     @Override
-    public boolean createExam(ExamPaper examPaper, UserDetail userDetail) {
+    public ExamPaper createExam(ExamPaper examPaper, UserDetail userDetail) {
         examPaper.setUserId(userDetail.getId());
         examPaper.setCreatedAt(LocalDateTime.now());
         examPaper.setUpdatedAt(LocalDateTime.now());
         examPaper.getQuestions().forEach(x->x.setCreatedAt(LocalDateTime.now()));
         examPaper.getQuestions().forEach(x->x.setUpdatedAt(LocalDateTime.now()));
         examPaperRepository.save(examPaper);
-        return true;
+        return examPaper;
     }
 
     @Override

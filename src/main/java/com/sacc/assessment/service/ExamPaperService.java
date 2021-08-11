@@ -13,7 +13,7 @@ import java.util.List;
  * Date 2021/8/1 12:44
  */
 public interface ExamPaperService {
-    boolean createExam(ExamPaper examPaper, UserDetail userDetail);
+    ExamPaper createExam(ExamPaper examPaper, UserDetail userDetail);
 
     boolean updateExam(ExamPaper examPaper);
 
