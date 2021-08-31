@@ -2,6 +2,7 @@ package com.sacc.assessment.conf;
 
 
 
+import com.sacc.assessment.entity.User;
 import com.sacc.assessment.handler.TigerLogoutSuccessHandler;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.service.UserService;
@@ -44,7 +45,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 //失败处理
                 .failureHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, e.getMessage())))
                 //成功处理
-                .successHandler((req ,resp, e)-> ResponseUtil.restResponse(resp,HttpStatus.OK,RestResult.success(UserServiceImpl.login())))
+                .successHandler((req ,resp, e)-> ResponseUtil.restResponse(resp,HttpStatus.OK,RestResult.success(login())))
                 .permitAll()
                 .and().exceptionHandling()
                 //请求登录处理，改变默认跳转登录页
@@ -64,5 +65,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    public User login(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setPassword("*******");
+        return user;
     }
 }

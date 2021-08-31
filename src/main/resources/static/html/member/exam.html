@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>exam</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
 <div class="exam" th:id="${exam.getId()}">
     <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question">
         <p th:text="${question.getInfoTextContent()}"></p>
         <label>
-            <input class="answer">
+            <input class="an">
         </label>
     </div>
     <button type="button" id="btn">提交</button>
@@ -19,26 +20,42 @@
     $("#btn").click(function (){
         let answer = [];
         let question = $(".question")
+        let ans = $(".an")
+        //let answers = []
         //let ans = $(".answer")
         for (let i=0;i<question.length;i++){
-            answer[i]=JSON.stringify({
+            let o = {}
+            o.questionId=question[i].id
+            o.answer=ans[i].value
+            /*answer[i]=JSON.stringify({
                 "questionId": question[i].id,
-                "answer": question[i].answer.val()
-            })
+                "answer": ans[i].value
+            })*/
+            answer.push(o)
+            //answers.push(answer[i])
+            //console.log("answer["+i+"]:"+answer[i])
         }
+        //console.log(answers)
+        let answers = JSON.stringify(answer)
         let bodyForm = JSON.stringify({
-            "examPaperId": $(".exam").id,
-            "answers": JSON.stringify(answer),
-        })
+            "examPaperId": $(".exam").attr("id"),
+            //"answers": JSON.stringify(answer)
+            "answers": answers
+        }).replace(new RegExp("\\\\\"","gm"),"\"").replace("\""+answers+"\"",answers)
+        console.log("body:"+bodyForm)
         $.ajax({
             url: "/uploadAnswer",
             type: "post",
-            body: bodyForm
+            contentType: "application/json",
+            data: bodyForm
         }).done(function (data){
             if(data.code===200)
                 alert("提交成功")
                 window.location.href="/home/member"
         })
     })
+    function replacer(key, value) {
+        return value.replace(/[^\w\s]/gi, '');
+    }
 </script>
 </html>

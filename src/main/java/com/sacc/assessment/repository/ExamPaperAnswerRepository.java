@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Date 2021/8/1 20:24
  */
 public interface ExamPaperAnswerRepository extends JpaRepository<ExamPaperAnswer,Integer> {
+    ExamPaperAnswer findByUserIdAndExamPaperId(Integer userId,Integer examPaperId);
 }

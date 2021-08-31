@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body th:id="${examPageId}" class="body">
 <div>
@@ -11,15 +12,19 @@
 <div>
     <p th:text="${question.infoTextContent}"></p>
 </div>
-<div th:id="paperAnswer" class="a">
+<div th:id="${paperAnswer}" class="a">
     <p th:text="${answer.answer}" th:id="${answer.id}" class="answer"></p>
 </div>
 <div>
+    <p>分数</p>
     <label for="score">
         <input id="score">
     </label>
 </div>
 <div>
+    <p>
+        评价
+    </p>
     <label for="comment">
         <input id="comment">
     </label>
@@ -33,33 +38,34 @@
 <script>
     $("#btn").click(function (){
         let form = JSON.stringify({
-            "examPaperAnswerId": $(".a").id,
-            "answerId": $(".answer").id,
+            "examPaperAnswerId": $(".a").attr("id"),
+            "answerId": $(".answer").attr("id"),
             "grade": $("#score").val(),
             "comment": $("#comment").val()
         })
         $.ajax({
             url: "/correction",
+            contentType: "application/json",
             type: "post",
-            body: form
+            data: form
         }).done(function (data){
             if(data.code===200)
                 alert("成功")
         })
     })
     $(".pre").click(function (){
-        let preId = $(".pre").id
-        if(preId===-1)
+        let preId = $(".pre").attr("id")
+        if(preId==="-1")
             alert("这已经是第一个了")
         else
-            window.location.href="/getAnswer?answerId="+preId+"&examPageId="+$(".body").id
+            window.location.href="/getAnswer?answerId="+preId+"&examPageId="+$(".body").attr("id")
     })
     $(".next").click(function (){
-        let nextId = $(".next").id
-        if(nextId===-1)
+        let nextId = $(".next").attr("id")
+        if(nextId==="-1")
             alert("这已经是最后一个了")
         else
-            window.location.href="/getAnswer?answerId="+nextId+"&examPageId="+$(".body").id
+            window.location.href="/getAnswer?answerId="+nextId+"&examPageId="+$(".body").attr("id")
     })
 </script>
 </html>

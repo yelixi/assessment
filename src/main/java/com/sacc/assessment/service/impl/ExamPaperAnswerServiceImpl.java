@@ -7,6 +7,8 @@ import com.sacc.assessment.repository.ExamPaperAnswerRepository;
 import com.sacc.assessment.repository.ExamPaperRepository;
 import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
+import com.sacc.assessment.util.GetNullPropertyNamesUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,20 +26,40 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
 
     @Override
     public boolean uploadAnswer(ExamPaperAnswer examPaperAnswer, UserDetail userDetail) {
-        examPaperAnswer.setUserId(userDetail.getId());
-        examPaperAnswer.setCreatedAt(LocalDateTime.now());
-        examPaperAnswer.setUpdatedAt(LocalDateTime.now());
-        for (Answer answer : examPaperAnswer.getAnswers()) {
-            answer.setCreatedAt(LocalDateTime.now());
-            answer.setUpdatedAt(LocalDateTime.now());
-            answer.setUserId(userDetail.getId());
+        ExamPaperAnswer exitAnswer = examPaperAnswerRepository.findByUserIdAndExamPaperId(userDetail.getId(),examPaperAnswer.getExamPaperId());
+        if(exitAnswer==null) {
+            examPaperAnswer.setUserId(userDetail.getId());
+            examPaperAnswer.setCreatedAt(LocalDateTime.now());
+            examPaperAnswer.setUpdatedAt(LocalDateTime.now());
+            for (Answer answer : examPaperAnswer.getAnswers()) {
+                answer.setCreatedAt(LocalDateTime.now());
+                answer.setUpdatedAt(LocalDateTime.now());
+                answer.setUserId(userDetail.getId());
+                answer.setExamPageId(examPaperAnswer.getExamPaperId());
+            }
+            examPaperAnswerRepository.save(examPaperAnswer);
         }
-        examPaperAnswerRepository.save(examPaperAnswer);
+        else {
+            for (Answer answer : examPaperAnswer.getAnswers()) {
+                for (Answer answer1:exitAnswer.getAnswers()){
+                    if(answer.getQuestionId().equals(answer1.getQuestionId())) {
+                        BeanUtils.copyProperties(answer, answer1, GetNullPropertyNamesUtil.getNullPropertyNames(answer));
+                        answer1.setUpdatedAt(LocalDateTime.now());
+                    }
+                }
+            }
+            examPaperAnswerRepository.save(exitAnswer);
+        }
         return true;
     }
 
     @Override
     public ExamPaperAnswer findOne(Integer examPaperAnswerId) {
         return examPaperAnswerRepository.getOne(examPaperAnswerId);
+    }
+
+    @Override
+    public boolean findByUserIdAndExamPaperId(Integer UserId, Integer ExamPaperId) {
+        return examPaperAnswerRepository.findByUserIdAndExamPaperId(UserId, ExamPaperId) != null;
     }
 }

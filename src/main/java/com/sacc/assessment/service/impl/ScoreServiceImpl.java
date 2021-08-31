@@ -7,7 +7,9 @@ import com.sacc.assessment.form.ScoreForm;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperAnswerRepository;
+import com.sacc.assessment.repository.ScoreRepository;
 import com.sacc.assessment.service.ScoreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +21,7 @@ import java.util.List;
  * Date 2021/7/18 17:35
  */
 @Service
+@Slf4j
 public class ScoreServiceImpl implements ScoreService {
 
     @Resource
@@ -27,18 +30,31 @@ public class ScoreServiceImpl implements ScoreService {
     @Resource
     private ExamPaperAnswerRepository examPaperAnswerRepository;
 
+    @Resource
+    private ScoreRepository scoreRepository;
+
     @Override
     public boolean correction(ScoreForm scoreForm, UserDetail userDetail) {
         ExamPaperAnswer examPaperAnswer = examPaperAnswerRepository.getOne(scoreForm.getExamPaperAnswerId());
-        Score score = new Score();
-        score.setGrade(scoreForm.getGrade());
-        score.setComment(scoreForm.getComment());
-        score.setCreatedAt(LocalDateTime.now());
-        score.setUpdatedAt(LocalDateTime.now());
         for (Answer answer : examPaperAnswer.getAnswers()) {
-            if(answer.getId().equals(scoreForm.getAnswerId()))
+            if(answer.getId().equals(scoreForm.getAnswerId())) {
+                Score score;
+                if(answer.getScore()==null) {
+                    score = new Score();
+                    score.setCreatedAt(LocalDateTime.now());
+                }else {
+                    score = answer.getScore();
+                }
+                score.setGrade(scoreForm.getGrade());
+                score.setComment(scoreForm.getComment());
+                score.setUpdatedAt(LocalDateTime.now());
+                score.setCorrectorId(userDetail.getId());
                 answer.setScore(score);
+                scoreRepository.save(score);
+                break;
+            }
         }
+        log.error(examPaperAnswer.toString());
         examPaperAnswerRepository.save(examPaperAnswer);
         return true;
     }

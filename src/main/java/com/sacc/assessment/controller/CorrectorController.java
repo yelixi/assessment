@@ -68,12 +68,23 @@ public class CorrectorController {
         for (Answer a : answerList) {
             if (a.getId().equals(answer.getId())){
                 int th = answerList.indexOf(a);
-                if(th==0)
-                    model.addAttribute("pre",-1);
-                if(th==answerList.size()-1)
-                    model.addAttribute("next",-1);
-                model.addAttribute("pre",answerList.get(th-1).getId());
-                model.addAttribute("next",answerList.get(th+1).getId());
+                if(th==0&&th==answerList.size()-1) {
+                    model.addAttribute("pre", -1);
+                    model.addAttribute("next", -1);
+                }
+                else if(th==0){
+                    model.addAttribute("pre", -1);
+                    model.addAttribute("next", answerList.get(th + 1).getId());
+                }
+                else if(th==answerList.size()-1) {
+                    model.addAttribute("pre", answerList.get(th - 1).getId());
+                    model.addAttribute("next", -1);
+                }
+                else {
+                    model.addAttribute("pre", answerList.get(th - 1).getId());
+                    model.addAttribute("next", answerList.get(th + 1).getId());
+                }
+                break;
             }
         }
         model.addAttribute("answer",answer);

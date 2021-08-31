@@ -11,4 +11,6 @@ public interface ExamPaperAnswerService {
     boolean uploadAnswer(ExamPaperAnswer examPaperAnswer, UserDetail userDetail);
 
     ExamPaperAnswer findOne(Integer examPaperAnswerId);
+
+    boolean findByUserIdAndExamPaperId(Integer UserId,Integer ExamPaperId);
 }

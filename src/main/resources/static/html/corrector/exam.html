@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-<table th:id="exam.id" class="t">
+<table th:id="${exam.id}" class="t">
     <tr th:each="question,loopStatus: ${exam.questions}">
         <td th:text="第+${loopStatus.count}+题"></td>
         <td th:text="${question.infoTextContent}"></td>
         <td th:text="${question.type}"></td>
-        <button type="button" th:id="question.id" onclick="getAnswer(this.id)">批改</button>
+        <td>
+        <button type="button" th:id="${question.id}" onclick="getAnswer(this.id)">批改</button>
+        </td>
     </tr>
 </table>
 </body>
 <script>
     function getAnswer(questionId){
-        window.location.href="/answer?questionId="+questionId+"&examPaperId="+$(".t").id
+        let examPaperId = $(".t").attr("id")
+        window.location.href="/answer?questionId="+questionId+"&examPaperId="+examPaperId
     }
 </script>
 </html>

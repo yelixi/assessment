@@ -3,12 +3,14 @@ package com.sacc.assessment.controller;
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.User;
 import com.sacc.assessment.model.RestResult;
+import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.UserService;
 import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +36,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ExamPaperService examPaperService;
+    @Autowired
+    private ExamPaperAnswerService examPaperAnswerService;
 
     @GetMapping("/login")
     public String login(){
@@ -72,9 +77,18 @@ public class UserController {
 
     @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/home/member")
-    public String memberHome(Model model){
+    public String memberHome(Model model, Authentication authentication){
         List<ExamPaper> examPaperList = examPaperService.getAllExam();
         model.addAttribute("examList",examPaperList);
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+        List<Integer> list = new ArrayList<>();
+        for (ExamPaper examPaper : examPaperList) {
+            if(examPaperAnswerService.findByUserIdAndExamPaperId(userDetail.getId(),examPaper.getId())){
+                list.add(1);
+            }
+            else list.add(0);
+        }
+        model.addAttribute("list",list);
         return "../static/html/member/memberHome.html";
     }
 }

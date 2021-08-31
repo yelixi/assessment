@@ -14,12 +14,12 @@
             <td>考试时间</td>
             <td>是否已参加</td>
         </tr>
-        <tr th:each="exam:${examList}">
+        <tr th:each="exam,index:${examList}">
             <td th:text="${exam.name}"></td>
             <td th:text="${exam.startTime}"></td>
             <td th:text="${exam.endTime}"></td>
             <td th:text="${exam.examTime}"></td>
-            <td>否</td>
+            <td th:if="${list[index.index]==1}" th:text="是">否</td>
             <td><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>
         </tr>
     </table>
