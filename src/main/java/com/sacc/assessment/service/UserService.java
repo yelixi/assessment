@@ -2,7 +2,9 @@ package com.sacc.assessment.service;
 
 import com.sacc.assessment.entity.User;
 import com.sacc.assessment.enums.Role;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,4 +22,6 @@ public interface UserService {
     boolean updateRole(String username, Role role);
 
     User getUser(Integer userId);
+
+    boolean registerAll(MultipartFile file) throws IOException;
 }

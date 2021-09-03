@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -47,6 +49,17 @@ public class RootController {
     @GetMapping("/addUser")
     public String addUser(){
         return "../static/html/root/addUser.html";
+    }
+
+    @GetMapping("/registerAll")
+    public String registerAll(){
+        return "../static/html/root/registerAll.html";
+    }
+
+    @ResponseBody
+    @PostMapping("/registerAll")
+    public RestResult<Boolean> registerAll(MultipartFile file) throws IOException {
+        return RestResult.success(userService.registerAll(file));
     }
 
     @GetMapping("/getAllUser")

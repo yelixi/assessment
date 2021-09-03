@@ -18,7 +18,8 @@
         <td th:if="${answer.score}==null"></td>
         <td th:if="${answer.score}!=null" th:unless="${answer.score.comment}==null" th:text="${answer.score.comment}"></td>
         <td th:if="${answer.score}==null"></td>
-        <td th:if="${answer.score}==null" th:text="否">是</td>
+        <td th:if="${answer.score}==null" th:text="否"></td>
+        <td th:if="${answer.score}!=null" th:text="是"></td>
         <td>
             <button type="button" th:id="${answer.id}" onclick="get(this.id)">批改</button>
         </td>

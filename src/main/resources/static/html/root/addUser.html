@@ -34,6 +34,9 @@
 			<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
 			<button class="btn btn-lg btn-primary btn-block" type="button" id="btn">注册</button>
 		</form>
+		<div>
+			<button class="btn btn-lg btn-primary btn-block" type="button" id="registerAll">批量注册</button>
+		</div>
 	</body>
 	<script>
         $("#btn").click(function (){
@@ -60,5 +63,8 @@
                     alert(data.message)
             })
         })
+		$("#registerAll").click(function (){
+			window.location.href="/root/registerAll";
+		})
 	</script>
 </html>

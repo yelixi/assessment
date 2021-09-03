@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Describe: 问题实体类
@@ -18,11 +19,12 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Data
 public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     /**
      * 自增ID
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -50,6 +52,13 @@ public class Question {
      * 创建人
      */
     private Integer creatUser;
+
+    /**
+     * 选项
+     */
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "question_id")
+    private List<Option> options;
 
     /**
      * 是否弃用

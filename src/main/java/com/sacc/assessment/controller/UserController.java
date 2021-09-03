@@ -7,7 +7,6 @@ import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.UserService;
-import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
