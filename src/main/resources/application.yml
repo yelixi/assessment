@@ -15,3 +15,6 @@ spring:
     allow-bean-definition-overriding: true
   aop:
     proxy-target-class: true
+  jackson:
+   serialization:
+    fail-on-empty-beans: false

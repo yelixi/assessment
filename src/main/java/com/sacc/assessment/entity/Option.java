@@ -1,10 +1,12 @@
 package com.sacc.assessment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by 林夕
@@ -14,6 +16,8 @@ import javax.persistence.Id;
  */
 @Entity
 @Data
+@Table(name = "`option`")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Option {
 
     /**
