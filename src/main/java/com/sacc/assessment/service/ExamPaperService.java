@@ -6,6 +6,7 @@ import com.sacc.assessment.model.UserDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -26,4 +27,6 @@ public interface ExamPaperService {
     List<ExamPaper> getAllExam();
 
     List<Answer> answerList(Integer questionId, Integer examPageId);
+
+    boolean getAllScore(Integer examPaperId, HttpServletResponse resp);
 }

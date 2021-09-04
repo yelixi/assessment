@@ -32,11 +32,13 @@
             </div>
             <div class="form-group">
                 <label for="score">分数</label>
-                <input type="text"class="form-control" id="score" th:value="${answer.score.grade}" placeholder="打上你的分数">
+                <input type="text" class="form-control" id="score" th:if="${answer.score!=null}" th:value="${answer.score.grade}" placeholder="打上你的分数">
+                <input type="text" class="form-control" id="score" th:unless="${answer.score!=null}" placeholder="打上你的分数">
             </div>
             <div class="form-group">
                 <label for="comment">评价</label>
-                <textarea class="form-control" rows="3" id="comment" th:id="comment" th:text="${answer.score.comment}" placeholder="填入评价"></textarea>
+                <textarea class="form-control" rows="3" id="comment" th:if="${answer.score!=null}" th:id="comment" th:text="${answer.score.comment}" placeholder="填入评价"></textarea>
+                <textarea class="form-control" rows="3" id="comment" th:unless="${answer.score!=null}" th:id="comment" placeholder="填入评价"></textarea>
             </div>
             <div style="text-align: center" >
                 <button type="button" th:id="${pre}" class="pre btn btn-primary">

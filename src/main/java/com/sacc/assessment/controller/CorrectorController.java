@@ -105,6 +105,9 @@ public class CorrectorController {
     public String answer(@RequestParam Integer questionId,Integer examPaperId,Model model){
         List<Answer> answerList = examPaperService.answerList(questionId,examPaperId);
         model.addAttribute("answerList",answerList);
+        if(answerList.size()!=0)
+            model.addAttribute("examPageId",answerList.get(0).getExamPageId());
+        model.addAttribute("examPageId",-1);
         return "../static/html/corrector/answer.html";
     }
 }

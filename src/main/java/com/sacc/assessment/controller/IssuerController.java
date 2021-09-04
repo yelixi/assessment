@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -88,5 +89,11 @@ public class IssuerController {
     public RestResult<ExamPaper> getExamPaper(@PathVariable Integer examPaperId,Authentication authentication){
         UserDetail userDetail = (UserDetail)authentication.getPrincipal();
         return RestResult.success(examPaperService.getExamPaper(examPaperId,userDetail));
+    }
+
+    @ResponseBody
+    @GetMapping("/getAllScore")
+    public RestResult<Boolean> getAllScore(@RequestParam Integer examPaperId, HttpServletResponse resp){
+        return RestResult.success(examPaperService.getAllScore(examPaperId,resp));
     }
 }
