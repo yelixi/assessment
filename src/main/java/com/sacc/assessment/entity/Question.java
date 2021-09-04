@@ -56,9 +56,13 @@ public class Question {
     /**
      * 选项
      */
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "question_id")
-    private List<Option> options;
+//    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @JoinColumn(name = "question_id")
+//    private List<Option> options;
+    private String option1;
+    private String option2;
+    private String option3;
+    private String option4;
 
     /**
      * 是否弃用

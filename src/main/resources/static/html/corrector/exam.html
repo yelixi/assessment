@@ -2,20 +2,42 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>考试批改-试卷查阅</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <!--基础js-->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--BootStrap Table-->
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 </head>
 <body>
-<table th:id="${exam.id}" class="t">
-    <tr th:each="question,loopStatus: ${exam.questions}">
-        <td th:text="第+${loopStatus.count}+题"></td>
-        <td th:text="${question.infoTextContent}"></td>
-        <td th:text="${question.type}"></td>
-        <td>
-        <button type="button" th:id="${question.id}" onclick="getAnswer(this.id)">批改</button>
-        </td>
-    </tr>
-</table>
+    <nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
+    <div class="container">
+        <h1>试卷下的所有题目</h1>
+        <br>
+        <table th:id="${exam.id}" class="t table" >
+            <thead>
+                <tr>
+                    <th>题目编号</th>
+                    <th>题目内容</th>
+                    <th>问题类型</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="question,loopStatus: ${exam.questions}">
+                    <td th:text="第+${loopStatus.count}+题"></td>
+                    <td th:text="${question.infoTextContent}"></td>
+                    <td th:text="${question.type}"></td>
+                    <td>
+                        <button type="button" class="btn btn-primary" th:id="${question.id}" onclick="getAnswer(this.id)">批改</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 <script>
     function getAnswer(questionId){

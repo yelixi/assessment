@@ -3,28 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <!--基础js-->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--BootStrap Table-->
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 </head>
 <body>
-<table th:id="${answerList.get(0).examPageId}" class="tab">
-    <tr>
-        <td>分数</td>
-        <td>评价</td>
-        <td>是否已批改</td>
-        <td></td>
-    </tr>
-    <tr th:each="answer:${answerList}">
-        <td th:unless="${answer.score}==null" th:text="${answer.score.grade}"></td>
-        <td th:if="${answer.score}==null"></td>
-        <td th:if="${answer.score}!=null" th:unless="${answer.score.comment}==null" th:text="${answer.score.comment}"></td>
-        <td th:if="${answer.score}==null"></td>
-        <td th:if="${answer.score}==null" th:text="否"></td>
-        <td th:if="${answer.score}!=null" th:text="是"></td>
-        <td>
-            <button type="button" th:id="${answer.id}" onclick="get(this.id)">批改</button>
-        </td>
-    </tr>
-</table>
+    <nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
+
+    <div class="container" >
+        <h1>本道题的所有提交</h1>
+        <br>
+        <table th:id="${answerList.get(0).examPageId}" class="tab table" >
+            <thead>
+                <tr>
+                    <th>分数</th>
+                    <th>评价</th>
+                    <th>是否已批改</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="answer:${answerList}">
+                    <td th:unless="${answer.score}==null" th:text="${answer.score.grade}"></td>
+                    <td th:if="${answer.score}==null"></td>
+                    <td th:if="${answer.score}!=null" th:unless="${answer.score.comment}==null" th:text="${answer.score.comment}"></td>
+                    <td th:if="${answer.score}==null"></td>
+                    <td th:if="${answer.score}==null" th:text="否"></td>
+                    <td th:if="${answer.score}!=null" th:text="是"></td>
+                    <td>
+                        <button type="button" class="btn btn-success" th:id="${answer.id}" onclick="get(this.id)">批改</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 <script>
     function get(answerId){

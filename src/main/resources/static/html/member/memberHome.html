@@ -2,11 +2,20 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>考试系统-考试</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <!--基础js-->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--BootStrap Table-->
+    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 </head>
 <body>
-<div>
-    <table>
+    <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
+<div class="container">
+    <table class="table">
         <tr>
             <td>考试名称</td>
             <td>起始时间</td>
@@ -19,8 +28,8 @@
             <td th:text="${exam.startTime}"></td>
             <td th:text="${exam.endTime}"></td>
             <td th:text="${exam.examTime}"></td>
-            <td th:if="${list[index.index]==1}" th:text="是">否</td>
-            <td><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>
+            <td th:if="${list[index.index]==1}"><button type="button" disabled class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >已参加</button></td>
+            <td th:if="${list[index.index]!=1}"><button type="button"  class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>
         </tr>
     </table>
 </div>

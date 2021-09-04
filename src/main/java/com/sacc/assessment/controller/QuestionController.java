@@ -28,7 +28,6 @@ public class QuestionController {
     QuestionService questionService;
 
     /**
-     * TODO:题目管理（增删改查）
      * @return
      */
     @Secured({"ROLE_ISSUER","ROLE_ROOT"})

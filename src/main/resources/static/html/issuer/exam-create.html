@@ -10,7 +10,6 @@
 
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>-->
 		<!--DateTimepicker-->
 		<script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
@@ -56,8 +55,7 @@
 	</style>
 
 	<body>
-		<nav th:replace="../static/html/issuer/issuer_fragments.html::menu(3)"></nav>
-
+		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 
 		<div class="container">
 			<form class="form" method="post" role="form">
@@ -146,9 +144,7 @@
             s = s.substr(0, s.length - 1) + ',' + questionToAdd + ']';
             exam.questions = JSON.parse(s);
             update();
-            // console.log(s);
             closeWin();
-            // console.log(JSON.stringify(JSON.stringify(exam.questions)));
         })
 
         /*窗口弹出添加修改函数*/

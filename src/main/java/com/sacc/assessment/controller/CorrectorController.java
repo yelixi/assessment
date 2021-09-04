@@ -62,7 +62,7 @@ public class CorrectorController {
         Answer answer = scoreService.getAnswer(answerId);
         Question question = questionService.selectQuestion(answer.getQuestionId());
         User user = userService.getUser(answer.getUserId());
-        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.findOne(examPageId);
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.findOne(answerId);
         List<Answer> answerList = examPaperService.answerList(answer.getQuestionId(),answer.getExamPageId());
         for (Answer a : answerList) {
             if (a.getId().equals(answer.getId())){

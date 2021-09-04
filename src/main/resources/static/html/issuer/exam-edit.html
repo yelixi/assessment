@@ -54,7 +54,7 @@
 	</style>
 
 	<body>
-		<nav th:replace="../static/html/issuer/issuer_fragments.html::menu(3)"></nav>
+		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 
 
 		<div class="container">
@@ -119,8 +119,8 @@
 					<input readonly="readonly" id="question-edit-id" type="text" class="form-control">
 				</div>
 				<div class="form-group">
-					<label for="question-type">题目类型</label>
-					<select id="question-type" class="form-control">
+					<label for="question-edit-type">题目类型</label>
+					<select id="question-edit-type" class="form-control" onchange="changEditForm()">
 						<option th:value="MULTIPLE_CHOICE">多选</option>
 						<option th:value="SINGLE_CHOICE">单选</option>
 						<option th:value="FILL_BLANK">填空</option>
@@ -131,9 +131,32 @@
 					<label for="question-info">题干</label>
 					<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>
 				</div>
-				<div class="form-group">
+				<div class="form-group" id="question-edit-answer-A">
+					<label for="answer">选项A</label>
+					<input type="text"  class="form-control" placeholder="答案" required>
+				</div>
+				<div class="form-group" id="question-edit-answer-B">
+					<label for="answer">选项B</label>
+					<input type="text"  class="form-control" placeholder="答案" required>
+				</div>
+				<div class="form-group" id="question-edit-answer-C">
+					<label for="answer">选项C</label>
+					<input type="text"  class="form-control" placeholder="答案" required>
+				</div>
+				<div class="form-group" id="question-edit-answer-D">
+					<label for="answer">选项D</label>
+					<input type="text"  class="form-control" placeholder="答案" required>
+				</div>
+				<div class="form-group" id="question-edit-answer">
 					<label for="answer">答案</label>
 					<input type="text" id="answer" class="form-control" placeholder="答案" required>
+				</div>
+				<div class="form-group" id="question-edit-judge">
+					<label for="question-edit-judge">题目正确性</label>
+					<select  class="form-control">
+						<option value="True">正确</option>
+						<option value="False">错误</option>
+					</select>
 				</div>
 				<div class="form-group">
 					<label for="score">分值</label>
@@ -159,9 +182,9 @@
 				<h2>试卷问题添加</h2>
 				<div class="form-group">
 					<label for="question-type">题目类型</label>
-					<select id="question-add-type" class="form-control">
+					<select id="question-add-type" class="form-control" onchange="changAddForm()">
 						<option th:value="MULTIPLE_CHOICE">多选</option>
-						<option th:value="INGLE_CHOICE">单选</option>
+						<option th:value="SINGLE_CHOICE">单选</option>
 						<option th:value="FILL_BLANK">填空</option>
 						<option th:value="JUDGE">判断</option>
 					</select>
@@ -171,10 +194,36 @@
 					<input type="text" id="question-add-info" class="form-control" placeholder="题目大意" required
 					       autofocus>
 				</div>
+
+				<div class="form-group" id="question-add-answer-A">
+					<label for="answer">选项A</label>
+					<input type="text"  class="form-control" placeholder="选项A" required>
+				</div>
+				<div class="form-group" id="question-add-answer-B">
+					<label for="answer">选项B</label>
+					<input type="text"  class="form-control" placeholder="选项B" required>
+				</div>
+				<div class="form-group" id="question-add-answer-C">
+					<label for="answer">选项C</label>
+					<input type="text"  class="form-control" placeholder="选项C" required>
+				</div>
+				<div class="form-group" id="question-add-answer-D">
+					<label for="answer">选项D</label>
+					<input type="text"  class="form-control" placeholder="选项D" required>
+				</div>
+
+				<div class="form-group" id="question-add-judge">
+					<label for="question-add-judge">题目是否正确</label>
+					<select  class="form-control">
+						<option th:value="True">正确</option>
+						<option th:value="False">错误</option>
+					</select>
+				</div>
 				<div class="form-group">
 					<label for="answer">答案</label>
 					<input type="text" id="question-add-answer" class="form-control" placeholder="答案" required>
 				</div>
+
 				<div class="form-group">
 					<label for="score">分值</label>
 					<input type="text" id="question-add-score" class="form-control" placeholder="分数" required>
@@ -323,6 +372,10 @@
             let questionToAdd = JSON.stringify({
                 "infoTextContent": $("#question-add-info").val(),
                 "score": $("#question-add-score").val(),
+                "option1":$("#question-edit-answer-A").val(),
+                "option2":$("#question-edit-answer-B").val(),
+                "option3":$("#question-edit-answer-C").val(),
+                "option4":$("#question-edit-answer-D").val(),
                 "type": $("#question-add-type").val(),
                 "correctAnswer": $("#question-add-answer").val(),
                 "deleted": $("#canUse").val() == "是" ? false : true
@@ -335,15 +388,19 @@
             closeWin();
         })
 
-        //编辑窗口提交操作
+        //编辑窗口修改操作
         $("#question-edit-btn").click(function () {
             var question_id = $("#question-edit-id").val();
             // alert("点了我！")
             let formData = JSON.stringify({
                 "id": $("#question-edit-id").val(),
                 "infoTextContent": $("#question-info").val(),
+                "option1":$("#question-edit-answer-A").val(),
+                "option2":$("#question-edit-answer-B").val(),
+                "option3":$("#question-edit-answer-C").val(),
+                "option4":$("#question-edit-answer-D").val(),
                 "score": $("#score").val(),
-                "type": $("#question-type").val(),
+                "type": $("#question-edit-type").val(),
                 "correctAnswer": $("#answer").val(),
                 "deleted": $("#delete").val() == "是" ? true : false,
             })
@@ -367,6 +424,7 @@
         function popWinToAdd() {
             document.getElementById('lightToAdd').style.display = 'block';
             document.getElementById('fade').style.display = 'block';
+            changAddForm();
         }
 
         /*窗口弹出编辑函数*/
@@ -380,6 +438,7 @@
             $("#delete").val((question.data.deleted) ? "是" : "否");
             document.getElementById('lightToEdit').style.display = 'block';
             document.getElementById('fade').style.display = 'block'
+            changEditForm();
         }
 
         function flash() {
@@ -394,6 +453,63 @@
             document.getElementById('lightToAdd').style.display = 'none';
             document.getElementById('fade').style.display = 'none';
             $('#question-table').bootstrapTable('refresh');
+        }
+
+        //根据题目类型来调整表单
+        function changEditForm(){
+            var type = $("#question-edit-type").val();
+            // alert("当前选项"+ $("#question--type").val());
+            console.log(type);
+            if(type == 'MULTIPLE_CHOICE' || type == "SINGLE_CHOICE") {
+                $("#question-edit-answer").show();
+                $("#question-edit-answer-A").show();
+                $("#question-edit-answer-B").show();
+                $("#question-edit-answer-C").show();
+                $("#question-edit-answer-D").show();
+                $("#question-edit-judge").hide();
+            }else if(type == 'FILL_BLANK'){
+                $("#question-edit-answer").show();
+                $("#question-edit-answer-A").hide();
+                $("#question-edit-answer-B").hide();
+                $("#question-edit-answer-C").hide();
+                $("#question-edit-answer-D").hide();
+                $("#question-edit-judge").hide();
+            }else{
+                $("#question-edit-answer").hide();
+                $("#question-edit-answer-A").hide();
+                $("#question-edit-answer-B").hide();
+                $("#question-edit-answer-C").hide();
+                $("#question-edit-answer-D").hide();
+                $("#question-edit-judge").show();
+            }
+        }
+
+        //根据题目类型来调整表单
+        function changAddForm(){
+            var type = $("#question-add-type").val();
+            console.log(type);
+            if(type == 'MULTIPLE_CHOICE' || type == "SINGLE_CHOICE") {
+                $("#question-add-answer").show();
+                $("#question-add-answer-A").show();
+                $("#question-add-answer-B").show();
+                $("#question-add-answer-C").show();
+                $("#question-add-answer-D").show();
+                $("#question-add-judge").hide();
+            }else if(type == 'FILL_BLANK'){
+                $("#question-add-answer").show();
+                $("#question-add-answer-A").hide();
+                $("#question-add-answer-B").hide();
+                $("#question-add-answer-C").hide();
+                $("#question-add-answer-D").hide();
+                $("#question-add-judge").hide();
+            }else{
+                $("#question-add-answer").hide();
+                $("#question-add-answer-A").hide();
+                $("#question-add-answer-B").hide();
+                $("#question-add-answer-C").hide();
+                $("#question-add-answer-D").hide();
+                $("#question-add-judge").show();
+            }
         }
 	</script>
 </html>
