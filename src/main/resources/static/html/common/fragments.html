@@ -5,14 +5,18 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title >模板</title>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<!--基础js-->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 	</head>
 	<body>
 		<!--Issuer导航-->
-		<nav th:fragment="issuer_menu(n)"  class="navbar navbar-default" role="navigation" >
+		<nav th:fragment="issuer_menu(n)"  class="navbar navbar-inverse" role="navigation" >
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<a class="navbar-brand" th:href="@{/home/issuer}" style="color: dodgerblue">考试系统</a>
@@ -22,14 +26,25 @@
 						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/home/issuer}">首页</a></li>
 						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/questions/}" >问题管理</a></li>
 						<li th:classappend="${n == 3} ? 'active'"><a  href="#" th:href="@{/issuer/getMyAllExamPaper}" >考试管理</a></li>
-						<li th:classappend="${n == 4} ? 'active'"><a  href="#" th:href="@{/questions/}" >用户成绩</a></li>
-						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
+						<li th:classappend="${n == 4} ? 'active'"><a  href="#" th:href="@{/questions/}" >用户成绩</a></li>\
+						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >我的信息</a></li>
 					</ul>
+				</div>
+				<div style="float: right" class="nav navbar-nav">
+					<li>
+						<a href="#" th:href="@{/logout}"  class="text-decoration-none">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"></path>
+							<path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+						</svg>
+						退出系统
+						</a>
+					</li>
 				</div>
 			</div>
 		</nav>
 		<!--Member导航-->
-		<nav th:fragment="member_menu(n)"  class="navbar navbar-default" role="navigation" >
+		<nav th:fragment="member_menu(n)"  class="navbar navbar-inverse" role="navigation" >
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<a class="navbar-brand" href="#">考试系统</a>
@@ -43,10 +58,21 @@
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
 					</ul>
 				</div>
+				<div style="float: right" class="nav navbar-nav">
+					<li>
+						<a href="#" th:href="@{/logout}"  class="text-decoration-none">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"></path>
+								<path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+							</svg>
+							退出系统
+						</a>
+					</li>
+				</div>
 			</div>
 		</nav>
 		<!--Root菜单-->
-		<nav th:fragment="root_menu(n)"  class="navbar navbar-default" role="navigation" >
+		<nav th:fragment="root_menu(n)"  class="navbar navbar-inverse" role="navigation" >
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<a class="navbar-brand" href="#">考试系统</a>
@@ -73,10 +99,21 @@
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
 					</ul>
 				</div>
+				<div style="float: right" class="nav navbar-nav">
+					<li>
+						<a href="#" th:href="@{/logout}"  class="text-decoration-none">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"></path>
+								<path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+							</svg>
+							退出系统
+						</a>
+					</li>
+				</div>
 			</div>
 		</nav>
 		<!--Corrector导航-->
-		<nav th:fragment="corrector_menu(n)"  class="navbar navbar-default" role="navigation" >
+		<nav th:fragment="corrector_menu(n)"  class="navbar navbar-inverse" role="navigation" >
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<a class="navbar-brand" th:href="@{/home/corrector}" style="color: dodgerblue">考试系统</a>
@@ -87,6 +124,17 @@
 <!--						<li th:classappend="${n == 3} ? 'active'"><a  href="#" th:href="@{/questions/}" >网站管理</a></li>-->
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
 					</ul>
+				</div>
+				<div style="float: right" class="nav navbar-nav">
+					<li>
+						<a href="#" th:href="@{/logout}"  class="text-decoration-none">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"></path>
+								<path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+							</svg>
+							退出系统
+						</a>
+					</li>
 				</div>
 			</div>
 		</nav>

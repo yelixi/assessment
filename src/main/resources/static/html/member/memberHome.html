@@ -28,7 +28,7 @@
             <td th:text="${exam.startTime}"></td>
             <td th:text="${exam.endTime}"></td>
             <td th:text="${exam.examTime}"></td>
-            <td th:if="${list[index.index]==1}"><button type="button" disabled class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >已参加</button></td>
+            <td th:if="${list[index.index]==1}"><button type="button"  class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >回顾考试</button></td>
             <td th:if="${list[index.index]!=1}"><button type="button"  class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>
         </tr>
     </table>

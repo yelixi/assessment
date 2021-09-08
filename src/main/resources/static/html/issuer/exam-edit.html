@@ -56,12 +56,11 @@
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 
-
 		<div class="container">
 			<form class="form" method="post" role="form">
 				<h1 id="add-title">查看考试</h1>
 				<br>
-				<div class="form-group">
+				<div class="form-group form-group-sm">
 					<label for="exam-id">考试编号</label>
 					<input type="text" id="exam-id" class="form-control" placeholder="这里什么都没有" disabled>
 				</div>
@@ -102,7 +101,7 @@
 
 				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
 				<button class="btn btn-lg btn-primary btn-block" type="button" id="exam-update-btn" onclick="update()">
-					保存问题
+					保存试卷
 				</button>
 			</form>
 		</div>
@@ -252,6 +251,7 @@
             search: true,
             showRefresh: true,
             showColumns: true,
+	        showFooter: true,
             data: exam.questions,
             columns: [{
                 field: 'id',
@@ -259,13 +259,21 @@
                 sortable: true,
                 sortOrder: "asc",
                 align: "center",
-                width: 30
+                width: 30,
+	            footerFormatter: function () {
+		            return '试卷总况'
+                }
             }, {
                 field: 'infoTextContent',
                 title: '问题题干',
                 sortable: true,
                 sortOrder: "asc",
-                width: 360
+                width: 360,
+	            footerFormatter: function (rows) {
+                    var count = 0;
+                    return '题目总数: '+ rows.length;
+                }
+
             }, {
                 field: 'type',
                 title: '题目类型',
@@ -279,7 +287,14 @@
                 sortable: true,
                 sortOrder: "asc",
                 width: 60,
-                align: "center"
+                align: "center",
+	            footerFormatter: function (rows) {
+                    var count = 0;
+                    for(var i in rows){
+                        count += rows[i].score;
+                    }
+                    return '总分: '+ count;
+                }
             }, {
                 field: 'id',
                 title: '操作',

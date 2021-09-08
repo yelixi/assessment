@@ -11,18 +11,21 @@
 	</head>
 	<body>
 		<nav th:replace="__${page}__" ></nav>
+		<h1>我的信息</h1>
+		<br>
 		<div class="container">
 			<form role="form" class="form">
 				<div class="form-group">
-					<label for="username"> 用户姓名</label>
+					<label for="username"> 用户账号</label>
 					<input id="username" disabled th:value="${userName}">
 				</div>
 				<div class="form-group">
 					<label for="ROlE"> 用户权限</label>
 					<input id="ROLE" disabled th:value="${ROLE}">
 				</div>
-
 			</form>
+
+			<a th:href="@{/logout}" class="btn btn-danger btn-lg">退出系统</a>
 		</div>
 
 	</body>

@@ -13,37 +13,58 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--BootStrap Table-->
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <!--markdown-->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+
         div {
             color: black;
+            margin-top: 2px;
         }
-
         .exam {
             /* text-align: center; */
         }
 
-        textarea {
-            width: 300px;
-            height: 200px;
-        }
-
         input[type="radio"] {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
         }
 
         input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
         }
-
+        .question{
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        label{
+            font-size: 17px;
+        }
         span {
-            font-size: 20px;
+            margin-left: 5px;
+            font-size: 17px;
+            font-family: 宋体;
         }
-
         li {
             display: inline-block;
             list-style: none;
+        }
+        .d1{
+            box-shadow: 1px 1px 1px 1px grey;
+            border-radius: 25px;
+            border:1px solid #96C2F1;
+            background-color:#F5F5F5;
+            padding: 6px;
+            margin: 6px;
+        }
+        hr{
+            color: grey;
+            size: 10px;
+        }
+        .btn1{
+            padding: 10px;
+            margin: 10px;
         }
     </style>
 </head>
@@ -51,19 +72,24 @@
 <body>
     <!-- // md -->
     <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <h1  style="text-align: center; margin-top: 5px; margin-bottom: 10px"  th:text="${exam.getName()}"><strong></strong></h1>
+<!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
+    <div style="text-align: center; display: inline"> <p th:text="'考试时间:' + ${exam.getStartTime()} + ' - ' + ${exam.getEndTime()}"></p></div>
+    <div class="exam container "  th:id="${exam.getId()}">
+        <form id="answer-form" class="d1" ></form>
+    </div>
 
-    <!--<nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>-->
-    <div class="exam" th:id="${exam.getId()}">
+<!--    <div class="exam"">-->
+<!--       <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question container">-->
+<!--            <form class="form-group">-->
+<!--                <label th:for="question-info" th:text="${question.getInfoTextContent()}"></label>-->
+<!--                <textarea class="an form-control" th:id="question-info" placeholder="填入你的答案" rows="2"></textarea>-->
+<!--            </form>-->
+<!--        </div>-->
 
-        <!-- <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question container">
-            <form class="form-group">
-                <label th:for="question-info" th:text="${question.getInfoTextContent()}"></label>
-                <textarea class="an form-control" th:id="question-info" placeholder="填入你的答案" rows="2"></textarea>
-            </form>
-        </div> -->
+<!--       提交按钮-->
         <div style="text-align: center">
-            <button type="button" id="btn" class="btn btn-primary" style="text-align: center">
+            <button type="button" id="btn" class="btn btn-primary btn1" style="text-align: center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-patch-check" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -88,7 +114,8 @@
         //let ans = $(".answer")
         for (let i = 0; i < question.length; i++) {
             let o = {}
-            o.questionId = question[i].id
+            //获得ID
+            o.questionId = new String(question[i].id).substr(9)
             console.log(question[i].querySelectorAll('.an'))
             for (let j = 0; j < question[i].querySelectorAll('.an').length; j++) {
                 arr.push( question[i].querySelectorAll('.an')[j].value)
@@ -110,7 +137,7 @@
             //console.log("answer["+i+"]:"+answer[i])
         }
         let answers = JSON.stringify(answer)
-        // console.log(answers)
+        console.log(answers)
         let bodyForm = JSON.stringify({
             "examPaperId": $(".exam").attr("id"),
             //"answers": JSON.stringify(answer)
@@ -132,93 +159,67 @@
         return value.replace(/[^\w\s]/gi, '');
     }
 
+    function mk_choice (choice_name, choice_id, choice_val){
+        let divv    = document.createElement('div')
+        let labell  = document.createElement('label')
+        let inputt  = document.createElement('input')
+        divv.setAttribute('class', 'form-check')
+        labell.setAttribute('class','form-check-label')
+        inputt.setAttribute('type', 'checkbox')
+        inputt.setAttribute('class', 'form-check-input')
+        inputt.setAttribute('value', choice_val)
+        inputt.setAttribute('name', choice_id)
+        inputt.setAttribute('id', choice_id)
+        var tmpNode = document.createElement( "div" );
+        tmpNode.appendChild( inputt.cloneNode( true ) );
+        var str = tmpNode.innerHTML;
+        inputt.addEventListener('click', function () {
+            this.setAttribute('class', 'an')
+            // console.log(this.value)
+        })
+
+        tmpNode = null; // prevent memory leaks in IE
+        labell.innerHTML = str + choice_name
+        divv.insertBefore(labell,null)
+        return divv
+
+    }
+
     $(function () {
         $.ajax({
-            url: 'http://116.62.110.191:8080/getExam',
+            url: 'http://localhost:8080/getExam',
             type: 'get',
             contentType: 'application/json',
             data: { examId: 1 }
         }).done(function (res) {
-            // if (res.code == 200) {
-            //     // console.log(res)
-            //     console.log(res.data.questions)
-            //     var questions = res.data.questions
-            //     for (var i = 0; i < questions.length; i++) {
-            //         console.log(questions[i])
-            //         if (questions[i].type == 'SINGLE_CHOICE') {
-            //             console.log(i)
-            //             // 题干
-            //             var q = $('<div>nihao</div>')
-            //             $('q').html(questions[i].infoTextContent)
-            //             // 创建一个单选题
-            //             var o1 = $('<input type="radio" class="s">')
-            //             var o2 = $('<input type="radio" class="s">')
-            //             var o3 = $('<input type="radio" class="s">')
-            //             var o4 = $('<input type="radio" class="s">')
-
-            //             // console.log(o1.)
-            //             // console.log($('input').attr('type'))
-            //             $('o1,o2,o3,o4').attr('name', questions[i].id)
-            //             // $('s').prop('type','radio')
-            //             // console.log($('s').prop('type'))
-            //             $('.btnDiv').before(q, o1, o2, o3, o4)
-            //             // $('.btnDiv').before(o1)
-            //             // $('.btnDiv').before(o2)
-            //             // $('.btnDiv').before(o3)
-            //             // $('.btnDiv').before(o4)
-            //         }
-            //         if (questions[i].type == 'MULTIPLE_CHOICE') {
-            //             console.log(i)
-            //             // 题干
-            //             var q = $('<div>nihao</div>')
-            //             $('q').html(questions[i].infoTextContent)
-            //             // 创建一个多选题
-            //             var o1 = $('<input type="checkbox" class="m">')
-            //             var o2 = $('<input type="checkbox" class="m">')
-            //             var o3 = $('<input type="checkbox" class="m">')
-            //             var o4 = $('<input type="checkbox" class="m">')
-
-            //             $("o1,o2,o3,o4").attr("name",questions[i].id)
-
-            //             $('.btnDiv').before(q, o1, o2, o3, o4)
-            //         }
-            //         if (questions[i].type == 'FILL_BLANK') {
-            //             console.log(i)
-            //             // 题干
-            //             var q = $('<div>nihao</div>')
-            //             $('q').html(questions[i].infoTextContent)
-            //             // 创建一个简答题
-            //             var ipt = $('<textarea></textarea>')
-
-            //             $('.btnDiv').before(q, ipt)
-            //             // $('.btnDiv').before(ipt)
-
-            //         }
-            //     }
-            // }
             if (res.code === 200) {
                 console.log(res)
                 let q = res.data.questions
-                let div = document.querySelector('.exam')
-                let div1 = document.querySelectorAll('div')
-                // console.log(div1)
+                let form = document.getElementById('answer-form')
                 // console.log(q)
                 for (let i = 0; i < q.length; i++) {
                     // 创建div用于存放 解析后的 .md 格式的文档 以及普通文本样式的题目
                     let qe = document.createElement('div')
-                    qe.setAttribute('class', 'question')
-                    qe.setAttribute('id', q[i].id)
-                    qe.innerHTML = marked(res.data.questions[i].infoTextContent)
-                    console.log(qe.innerHTML)
+                    qe.setAttribute('class', 'form-group question')
+                    qe.setAttribute('id', 'question-' + q[i].id)
+
+                    //创建label标签
+                    let label = document.createElement('label')
+                    label.setAttribute('for', q[i].id)
+                    label.innerHTML =  + q[i].id + ' . ' + res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)';
+
                     // 插入元素
-                    div.parentNode.insertBefore(qe, div1[5])
+                    qe.insertBefore(label,null)
+                    form.insertBefore(qe, null)
+                    form.insertBefore(document.createElement('hr'),null);
+
+
+
                     if (q[i].type === 'SINGLE_CHOICE') {
                         // 创建单选题的题目和答案
                         let ul = document.createElement('ul')
                         for (let j = 0; j < 4; j++) {
-
                             let li = document.createElement('li')
-
                             let s = document.createElement('input')
                             s.setAttribute('type', 'radio')
                             s.setAttribute('name', q[i].id)
@@ -232,16 +233,28 @@
                             li.appendChild(s)
                             li.appendChild(span)
                             ul.appendChild(li)
-
+                            ul.appendChild(document.createElement('br'))
                             qe.appendChild(ul)
                             // div.insertBefore(span, div1[1])
                             switch (j) {
-                                case 0: s.setAttribute('value', 'A'); span.innerText = 'A.'+q[i].option1; break
-                                case 1: s.setAttribute('value', 'B'); span.innerText = 'B.'+q[i].option2; break
-                                case 2: s.setAttribute('value', 'C'); span.innerText = 'C.'+q[i].option3; break
-                                case 3: s.setAttribute('value', 'D'); span.innerText = 'D.'+q[i].option4; break
+                                // case 0:
+                                //     console.log(q[i].option1)
+                                //     qe.insertBefore(mk_choice('A.' + q[i].option1, q[i].id, 'A'),null); break;
+                                // case 1:
+                                //     qe.insertBefore(mk_choice('B.' + q[i].option2, q[i].id, 'B'),null); break;
+                                // case 2:
+                                //     qe.insertBefore(mk_choice('C.' + q[i].option3, q[i].id, 'C'),null); break;
+                                // case 3:
+                                //     qe.insertBefore(mk_choice('D.' + q[i].option4, q[i].id, 'D'),null); break;
+
+
+                                    case 0: s.setAttribute('value', 'A'); span.innerText = 'A.'+q[i].option1; break
+                                    case 1: s.setAttribute('value', 'B'); span.innerText = 'B.'+q[i].option2; break
+                                    case 2: s.setAttribute('value', 'C'); span.innerText = 'C.'+q[i].option3; break
+                                    case 3: s.setAttribute('value', 'D'); span.innerText = 'D.'+q[i].option4; break
                             }
                         }
+
                         // var s1 = document.createElement('input')
                         // var s2 = document.createElement('input')
                         // var s3 = document.createElement('input')
@@ -280,7 +293,7 @@
                             //     console.log(this.index)
                             // })
                             ul.appendChild(li)
-
+                            ul.appendChild(document.createElement('br'))
                             qe.appendChild(ul)
                             // div.insertBefore(span, div1[1])
                             switch (j) {
@@ -295,7 +308,7 @@
                         let ta = document.createElement('textarea')
                         ta.setAttribute('placeholder', '请在此处输入答案')
                         ta.setAttribute('id', q[i].id)
-                        ta.setAttribute('class', 'an')
+                        ta.setAttribute('class', 'an form-control')
                         // var answer = ta.innerHTML
                         // console.log(answer)
                         // setInterval(function () {
@@ -303,6 +316,7 @@
                         // },1000)
                         qe.appendChild(ta)
                     }
+
                 }
             }
         }).fail(function (err) {
