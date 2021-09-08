@@ -1,32 +1,77 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>考试系统-考试</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
     <!--基础js-->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--BootStrap Table-->
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <style>
+        div {
+            color: black;
+        }
+
+        .exam {
+            /* text-align: center; */
+        }
+
+        textarea {
+            width: 300px;
+            height: 200px;
+        }
+
+        input[type="radio"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        span {
+            font-size: 20px;
+        }
+
+        li {
+            display: inline-block;
+            list-style: none;
+        }
+    </style>
 </head>
+
 <body>
+    <!-- // md -->
     <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!--<nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>-->
     <div class="exam" th:id="${exam.getId()}">
 
-        <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question container">
+        <!-- <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question container">
             <form class="form-group">
                 <label th:for="question-info" th:text="${question.getInfoTextContent()}"></label>
                 <textarea class="an form-control" th:id="question-info" placeholder="填入你的答案" rows="2"></textarea>
             </form>
-        </div>
+        </div> -->
         <div style="text-align: center">
             <button type="button" id="btn" class="btn btn-primary" style="text-align: center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"></path>
-                    <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-patch-check" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z">
+                    </path>
+                    <path
+                        d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z">
+                    </path>
                 </svg> 提交答案
             </button>
         </div>
@@ -34,16 +79,28 @@
     </div>
 </body>
 <script>
-    $("#btn").click(function (){
+    $("#btn").click(function () {
         let answer = [];
         let question = $(".question")
         let ans = $(".an")
+        let arr = []
         //let answers = []
         //let ans = $(".answer")
-        for (let i=0;i<question.length;i++){
+        for (let i = 0; i < question.length; i++) {
             let o = {}
-            o.questionId=question[i].id
-            o.answer=ans[i].value
+            o.questionId = question[i].id
+            console.log(question[i].querySelectorAll('.an'))
+            for (var j = 0; j < question[i].querySelectorAll('.an').length; j++) {
+                arr.push( question[i].querySelectorAll('.an')[j].value)
+                // console.log(arr[j])
+            }
+            o.answer = arr.join('')
+            arr = []
+            // console.log(arr)
+            // console.log(o.answer)
+            // for (var j = 0; j < arr.length; j++) {
+            //     o.answer = arr[j] + ' '
+            // }
             /*answer[i]=JSON.stringify({
                 "questionId": question[i].id,
                 "answer": ans[i].value
@@ -52,27 +109,207 @@
             //answers.push(answer[i])
             //console.log("answer["+i+"]:"+answer[i])
         }
-        //console.log(answers)
         let answers = JSON.stringify(answer)
+        // console.log(answers)
         let bodyForm = JSON.stringify({
             "examPaperId": $(".exam").attr("id"),
             //"answers": JSON.stringify(answer)
             "answers": answers
-        }).replace(new RegExp("\\\\\"","gm"),"\"").replace("\""+answers+"\"",answers)
-        console.log("body:"+bodyForm)
+        }).replace(new RegExp("\\\\\"", "gm"), "\"").replace("\"" + answers + "\"", answers)
+        console.log("body:" + bodyForm)
         $.ajax({
             url: "/uploadAnswer",
             type: "post",
             contentType: "application/json",
             data: bodyForm
-        }).done(function (data){
-            if(data.code===200)
+        }).done(function (data) {
+            if (data.code === 200)
                 alert("提交成功")
-                window.location.href="/home/member"
+            window.location.href = "/home/member"
         })
     })
     function replacer(key, value) {
         return value.replace(/[^\w\s]/gi, '');
     }
+
+    $(function () {
+        $.ajax({
+            url: 'http://116.62.110.191:8080/getExam',
+            type: 'get',
+            contentType: 'application/json',
+            data: { examId: 1 }
+        }).done(function (res) {
+            // if (res.code == 200) {
+            //     // console.log(res)
+            //     console.log(res.data.questions)
+            //     var questions = res.data.questions
+            //     for (var i = 0; i < questions.length; i++) {
+            //         console.log(questions[i])
+            //         if (questions[i].type == 'SINGLE_CHOICE') {
+            //             console.log(i)
+            //             // 题干
+            //             var q = $('<div>nihao</div>')
+            //             $('q').html(questions[i].infoTextContent)
+            //             // 创建一个单选题
+            //             var o1 = $('<input type="radio" class="s">')
+            //             var o2 = $('<input type="radio" class="s">')
+            //             var o3 = $('<input type="radio" class="s">')
+            //             var o4 = $('<input type="radio" class="s">')
+
+            //             // console.log(o1.)
+            //             // console.log($('input').attr('type'))
+            //             $('o1,o2,o3,o4').attr('name', questions[i].id)
+            //             // $('s').prop('type','radio')
+            //             // console.log($('s').prop('type'))
+            //             $('.btnDiv').before(q, o1, o2, o3, o4)
+            //             // $('.btnDiv').before(o1)
+            //             // $('.btnDiv').before(o2)
+            //             // $('.btnDiv').before(o3)
+            //             // $('.btnDiv').before(o4)
+            //         }
+            //         if (questions[i].type == 'MULTIPLE_CHOICE') {
+            //             console.log(i)
+            //             // 题干
+            //             var q = $('<div>nihao</div>')
+            //             $('q').html(questions[i].infoTextContent)
+            //             // 创建一个多选题
+            //             var o1 = $('<input type="checkbox" class="m">')
+            //             var o2 = $('<input type="checkbox" class="m">')
+            //             var o3 = $('<input type="checkbox" class="m">')
+            //             var o4 = $('<input type="checkbox" class="m">')
+
+            //             $("o1,o2,o3,o4").attr("name",questions[i].id)
+
+            //             $('.btnDiv').before(q, o1, o2, o3, o4)
+            //         }
+            //         if (questions[i].type == 'FILL_BLANK') {
+            //             console.log(i)
+            //             // 题干
+            //             var q = $('<div>nihao</div>')
+            //             $('q').html(questions[i].infoTextContent)
+            //             // 创建一个简答题
+            //             var ipt = $('<textarea></textarea>')
+
+            //             $('.btnDiv').before(q, ipt)
+            //             // $('.btnDiv').before(ipt)
+
+            //         }
+            //     }
+            // }
+            if (res.code === 200) {
+                console.log(res)
+                let q = res.data.questions
+                let div = document.querySelector('.exam')
+                let div1 = document.querySelectorAll('div')
+                // console.log(div1)
+                // console.log(q)
+                for (let i = 0; i < q.length; i++) {
+                    // 创建div用于存放 解析后的 .md 格式的文档 以及普通文本样式的题目
+                    let qe = document.createElement('div')
+                    qe.setAttribute('class', 'question')
+                    qe.setAttribute('id', q[i].id)
+                    qe.innerHTML = marked(res.data.questions[i].infoTextContent)
+                    console.log(qe.innerHTML)
+                    // 插入元素
+                    div.parentNode.insertBefore(qe, div1[5])
+                    if (q[i].type === 'SINGLE_CHOICE') {
+                        // 创建单选题的题目和答案
+                        let ul = document.createElement('ul')
+                        for (let j = 0; j < 4; j++) {
+
+                            let li = document.createElement('li')
+
+                            let s = document.createElement('input')
+                            s.setAttribute('type', 'radio')
+                            s.setAttribute('name', q[i].id)
+                            s.setAttribute('id', q[i].id)
+                            s.addEventListener('click', function () {
+                                this.setAttribute('class', 'an')
+                                // console.log(this.value)
+                            })
+
+                            let span = document.createElement('span')
+                            li.appendChild(s)
+                            li.appendChild(span)
+                            ul.appendChild(li)
+
+                            qe.appendChild(ul)
+                            // div.insertBefore(span, div1[1])
+                            switch (j) {
+                                case 0: s.setAttribute('value', 'A'); span.innerText = 'A.'+q[i].option1; break
+                                case 1: s.setAttribute('value', 'B'); span.innerText = 'B.'+q[i].option2; break
+                                case 2: s.setAttribute('value', 'C'); span.innerText = 'C.'+q[i].option3; break
+                                case 3: s.setAttribute('value', 'D'); span.innerText = 'D.'+q[i].option4; break
+                            }
+                        }
+                        // var s1 = document.createElement('input')
+                        // var s2 = document.createElement('input')
+                        // var s3 = document.createElement('input')
+                        // var s4 = document.createElement('input')
+
+                        // s1.setAttribute('type', 'radio')
+                        // s1.setAttribute('name', q[i].id)
+                        // s2.setAttribute('type', 'radio')
+                        // s2.setAttribute('name', q[i].id)
+                        // s3.setAttribute('type', 'radio')
+                        // s3.setAttribute('name', q[i].id)
+                        // s4.setAttribute('type', 'radio')
+                        // s4.setAttribute('name', q[i].id)
+                        // div.insertBefore(s1, div1[1])
+                        // div.insertBefore(s2, div1[1])
+                        // div.insertBefore(s3, div1[1])
+                        // div.insertBefore(s4, div1[1])
+
+                    } else if (q[i].type === 'MULTIPLE_CHOICE') {
+                        // 创建多选题的题目和答案
+                        let ul = document.createElement('ul')
+                        for (let j = 0; j < 4; j++) {
+
+                            let li = document.createElement('li')
+                            let m = document.createElement('input')
+                            m.setAttribute('type', 'checkbox')
+                            m.addEventListener('click', function () {
+                                this.setAttribute('class', 'an')
+                                console.log(this.value)
+                            })
+
+                            let span = document.createElement('span')
+                            li.appendChild(m)
+                            li.appendChild(span)
+                            // li.addEventListener('click',function () {
+                            //     console.log(this.index)
+                            // })
+                            ul.appendChild(li)
+
+                            qe.appendChild(ul)
+                            // div.insertBefore(span, div1[1])
+                            switch (j) {
+                                case 0: m.setAttribute('value', 'A'); span.innerText = 'A.'+q[i].option1; break
+                                case 1: m.setAttribute('value', 'B'); span.innerText = 'B.'+q[i].option2; break
+                                case 2: m.setAttribute('value', 'C'); span.innerText = 'C.'+q[i].option3; break
+                                case 3: m.setAttribute('value', 'D'); span.innerText = 'D.'+q[i].option4; break
+                            }
+                        }
+                    } else if (q[i].type === 'FILL_BLANK') {
+                        // 创建简答题的题目和答案
+                        let ta = document.createElement('textarea')
+                        ta.setAttribute('placeholder', '请在此处输入答案')
+                        ta.setAttribute('id', q[i].id)
+                        ta.setAttribute('class', 'an')
+                        // var answer = ta.innerHTML
+                        // console.log(answer)
+                        // setInterval(function () {
+                        //     console.log($('#1').val())
+                        // },1000)
+                        qe.appendChild(ta)
+                    }
+                }
+            }
+        }).fail(function (err) {
+            console.log(err)
+        })
+    })
+    // $('div')[0].appendChild()
 </script>
+
 </html>
