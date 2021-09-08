@@ -90,7 +90,7 @@
             let o = {}
             o.questionId = question[i].id
             console.log(question[i].querySelectorAll('.an'))
-            for (var j = 0; j < question[i].querySelectorAll('.an').length; j++) {
+            for (let j = 0; j < question[i].querySelectorAll('.an').length; j++) {
                 arr.push( question[i].querySelectorAll('.an')[j].value)
                 // console.log(arr[j])
             }
