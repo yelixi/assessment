@@ -12,5 +12,5 @@ public interface ExamPaperAnswerService {
 
     ExamPaperAnswer findOne(Integer examPaperAnswerId);
 
-    boolean findByUserIdAndExamPaperId(Integer UserId,Integer ExamPaperId);
+    ExamPaperAnswer findByUserIdAndExamPaperId(Integer UserId,Integer ExamPaperId);
 }

@@ -37,6 +37,8 @@ public class User{
     @Column(nullable = false)
     private Role role;
 
+    private String email;
+
     @Column(nullable = false, unique = true)
     private String username;
     @CreatedDate

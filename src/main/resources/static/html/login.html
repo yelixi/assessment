@@ -15,8 +15,8 @@
     <form class="form-signin" method="post" action="/login">
         <h2 class="form-signin-heading">请 登 录</h2>
         <p>
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+            <label for="studentId" class="sr-only">Username</label>
+            <input type="text" id="studentId" name="studentId" class="form-control" placeholder="studentId" required autofocus>
         </p>
         <p>
             <label for="password" class="sr-only">Password</label>
@@ -30,7 +30,7 @@
 <script>
     $("#btn").click(function (){
         $.ajax({
-            url  : '/login?username='+$("#username").val()+'&password='+$("#password").val(),
+            url  : '/login?studentId='+$("#studentId").val()+'&password='+$("#password").val(),
             type : 'post'
         }).done(function(data){
             if(data.code===200) {

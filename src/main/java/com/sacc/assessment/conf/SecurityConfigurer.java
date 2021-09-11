@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Date 2021/6/14 15:48
  */
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 /*开启方法权限认证*/
 @EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
@@ -33,15 +33,14 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     private final TigerLogoutSuccessHandler logoutSuccessHandler = new TigerLogoutSuccessHandler("/");
 
     public static final String[] NO_AUTH_LIST={
-            "/**",
-            "/test",
+            "/login",
             "/static/**",
     };
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter(
-                "username").permitAll()
+                "studentId").permitAll()
                 //失败处理
                 .failureHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, e.getMessage())))
                 //成功处理

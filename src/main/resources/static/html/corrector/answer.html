@@ -17,23 +17,31 @@
 
     <div class="container" >
         <h1>本道题的所有提交</h1>
+        <div>
+            <label>
+                <input property="请输入学号" id="search_id">
+            </label>
+            <button type="button" onclick="search()">搜索</button>
+        </div>
         <br>
-        <table th:id="${examPageId}" class="tab table" >
+        <table class="tab table" >
             <thead>
                 <tr>
                     <th>分数</th>
                     <th>评价</th>
                     <th>是否已批改</th>
+                    <th>用户名称</th>
+                    <th>学号</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="answer:${answerList}">
-                    <td th:unless="${answer.score}==null" th:text="${answer.score.grade}"></td>
-                    <td th:if="${answer.score}==null"></td>
+                <tr th:each="answer,loop:${answerList}">
+                    <td th:text="${answer.score}==null?'未批改':${answer.score.grade}"></td>
                     <td th:if="${answer.score}!=null" th:unless="${answer.score.comment}==null" th:text="${answer.score.comment}"></td>
-                    <td th:if="${answer.score}==null"></td>
-                    <td th:if="${answer.score}==null" th:text="否"></td>
-                    <td th:if="${answer.score}!=null" th:text="是"></td>
+                    <td th:if="${answer.score}==null" th:text="未评价"></td>
+                    <td th:text="${answer.score}==null?'否':'是'"></td>
+                    <td th:text="${answer.id}==null?'':${userFormList.get(loop.index).username}"></td>
+                    <td th:text="${answer.id}==null?'':${userFormList.get(loop.index).studentId}"></td>
                     <td>
                         <button type="button" class="btn btn-success" th:id="${answer.id}" onclick="get(this.id)">批改</button>
                     </td>
@@ -45,7 +53,23 @@
 </body>
 <script>
     function get(answerId){
-        window.location.href="/getAnswer?answerId="+answerId+"&examPageId="+$(".tab").attr("id")
+        let examPageId = getQueryVariable("examPaperId")
+        window.location.href="/getAnswer?answerId="+answerId+"&examPageId="+examPageId
+    }
+    function search(){
+        let questionId = getQueryVariable("questionId")
+        let examPageId = getQueryVariable("examPaperId")
+        window.location.href="/answer?questionId="+questionId+"&examPaperId="+examPageId+"&studentId="+$("#search_id").val()
+    }
+    function getQueryVariable(variable)
+    {
+        let query = window.location.search.substring(1);
+        let vars = query.split("&");
+        for (let i=0;i<vars.length;i++) {
+            let pair = vars[i].split("=");
+            if(pair[0] === variable){return pair[1];}
+        }
+        return false;
     }
 </script>
 </html>

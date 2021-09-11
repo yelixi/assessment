@@ -14,10 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -82,7 +79,7 @@ public class UserController {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();
         List<Integer> list = new ArrayList<>();
         for (ExamPaper examPaper : examPaperList) {
-            if(examPaperAnswerService.findByUserIdAndExamPaperId(userDetail.getId(),examPaper.getId())){
+            if(examPaperAnswerService.findByUserIdAndExamPaperId(userDetail.getId(),examPaper.getId())!=null){
                 list.add(1);
             }
             else list.add(0);
@@ -99,4 +96,10 @@ public class UserController {
                 "../static/html/common/fragments.html::" + principal.getRole().toString().toLowerCase()+"_menu(999)");
         return "../static/html/common/userInfo";
     }
+
+   /* @ResponseBody
+    @GetMapping("/js/{url}")
+    public String getJs(@PathVariable String url){
+        return "../static/js"+url;
+    }*/
 }

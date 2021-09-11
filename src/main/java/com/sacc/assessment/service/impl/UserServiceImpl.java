@@ -1,9 +1,11 @@
 package com.sacc.assessment.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.sacc.assessment.entity.User;
 import com.sacc.assessment.enums.Role;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.repository.UserRepository;
+import com.sacc.assessment.service.MailService;
 import com.sacc.assessment.service.UserService;
 import com.sacc.assessment.util.ExcelUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -43,13 +45,16 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     @Resource
     private UserRepository userRepository;
 
+    @Resource
+    private MailService mailService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.error("username=" + username);
-        List<User> u = userRepository.findByUsername(username);
+        User u = userRepository.findByStudentId(username);
         log.error(u.toString());
 //        u.get(0).setPassword("******");
-        return new UserDetail(u.get(0));
+        return new UserDetail(u);
     }
 
     @Override
@@ -91,8 +96,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         assert fileName != null;
         String fileSuffix = fileName.substring(fileName.lastIndexOf(".")+1);  //获取上传的excel文件名后缀
 
-        List<User> list = null;
-
         if("xlsx".equals(fileSuffix)) {
             log.info("excel2007及以上版本");
 
@@ -103,8 +106,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
             if(xssfSheet == null) {
                 return false;
             }
-
-            list = new ArrayList<>();
 
             //循环获取excel每一行
             for(int rowNum = 1; rowNum < xssfSheet.getLastRowNum()+1; rowNum++) {
@@ -126,14 +127,22 @@ public class UserServiceImpl implements UserDetailsService,UserService {
                         user.setStudentId((String)ExcelUtils.getXSSFValue(xssCell));
                     }else if(cellNum == 1) {
                         user.setUsername((String) ExcelUtils.getXSSFValue(xssCell));
+                    }else if(cellNum==2){
+                        user.setEmail((String) ExcelUtils.getXSSFValue(xssCell));
                     }
                     System.out.print(" "+ExcelUtils.getXSSFValue(xssCell));
                 }
-                user.setPassword(passwordEncoder.encode(user.getStudentId()+"@njupt"));
+                String password = RandomUtil.randomString(10);
+                user.setPassword(passwordEncoder.encode(password));
                 user.setCreatedAt(LocalDateTime.now());
                 user.setUpdatedAt(LocalDateTime.now());
                 user.setRole(Role.MEMBER);
-                list.add(user);  //将excel每一行的数据封装到user对象,并将user对象添加到list
+
+                String subject="【院科协招新考试系统】";
+                String text = "您的账号为:"+user.getStudentId()+",密码为:"+RandomUtil.randomString(10)+"请勿泄露给其他人";
+                mailService.sendMail(subject, user.getEmail(), text);
+                //list.add(user);  //将excel每一行的数据封装到user对象,并将user对象添加到list
+                userRepository.save(user);
             }
         }else if("xls".equals(fileSuffix)) {
             log.info("excel2003版本");
@@ -145,8 +154,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
             if(sheet==null) {
                 return false;
             }
-
-            list = new ArrayList<>();
 
             //循环获取excel每一行
             for(int rowNum=1;rowNum<sheet.getLastRowNum()+1;rowNum++) {
@@ -168,20 +175,79 @@ public class UserServiceImpl implements UserDetailsService,UserService {
                         user.setStudentId((String)ExcelUtils.getValue(cell));
                     }else if(cellNum == 1) {
                         user.setUsername((String) ExcelUtils.getValue(cell));
+                    } else if (cellNum == 2) {
+                        user.setEmail((String) ExcelUtils.getValue(cell));
                     }
-
                     System.out.print(" "+ExcelUtils.getValue(cell));
                 }
-                user.setPassword(passwordEncoder.encode(user.getStudentId()+"@njupt"));
+                if(user.getEmail()!=null) {
+                    String password = RandomUtil.randomString(14);
+                    user.setPassword(passwordEncoder.encode(password));
+                    user.setRole(Role.MEMBER);
+                    String subject = "【院科协招新考试系统】";
+                    String text = "您的账号为:" + user.getStudentId() + ",密码为:" + password + "请勿泄露给其他人";
+                    mailService.sendMail(subject, user.getEmail(), text);
+                }else{
+                    String password = user.getStudentId()+"@sacc";
+                    user.setPassword(password);
+                }
                 user.setCreatedAt(LocalDateTime.now());
                 user.setUpdatedAt(LocalDateTime.now());
-                user.setRole(Role.MEMBER);
-                list.add(user);    //将excel每一行的数据封装到user对象,并将user对象添加到list
+                userRepository.save(user);
             }
 
         }
-        assert list != null;
-        userRepository.saveAll(list);
+        /*assert list != null;
+        userRepository.saveAll(list);*/
+        return true;
+    }
+
+    @Override
+    public boolean deleteAll(MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();  //获得上传的excel文件名
+        assert fileName != null;
+        String fileSuffix = fileName.substring(fileName.lastIndexOf(".") + 1);  //获取上传的excel文件名后缀
+
+        if ("xlsx".equals(fileSuffix)) {
+            log.info("excel2007及以上版本");
+
+            XSSFWorkbook xwb = new XSSFWorkbook(file.getInputStream()); //获取excel工作簿
+
+            XSSFSheet xssfSheet = xwb.getSheetAt(0); //获取excel的sheet
+
+            if (xssfSheet == null) {
+                return false;
+            }
+
+            //循环获取excel每一行
+            for (int rowNum = 1; rowNum < xssfSheet.getLastRowNum() + 1; rowNum++) {
+                XSSFRow xssfRow = xssfSheet.getRow(rowNum);
+                if (xssfRow == null) {
+                    continue;
+                }
+
+                userRepository.deleteByStudentId((String) ExcelUtils.getValue(xssfRow.getCell(0)));
+            }
+        }else if("xls".equals(fileSuffix)) {
+            log.info("excel2003版本");
+
+            Workbook wb=new HSSFWorkbook(file.getInputStream()); //获取excel工作簿
+
+            Sheet sheet=wb.getSheetAt(0);  //获取excel的sheet
+
+            if(sheet==null) {
+                return false;
+            }
+
+            //循环获取excel每一行
+            for(int rowNum=1;rowNum<sheet.getLastRowNum()+1;rowNum++) {
+                Row row = sheet.getRow(rowNum);
+                if (row == null) {
+                    continue;
+                }
+                userRepository.deleteByStudentId((String) ExcelUtils.getValue(row.getCell(0)));
+            }
+        }
         return true;
     }
 

@@ -8,6 +8,7 @@ import com.sacc.assessment.service.ExamPaperService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by 林夕
  * Date 2021/6/15 10:17
  */
-@PreAuthorize("hasRole('ISSUER')")
+//@PreAuthorize("hasRole('ISSUER')")
 @Controller
 @RequestMapping("/issuer")
 public class IssuerController {
@@ -31,6 +32,7 @@ public class IssuerController {
     @Resource
     private ExamPaperService examPaperService;
 
+    @Secured({"ROLE_ISSUER"})
     @ResponseBody
     @PostMapping("/createExam")
     public RestResult<ExamPaper> createExam(@RequestBody ExamPaper examPaper, Authentication authentication){
@@ -38,11 +40,13 @@ public class IssuerController {
         return RestResult.success(examPaperService.createExam(examPaper,userDetail));
     }
 
+    @Secured({"ROLE_ISSUER"})
     @GetMapping("/createExam")
     public String createExam(Authentication authentication){
         return "../static/html/issuer/exam-create.html";
     }
 
+    @Secured({"ROLE_ISSUER"})
     @ResponseBody
     @PostMapping("/updateExam")
     public RestResult<Boolean> updateExam(@RequestBody ExamPaper examPaper,Authentication authentication){
@@ -52,6 +56,7 @@ public class IssuerController {
         return RestResult.success(examPaperService.updateExam(examPaper));
     }
 
+    @Secured({"ROLE_ISSUER"})
     @GetMapping("/updateExam/{examId}")
     public String updateExam(@PathVariable Integer examId, Model model, Authentication authentication){
         ExamPaper exam = examPaperService.getExam(examId);
@@ -59,6 +64,7 @@ public class IssuerController {
         return "../static/html/issuer/exam-edit.html";
     }
 
+    @Secured({"ROLE_ISSUER"})
     @GetMapping("/getMyAllExamPaper")
     public String getMyAllExamPaper(Authentication authentication, Model model,
                                     @RequestParam(required = false,defaultValue = "0",name = "page") Integer page ,
@@ -84,6 +90,7 @@ public class IssuerController {
         return "../static/html/issuer/exam.html";
     }
 
+    @Secured({"ROLE_ISSUER"})
     @ResponseBody
     @GetMapping("/ExamPaper/{examPaperId}")
     public RestResult<ExamPaper> getExamPaper(@PathVariable Integer examPaperId,Authentication authentication){
@@ -91,9 +98,18 @@ public class IssuerController {
         return RestResult.success(examPaperService.getExamPaper(examPaperId,userDetail));
     }
 
+    @Secured({"ROLE_ISSUER"})
     @ResponseBody
     @GetMapping("/getAllScore")
     public RestResult<Boolean> getAllScore(@RequestParam Integer examPaperId, HttpServletResponse resp){
         return RestResult.success(examPaperService.getAllScore(examPaperId,resp));
+    }
+
+    @Secured({"ROLE_ISSUER"})
+    @GetMapping("/examView")
+    public String examView(@RequestParam Integer examId,Model model){
+        ExamPaper examPaper = examPaperService.getExam(examId);
+        model.addAttribute("exam",examPaper);
+        return "../static/html/issuer/examView.html";
     }
 }

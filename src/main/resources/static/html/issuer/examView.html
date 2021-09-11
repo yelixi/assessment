@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>考试系统-考试</title>
+    <title>试卷预览</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-        rel="stylesheet">
+          rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
     <!--基础js-->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
@@ -81,14 +81,14 @@
 </head>
 
 <body>
-    <!-- // md -->
-    <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
-    <h1  style="text-align: center; margin-top: 5px; margin-bottom: 10px"  th:text="${exam.getName()}"><strong></strong></h1>
+<!-- // md -->
+<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
+<h1  style="text-align: center; margin-top: 5px; margin-bottom: 10px"  th:text="${exam.getName()}"><strong></strong></h1>
 <!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
-    <div style="text-align: center; display: inline"> <p th:text="'考试时间:' + ${exam.getStartTime()} + ' - ' + ${exam.getEndTime()}"></p></div>
-    <div class="exam_container "  th:id="${exam.getId()}">
-        <form id="answer-form" class="d1" ></form>
-    </div>
+<div style="text-align: center; display: inline"> <p th:text="'考试时间:' + ${exam.getStartTime()} + ' - ' + ${exam.getEndTime()}"></p></div>
+<div class="exam_container "  th:id="${exam.getId()}">
+    <form id="answer-form" class="d1" ></form>
+</div>
 
 <!--    <div class="exam"">-->
 <!--       <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question container">-->
@@ -99,77 +99,26 @@
 <!--        </div>-->
 
 <!--       提交按钮-->
-        <div style="text-align: center">
-            <button type="button" id="btn" class="btn btn-primary btn1" style="text-align: center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-patch-check" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z">
-                    </path>
-                    <path
-                        d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z">
-                    </path>
-                </svg> 提交答案
-            </button>
-        </div>
+<div style="text-align: center">
+    <button type="button" id="btn" class="btn btn-primary btn1" style="text-align: center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-patch-check" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z">
+            </path>
+            <path
+                    d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z">
+            </path>
+        </svg> 返回
+    </button>
+</div>
 
-    </div>
+</div>
 </body>
 <script>
-    $("#btn").click(function () {
-        let answer = [];
-        let question = $(".question")
-        let ans = $(".an")
-        let arr = []
-        //let answers = []
-        //let ans = $(".answer")
-        for (let i = 0; i < question.length; i++) {
-            let o = {}
-            //获得ID
-            o.questionId = new String(question[i].id).substr(9)
-            console.log(question[i].querySelectorAll('.an'))
-            for (let j = 0; j < question[i].querySelectorAll('.an').length; j++) {
-                arr.push( question[i].querySelectorAll('.an')[j].value)
-                // console.log(arr[j])
-            }
-            o.answer = arr.join('')
-            arr = []
-            // console.log(arr)
-            // console.log(o.answer)
-            // for (var j = 0; j < arr.length; j++) {
-            //     o.answer = arr[j] + ' '
-            // }
-            /*answer[i]=JSON.stringify({
-                "questionId": question[i].id,
-                "answer": ans[i].value
-            })*/
-            answer.push(o)
-            //answers.push(answer[i])
-            //console.log("answer["+i+"]:"+answer[i])
-        }
-        let answers = JSON.stringify(answer)
-        console.log(answers)
-        let bodyForm = JSON.stringify({
-            "examPaperId": $(".exam_container ").attr("id"),
-            //"answers": JSON.stringify(answer)
-            "answers": answers
-        }).replace(new RegExp("\\\\\"", "gm"), "\"").replace("\"" + answers + "\"", answers)
-        console.log("body:" + bodyForm)
-        $.ajax({
-            url: "/uploadAnswer",
-            type: "post",
-            contentType: "application/json",
-            data: bodyForm
-        }).done(function (data) {
-            if (data.code === 200)
-                alert("提交成功")
-            window.location.href = "/home/member"
-        })
+    $("#btn").click(function (){
+        window.location.href="/issuer/updateExam/"+$(".exam_container").attr("id")
     })
-    function replacer(key, value) {
-        return value.replace(/[^\w\s]/gi, '');
-    }
-
     function mk_choice (choice_name, choice_id, choice_val){
         let divv    = document.createElement('div')
         let labell  = document.createElement('label')
@@ -354,78 +303,11 @@
 
                 }
             }
-        }).then(function (){
-            $.ajax({
-                url: '/getOneAnswer?examId='+$(".exam_container").attr("id"),
-                type: 'get',
-            }).done(function (res){
-                console.log(res)
-                if(res.code === 200){
-                    let preAnswers=res.data.answers
-                    let num = 0
-                    console.log(preAnswers.length)
-                    for(let i=0;i<preAnswers.length;i++){
-                        let q_id = preAnswers[i].questionId
-                        let q_class_id = 'question-'+q_id
-                        //console.log(q_class_id)
-                        let d = document.getElementById(q_class_id)
-                        //let d = document.getElementById('question-1')
-                        console.log(d.getAttribute('question_type'))
-                        switch (d.getAttribute('question_type')) {
-                            case 'SINGLE_CHOICE':
-                                console.log("这里是单选题")
-                                console.log(num)
-                                num++
-                                let inputs1 = d.getElementsByClassName('a')
-                                for(let j=0;j<inputs1.length;j++) {
-                                    if (preAnswers[i].answer === inputs1[j].value) {
-                                        inputs1[j].checked = true
-                                        inputs1[j].setAttribute('class', 'an')
-                                        break;
-                                    }
-                                }
-                                break;
-                            case 'MULTIPLE_CHOICE':
-                                console.log("这里是多选题")
-                                console.log(num)
-                                num++
-                                let inputs2 = d.getElementsByClassName('a')
-                                let pre_answer = preAnswers[i].answer
-                                let AToNum = {'A':'1','B':'2','C':'3','D':'4'}
-                                /*for(let j=0;j<pre_answer.length;j++) {
-                                    if (pre_answer[pre_answer_num] === inputs2[j].value) {
-                                        inputs2[j].setAttribute('class', 'an')
-                                        inputs2[j-1].checked = true
-                                        pre_answer_num++
-                                    }*/
-                                for(let am = 0;am<pre_answer.length;am++){
-                                    console.log('pre_answer['+am+']'+pre_answer[am])
-                                    console.log(inputs2.length)
-                                    for(let j=0;j<inputs2.length;j++){
-                                        if(pre_answer[am]===inputs2[j].value){
-                                            console.log('inputs2['+j+']'+inputs2[j].value)
-                                            inputs2[j].checked=true
-                                            inputs2[j].className='an'
-                                            console.log(j)
-                                            break
-                                        }
-                                    }
-                                }
-                                break;
-                            case 'FILL_BLANK':{
-                                console.log("这里是简答题")
-                                console.log(num)
-                                num++
-                                document.getElementById(q_id).value = preAnswers[i].answer
-                            }
-                        }
-                    }
-                }
-            })
         }).fail(function (err) {
             console.log(err)
         })
     })
     // $('div')[0].appendChild()
 </script>
+
 </html>

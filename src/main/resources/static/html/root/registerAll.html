@@ -5,9 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-<form method="POST" enctype="multipart/form-data" action="/root/registerAll">
-    <input type="file" name="file" value="请选择文件"><br />
-    <input type="submit">
-</form>
+<div>
+    <h3>批量注册</h3>
+    <form method="POST" enctype="multipart/form-data" action="/root/registerAll">
+        <input type="file" name="file" value="请选择文件"><br />
+        <input type="submit">
+    </form>
+</div>
+<div>
+    <h3>批量删除</h3>
+    <form method="POST" enctype="multipart/form-data" action="/root/deleteAll">
+        <input type="file" name="file" value="请选择文件"><br />
+        <input type="submit">
+    </form>
+</div>
 </body>
 </html>

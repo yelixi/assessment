@@ -11,6 +11,21 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--BootStrap Table-->
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+    <!--md解析js-->
+    <script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+    <style>
+        code {
+
+            /*元素内的空白保留，并允许换行*/
+            white-space: pre-wrap !important;
+            /*是否允许在单词内断句*/
+            word-wrap: break-word !important;
+            /*强调怎么样断句*/
+            /*word-break: break-all !important;*/
+            background-color: #F5F5F5;
+        }
+    </style>
 </head>
 <body>
     <nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
@@ -28,7 +43,7 @@
             <tbody>
                 <tr th:each="question,loopStatus: ${exam.questions}">
                     <td th:text="第+${loopStatus.count}+题"></td>
-                    <td th:text="${question.infoTextContent}"></td>
+                    <td th:text="${question.infoTextContent}" class="md"></td>
                     <td th:text="${question.type}"></td>
                     <td>
                         <button type="button" class="btn btn-primary" th:id="${question.id}" onclick="getAnswer(this.id)">批改</button>
@@ -44,5 +59,12 @@
         let examPaperId = $(".t").attr("id")
         window.location.href="/answer?questionId="+questionId+"&examPaperId="+examPaperId
     }
+    $(function (){
+        let m = $(".md")
+        for(let i=0;i<m.length;i++){
+            let converter = new Markdown.Converter();
+            m[i].innerHTML=converter.makeHtml(m[i].innerText)
+        }
+    })
 </script>
 </html>

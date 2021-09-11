@@ -5,6 +5,7 @@ import com.sacc.assessment.repository.QuestionRepository;
 import com.sacc.assessment.service.QuestionService;
 import com.sacc.assessment.util.GetNullPropertyNamesUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,14 +50,18 @@ public class QuestionServiceImpl implements QuestionService {
         }else{
             return Boolean.FALSE;
         }
-        question1.setScore(question.getScore());
+        System.out.println("question1:"+question1.toString());
+        System.out.println("question:"+question.toString());
+        BeanUtils.copyProperties(question, question1, GetNullPropertyNamesUtil.getNullPropertyNames(question));
+        /*question1.setScore(question.getScore());
         question1.setCorrectAnswer(question.getCorrectAnswer());
         question1.setInfoTextContent(question.getInfoTextContent());
         question1.setDeleted(question.isDeleted());
 //        log.error(question.getType().name());
         question1.setType(question.getType());
-//        question1.setDeleted(question.get);
+//        question1.setDeleted(question.get);*/
         question1.setUpdatedAt(LocalDateTime.now());
+        System.out.println("question1:"+question1.toString());
         questionRepository.saveAndFlush(question1);
         return Boolean.TRUE;
     }

@@ -24,4 +24,6 @@ public interface UserService {
     User getUser(Integer userId);
 
     boolean registerAll(MultipartFile file) throws IOException;
+
+    boolean deleteAll(MultipartFile file) throws IOException;
 }

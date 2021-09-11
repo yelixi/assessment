@@ -41,13 +41,23 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
         }
         else {
             for (Answer answer : examPaperAnswer.getAnswers()) {
+                boolean isUpdate = false;
                 for (Answer answer1:exitAnswer.getAnswers()){
                     if(answer.getQuestionId().equals(answer1.getQuestionId())) {
                         BeanUtils.copyProperties(answer, answer1, GetNullPropertyNamesUtil.getNullPropertyNames(answer));
                         answer1.setUpdatedAt(LocalDateTime.now());
+                        isUpdate=true;
                     }
                 }
+                if(!isUpdate) {
+                    answer.setUserId(userDetail.getId());
+                    answer.setExamPageId(examPaperAnswer.getExamPaperId());
+                    answer.setCreatedAt(LocalDateTime.now());
+                    answer.setUpdatedAt(LocalDateTime.now());
+                    exitAnswer.getAnswers().add(answer);
+                }
             }
+            exitAnswer.setUpdatedAt(LocalDateTime.now());
             examPaperAnswerRepository.save(exitAnswer);
         }
         return true;
@@ -59,7 +69,7 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
     }
 
     @Override
-    public boolean findByUserIdAndExamPaperId(Integer UserId, Integer ExamPaperId) {
-        return examPaperAnswerRepository.findByUserIdAndExamPaperId(UserId, ExamPaperId) != null;
+    public ExamPaperAnswer findByUserIdAndExamPaperId(Integer UserId, Integer ExamPaperId) {
+        return examPaperAnswerRepository.findByUserIdAndExamPaperId(UserId, ExamPaperId);
     }
 }
