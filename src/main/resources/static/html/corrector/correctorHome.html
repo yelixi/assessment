@@ -15,20 +15,27 @@
 <body>
     <nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
     <div class="container">
-        <table class="table table-hover" id="exam-table" search="true">
-            <tr>
-                <td>考试名称</td>
-                <td>起始时间</td>
-                <td>结束时间</td>
-                <td>考试时间</td>
-            </tr>
-            <tr th:each="exam:${examList}">
-                <td th:text="${exam.name}"></td>
-                <td th:text="${exam.startTime}"></td>
-                <td th:text="${exam.endTime}"></td>
-                <td th:text="${exam.examTime}"></td>
-                <td><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >批改</button></td>
-            </tr>
+        <h1><strong>所有考试</strong></h1>
+        <table class="table table-hover" id="exam-table" search="true" sortable="true">
+            <thead>
+                <tr>
+                    <th>考试名称</th>
+                    <th>起始时间</th>
+                    <th>结束时间</th>
+                    <th>考试时间</th>
+                    <th data-width="10px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="exam:${examList}">
+                    <td th:text="${exam.name}"></td>
+                    <td th:text="${exam.startTime}"></td>
+                    <td th:text="${exam.endTime}"></td>
+                    <td th:text="${exam.examTime}"></td>
+                    <td><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >批改</button></td>
+                </tr>
+            </tbody>
+
         </table>
     </div>
 </body>

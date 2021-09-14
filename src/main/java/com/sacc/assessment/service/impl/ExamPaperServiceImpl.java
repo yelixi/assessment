@@ -1,7 +1,6 @@
 package com.sacc.assessment.service.impl;
 
 import com.sacc.assessment.entity.*;
-import com.sacc.assessment.enums.Business;
 import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperAnswerRepository;
 import com.sacc.assessment.repository.ExamPaperRepository;
@@ -11,11 +10,9 @@ import com.sacc.assessment.service.ExamPaperService;
 import com.sacc.assessment.util.GetNullPropertyNamesUtil;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +24,6 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +64,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         exam.setStartTime(examPaper.getStartTime());
         exam.setEndTime(examPaper.getEndTime());
         exam.setName(examPaper.getName());
-        exam.setCreatedAt(examPaper.getCreatedAt());
+        if(examPaper.getCreatedAt() != null)  exam.setCreatedAt(examPaper.getCreatedAt());
+        exam.setUpdatedAt(LocalDateTime.now());
         exam.setUserId(examPaper.getUserId());
         for(Question question: exam.getQuestions()){
             for(Question q: examPaper.getQuestions()){

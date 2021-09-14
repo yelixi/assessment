@@ -3,26 +3,31 @@ package com.sacc.assessment.service.impl;
 import com.sacc.assessment.entity.Answer;
 import com.sacc.assessment.entity.ExamPaperAnswer;
 import com.sacc.assessment.model.UserDetail;
+import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperAnswerRepository;
-import com.sacc.assessment.repository.ExamPaperRepository;
 import com.sacc.assessment.service.ExamPaperAnswerService;
-import com.sacc.assessment.service.ExamPaperService;
 import com.sacc.assessment.util.GetNullPropertyNamesUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * Created by 林夕
  * Date 2021/8/1 20:26
  */
 @Service
+@Slf4j
 public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
 
     @Resource
     public ExamPaperAnswerRepository examPaperAnswerRepository;
+
+    @Resource
+    public AnswerRepository answerRepository;
 
     @Override
     public boolean uploadAnswer(ExamPaperAnswer examPaperAnswer, UserDetail userDetail) {
@@ -72,4 +77,24 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
     public ExamPaperAnswer findByUserIdAndExamPaperId(Integer UserId, Integer ExamPaperId) {
         return examPaperAnswerRepository.findByUserIdAndExamPaperId(UserId, ExamPaperId);
     }
+
+    @Override
+    public ExamPaperAnswer findExamPaperAnswerByAnswerId(Integer answerId) {
+        Integer paperAnswerId = answerRepository.findPaperAnswerIdByAnswerId(answerId);
+        Optional<ExamPaperAnswer> examPaperAnswer = examPaperAnswerRepository.findById(paperAnswerId);
+        log.error(examPaperAnswer.get().getId().toString());
+        if(examPaperAnswer.isPresent()) return examPaperAnswer.get();
+        return null;
+    }
+
+
+//    @Override
+//    public ExamPaperAnswer findExamPaperAnswerByAnswerId(Integer answerId) {
+////        List<Integer> paperAnswerId = answerRepository.findPaperAnswerIdByAnswerId(answerId);
+////        System.out.println(paperAnswerId.get(0));
+////        List<ExamPaperAnswer> allByExamPaperId = examPaperAnswerRepository.getOne(paperAnswerId.get(0));
+////        return allByExamPaperId.get(0);
+////        examPaperAnswerRepository.findByAnswer(answer);
+//    }
+
 }

@@ -1,7 +1,12 @@
 package com.sacc.assessment.service;
 
+import afu.org.checkerframework.checker.igj.qual.I;
+import com.sacc.assessment.entity.Answer;
 import com.sacc.assessment.entity.ExamPaperAnswer;
 import com.sacc.assessment.model.UserDetail;
+import com.sacc.assessment.repository.ExamPaperAnswerRepository;
+
+import java.util.List;
 
 /**
  * Created by 林夕
@@ -13,4 +18,8 @@ public interface ExamPaperAnswerService {
     ExamPaperAnswer findOne(Integer examPaperAnswerId);
 
     ExamPaperAnswer findByUserIdAndExamPaperId(Integer UserId,Integer ExamPaperId);
+
+    ExamPaperAnswer findExamPaperAnswerByAnswerId(Integer answerId);
+
+
 }

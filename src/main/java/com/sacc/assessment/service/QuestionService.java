@@ -1,5 +1,6 @@
 package com.sacc.assessment.service;
 
+import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,8 @@ public interface QuestionService {
     void deleteQuesionById(Integer id);
 
     List<Question> findAll();
+
+    Integer findExamPaperByQuestionId(Integer questionId);
 
 
 

@@ -22,10 +22,6 @@
             color: black;
             margin-top: 2px;
         }
-        .exam {
-            /* text-align: center; */
-        }
-
         input[type="radio"] {
             width: 16px;
             height: 16px;
@@ -79,24 +75,16 @@
         }
     </style>
 </head>
-
 <body>
     <!-- // md -->
     <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
     <h1  style="text-align: center; margin-top: 5px; margin-bottom: 10px"  th:text="${exam.getName()}"><strong></strong></h1>
 <!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
-    <div style="text-align: center; display: inline"> <p th:text="'考试时间:' + ${exam.getStartTime()} + ' - ' + ${exam.getEndTime()}"></p></div>
+    <div style="text-align: center; display: inline"> <p th:text="'考试时间 : ' +  ${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')} + ' - ' +     ${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')}"></p></div>
     <div class="exam_container "  th:id="${exam.getId()}">
         <form id="answer-form" class="d1" ></form>
     </div>
 
-<!--    <div class="exam"">-->
-<!--       <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question container">-->
-<!--            <form class="form-group">-->
-<!--                <label th:for="question-info" th:text="${question.getInfoTextContent()}"></label>-->
-<!--                <textarea class="an form-control" th:id="question-info" placeholder="填入你的答案" rows="2"></textarea>-->
-<!--            </form>-->
-<!--        </div>-->
 
 <!--       提交按钮-->
         <div style="text-align: center">
@@ -170,31 +158,6 @@
         return value.replace(/[^\w\s]/gi, '');
     }
 
-    function mk_choice (choice_name, choice_id, choice_val){
-        let divv    = document.createElement('div')
-        let labell  = document.createElement('label')
-        let inputt  = document.createElement('input')
-        divv.setAttribute('class', 'form-check')
-        labell.setAttribute('class','form-check-label')
-        inputt.setAttribute('type', 'checkbox')
-        inputt.setAttribute('class', 'form-check-input')
-        inputt.setAttribute('value', choice_val)
-        inputt.setAttribute('name', choice_id)
-        inputt.setAttribute('id', choice_id)
-        let tmpNode = document.createElement( "div" );
-        tmpNode.appendChild( inputt.cloneNode( true ) );
-        let str = tmpNode.innerHTML;
-        inputt.addEventListener('click', function () {
-            this.setAttribute('class', 'an')
-            // console.log(this.value)
-        })
-
-        tmpNode = null; // prevent memory leaks in IE
-        labell.innerHTML = str + choice_name
-        divv.insertBefore(labell,null)
-        return divv
-
-    }
 
     $(function () {
         $.ajax({
@@ -220,7 +183,7 @@
                     console.log(markdown)*/
                     //转为md格式
                     let converter = new Markdown.Converter();
-                    label.innerHTML =  converter.makeHtml(q[i].id + ' . ' + res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)') ;
+                    label.innerHTML =  converter.makeHtml( i+1 + ' . ' + res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)') ;
                     // 插入元素
                     qe.insertBefore(label,null)
                     form.insertBefore(qe, null)
@@ -254,16 +217,6 @@
                             qe.appendChild(ul)
                             // div.insertBefore(span, div1[1])
                             switch (j) {
-                                // case 0:
-                                //     console.log(q[i].option1)
-                                //     qe.insertBefore(mk_choice('A.' + q[i].option1, q[i].id, 'A'),null); break;
-                                // case 1:
-                                //     qe.insertBefore(mk_choice('B.' + q[i].option2, q[i].id, 'B'),null); break;
-                                // case 2:
-                                //     qe.insertBefore(mk_choice('C.' + q[i].option3, q[i].id, 'C'),null); break;
-                                // case 3:
-                                //     qe.insertBefore(mk_choice('D.' + q[i].option4, q[i].id, 'D'),null); break;
-
 
                                 case 0:
                                     s.setAttribute('value', 'A');

@@ -1,5 +1,6 @@
 package com.sacc.assessment.controller;
 
+import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.Question;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.service.QuestionService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +46,10 @@ public class QuestionController {
         int totalPages = questionPage.getTotalPages();
         //拿出集合
         List<Question> questions = questionPage.getContent();
+        List<Integer> exams     = new ArrayList<>();
+        for(Question question : questions) exams.add(questionService.findExamPaperByQuestionId(question.getId()));
         model.addAttribute("questionLists",questions);
+        model.addAttribute("examList",exams);
         model.addAttribute("TotalPages",totalPages);
         model.addAttribute("TotalElements", questionPage.getTotalElements());
         model.addAttribute("Number", questionPage.getNumber()-1);

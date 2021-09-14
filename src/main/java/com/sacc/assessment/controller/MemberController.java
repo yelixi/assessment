@@ -1,13 +1,12 @@
 package com.sacc.assessment.controller;
 
-import com.sacc.assessment.entity.Answer;
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.ExamPaperAnswer;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.model.UserDetail;
-import com.sacc.assessment.service.AnswerService;
 import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
+import org.springframework.data.util.Pair;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -16,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 林夕
@@ -30,7 +31,10 @@ public class MemberController {
 
     @Resource
     private ExamPaperService examPaperService;
-    @Secured({"ROLE_MEMBER"})
+
+    @Resource
+    private ExamPaperAnswerService examPaperAnswerService;
+
     @ResponseBody
     @PostMapping("/uploadAnswer")
     public RestResult<Boolean> uploadAnswer(@RequestBody ExamPaperAnswer examPaperAnswer, Authentication authentication){

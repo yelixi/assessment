@@ -2,10 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>试卷提交</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <link href="/css/table.css" rel="stylesheet" type="text/css">
     <!--基础js-->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -14,35 +15,49 @@
 </head>
 <body>
     <nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
+    <input type="hidden" th:value="${answerList}" id="exam-question-submits"/>
 
     <div class="container" >
-        <h1>本道题的所有提交</h1>
-        <div>
-            <label>
-                <input property="请输入学号" id="search_id">
-            </label>
-            <button type="button" onclick="search()">搜索</button>
-        </div>
-        <br>
-        <table class="tab table" >
+        <h1><strong>本道题的所有提交</strong></h1>
+        <table
+                data-toggle="table"
+                data-height="460"
+                data-show-pagination-switch="true"
+                data-show-refresh="true"
+                data-show-columns="true"
+                data-page-list="[10, 25, 50, 100, 200, All]"
+                data-search="true"
+                data-pagination="true"
+                data-pagination-h-align="left"
+                data-pagination-detail-h-align="right"
+                data-pagination-pre-text="上一页"
+                data-pagination-next-text="下一页"
+                class="tab table table-hover" id="exam-question-submits-table" >
+
             <thead>
                 <tr>
-                    <th>分数</th>
+                    <th data-sortable="true" data-width="15px">是否批改</th>
+                    <th data-width="100px">用户名称</th>
+                    <th data-width="120px">学号</th>
                     <th>评价</th>
-                    <th>是否已批改</th>
-                    <th>用户名称</th>
-                    <th>学号</th>
+                    <th data-sortable="true" data-width="15">分数</th>
+                    <th data-width="10px">状态</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="answer,loop:${answerList}">
-                    <td th:text="${answer.score}==null?'未批改':${answer.score.grade}"></td>
-                    <td th:if="${answer.score}!=null" th:unless="${answer.score.comment}==null" th:text="${answer.score.comment}"></td>
-                    <td th:if="${answer.score}==null" th:text="未评价"></td>
+
                     <td th:text="${answer.score}==null?'否':'是'"></td>
                     <td th:text="${answer.id}==null?'':${userFormList.get(loop.index).username}"></td>
                     <td th:text="${answer.id}==null?'':${userFormList.get(loop.index).studentId}"></td>
-                    <td>
+                    <td th:if="${answer.score}!=null" th:unless="${answer.score.comment}==null" th:text="${answer.score.comment}"></td>
+                    <td th:if="${answer.score}==null" th:text="未评价"></td>
+
+                    <td th:text="${answer.score}==null?'未批改':${answer.score.grade}"></td>
+                    <td th:if="${answer.score}!=null">
+                        <button type="button" class="btn btn-info" th:id="${answer.id}" onclick="get(this.id)">已批改</button>
+                    </td>
+                    <td th:if="${answer.score}==null">
                         <button type="button" class="btn btn-success" th:id="${answer.id}" onclick="get(this.id)">批改</button>
                     </td>
                 </tr>
@@ -52,6 +67,9 @@
 
 </body>
 <script>
+    $("#exam-table").bootstrapTable({
+
+    });
     function get(answerId){
         let examPageId = getQueryVariable("examPaperId")
         window.location.href="/getAnswer?answerId="+answerId+"&examPageId="+examPageId
