@@ -1,20 +1,22 @@
 <!DOCTYPE html>
+<!--试卷展示页面-->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<title>Exams</title>
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link href="/css/table.css" rel="stylesheet" type="text/css">
 		<!--基础js-->
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 		<div class="container">
+			<h1><strong>所有试卷</strong></h1>
 			<!--创建考试按钮-->
 			<div th:align="left">
 				<a th:href="@{/issuer/createExam}">
@@ -22,31 +24,37 @@
 				</a>
 			</div>
 			<!--表格-->
-			<div>
-				<table class="table table-hover" id="exam-table">
-					<thead class="table-light">
-						<tr class="table-danger">
-							<th>试卷名称</th>
-							<th>开始时间</th>
-							<th>结束时间</th>
-							<th>创建时间</th>
+			<div class="container">
+
+				<table class="table table-striped" id="exam-table">
+					<thead>
+						<tr>
+							<th data-width="10">试卷编号</th>
+							<th data-sortable="true">试卷名称</th>
+							<th data-sortable="true">考试日期</th>
+							<th>考试时间</th>
+							<th data-sortable="true">创建时间</th>
 							<th>更新时间</th>
+							<th data-width="180">操作</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="exam : ${examLists}">
-							<td th:text="${exam.id}" hidden>100</td>
+							<td th:text="${exam.id}" hidden data-hidden="true">100</td>
 							<td th:text="${exam.name}">题干</td>
-							<td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd HH:ss')}">猴年马月</td>
-							<td th:text="${#temporals.format(exam.endTime,'yyyy-MM-dd HH:ss')}">猴年马月</td>
-							<td th:text="${#temporals.format(exam.createdAt,'yyyy-MM-dd HH:ss')}">猴年马月</td>
-							<td th:text="${#temporals.format(exam.updatedAt,'yyyy-MM-dd HH:ss')}">猴年马月</td>
-							<td><a th:href="@{'/issuer/updateExam/'+${exam.id}}">
-								<button type="button" class="btn btn-info">查看详情</button>
-							</a></td>
-							<td><a th:href="@{'/issuer/getAllScore/'+${exam.id}}">
-								<button type="button" class="btn btn-info">导出成绩</button>
-							</a></td>
+							<td th:text="${#temporals.format(exam.startTime,'yyyy年MM月dd日')}">猴年马月</td>
+							<td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '—' + ${#temporals.format(exam.endTime,'HH:mm')}">猴年马月</td>
+<!--							<td th:text="">猴年马月</td>-->
+							<td th:text="${#temporals.format(exam.createdAt,'yyyy-MM-dd HH:mm')}">猴年马月</td>
+							<td th:text="${#temporals.format(exam.updatedAt,'yyyy-MM-dd HH:mm')}">猴年马月</td>
+							<td>
+								<a th:href="@{'/issuer/updateExam/'+${exam.id}}">
+									<button type="button" class="btn-sm btn-info">查看详情</button>
+								</a>
+								<a th:href="@{'/issuer/getAllScore/'+${exam.id}}">
+									<button type="button" class="btn-sm btn-success">导出成绩</button>
+								</a>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -91,16 +99,12 @@
             alert("对不起，已经达到最后一页！");
         }
 
-        //编辑按钮操作
-        function editQuestion(editButtonId) {
-            console.log(questionId);
-            var questionId = editButtonId.substr(8);
-            console.log(questionId);
-            $.getJSON("/questions/" + questionId, function (result) {
-                popWinToEdit(result);
-            })
-        }
-
-
+        $("#exam-table").bootstrapTable({
+            search: true,
+            showRefresh: true,
+            showColumns: true,
+            striped: true,
+            sortable: true
+        });
 	</script>
 </html>

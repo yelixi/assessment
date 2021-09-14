@@ -1,6 +1,8 @@
 package com.sacc.assessment.service.impl;
 
+import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.Question;
+import com.sacc.assessment.repository.ExamPaperRepository;
 import com.sacc.assessment.repository.QuestionRepository;
 import com.sacc.assessment.service.QuestionService;
 import com.sacc.assessment.util.GetNullPropertyNamesUtil;
@@ -28,6 +30,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Resource
     private QuestionRepository questionRepository;
+
+    @Resource
+    private ExamPaperRepository examPaperRepository;
 
     @Override
     @Transactional
@@ -78,6 +83,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> findAll() {
         return questionRepository.findAll();
+    }
+
+    @Override
+    public Integer findExamPaperByQuestionId(Integer questionId) {
+        Integer examPaperId = questionRepository.findExamPaperByQuestionId(questionId);
+        return examPaperId;
     }
 
     @Override

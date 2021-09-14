@@ -17,6 +17,8 @@
 
     <!--Corrector用户表单-->
     <div class="container">
+        <h1><strong>试卷批改</strong></h1>
+        <hr>
         <form class="form">
             <div class="form-group">
                 <label for="usr">用户名称</label>
@@ -29,6 +31,10 @@
             <div th:id="${paperAnswer}" class="a form-group">
                 <label th:for="${answer.id}">用户答案</label>
                 <input type="text" disabled class="answer form-control"  th:id="${answer.id}" th:value="${answer.answer}">
+            </div>
+            <div  class="form-group">
+                <label th:for="check-answer">题目参考答案</label>
+                <input type="text" disabled class="form-control"  th:id="check-answer" th:value="${question.correctAnswer}">
             </div>
             <div class="form-group">
                 <label for="score">分数</label>

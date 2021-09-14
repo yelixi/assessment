@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--试卷编辑页面-->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
@@ -6,6 +7,8 @@
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link href="/css/exam.css" rel="stylesheet" type="text/css">
+		<link href="/css/table.css" rel="stylesheet" type="text/css">
 		<!--基础js-->
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -18,49 +21,14 @@
 		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
 
 	</head>
-	<style>
-        #question-table tr:nth-child(even) {
-            background: #f4f8fb;
-        }
-
-        .black_overlay {
-
-            display: none;
-            position: absolute;
-            top: 0%;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            background-color: #c8c8c8;
-            z-index: 1001;
-            -moz-opacity: 0.8;
-            opacity: .80;
-            filter: alpha(opacity=78);
-        }
-
-        .pop_win {
-
-            display: none;
-            position: absolute;
-            top: 10%;
-            left: 23%;
-            width: 55%;
-            height: 75%;
-            padding: 10px;
-            /*border-radius: 36px 38px 49px 40px / 53px 47px 51px 54px;*/
-            border: 2px solid cornflowerblue;
-            background-color: white;
-            z-index: 9999;
-            overflow: auto;
-        }
-	</style>
-
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
+		<!--利用thymeleaf传数据给bootstrap生成js函数-->
+		<input type="hidden" th:value="${exam}" id="exam-questions"/>
 
 		<div class="container">
 			<form class="form" method="post" role="form">
-				<h1 id="add-title">查看考试</h1>
+				<h1 id="add-title" >查看考试</h1>
 				<br>
 				<div class="form-group form-group-sm">
 					<label for="exam-id">考试编号</label>
@@ -89,8 +57,6 @@
                         </span>
 					</div>
 				</div>
-				<input type="hidden" th:value="${exam}" id="exam-questions"/>
-
 
 				<div class="form-group" id="question-container">
 					<label for="exam-questions">题目选择</label>
@@ -190,7 +156,7 @@
 			<form class="form" method="post" role="form">
 				<h2>试卷问题添加</h2>
 				<div class="form-group">
-					<label for="question-type">题目类型</label>
+					<label for="question-add-type">题目类型</label>
 					<select id="question-add-type" class="form-control" onchange="changAddForm()">
 						<option th:value="MULTIPLE_CHOICE">多选</option>
 						<option th:value="SINGLE_CHOICE">单选</option>
@@ -260,6 +226,7 @@
         $("#exam-name").val(exam.name);
         $("#start_time").val(exam.startTime);
         $("#end_time").val(exam.endTime);
+        document.getElementById("add-title").innerHTML =  '【' +exam.name +  '】';
 
         /*表格初始化*/
         $('#question-table').bootstrapTable({
@@ -276,18 +243,18 @@
                 sortable: true,
                 sortOrder: "asc",
                 align: "center",
-                width: 30,
+                width: 10,
 	            footerFormatter: function () {
 		            return '试卷总况'
                 }
             }, {
                 field: 'infoTextContent',
                 title: '问题题干',
+	            class: 'md',
                 sortable: true,
                 sortOrder: "asc",
                 width: 360,
 	            footerFormatter: function (rows) {
-                    let count = 0;
                     return '题目总数: '+ rows.length;
                 }
 
@@ -295,6 +262,7 @@
                 field: 'type',
                 title: '题目类型',
                 width: 120,
+	            class: 'question-type',
                 sortable: true,
                 sortOrder: "asc",
                 align: "center"
@@ -320,6 +288,25 @@
                 formatter: actionFormatter,
             }]
         });
+
+        /*Markdown转换 问题类型转换*/
+        $(function (){
+            let m = $(".md")
+            for(let i=0;i<m.length;i++){
+                let converter = new Markdown.Converter();
+                m[i].innerHTML=converter.makeHtml(m[i].innerText)
+            }
+            let type = $(".question-type")
+            for(let i=0;i<type.length;i++){
+                let t = type[i].innerText;
+                if(t == "SINGLE_CHOICE") type[i].innerText="单选题"
+	            else if(t == "MULTIPLE_CHOICE") type[i].innerText="多选题"
+	            else if(t == "FILL_BLANK") type[i].innerText="填空题"
+	            else if(t == "JUDGE")type[i].innerText="选择题"
+
+            }
+        })
+
 
         /*图标初始化*/
         function actionFormatter(value, row, index) {
@@ -372,7 +359,7 @@
                 "name": $("#exam-name").val(),
                 "questions": exam.questions,
                 "startTime": $("#start_time").val(),
-                "endTime": $("#end_time").val()
+                "endTime": $("#end_time").val(),
             });
             $.ajax({
                 url: "/issuer/updateExam",

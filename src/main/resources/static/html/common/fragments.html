@@ -53,7 +53,7 @@
 					<ul class="nav navbar-nav">
 						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/home/member}">我的考试</a></li>
 <!--						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/questions/}" >我的考试</a></li>-->
-						<li th:classappend="${n == 3} ? 'active'"><a  href="#"  >考试记录</a></li>
+						<li th:classappend="${n == 3} ? 'active'"><a  th:href="@{/getMyFinishedExam}"  >考试记录</a></li>
 						<li th:classappend="${n == 5} ? 'active'"><a  href="#"  >消息窗口</a></li>
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
 					</ul>

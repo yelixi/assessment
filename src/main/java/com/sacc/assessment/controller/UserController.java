@@ -92,6 +92,8 @@ public class UserController {
         UserDetail principal = (UserDetail) authentication.getPrincipal();
         model.addAttribute("ROLE", principal.getRole());
         model.addAttribute("userName", principal.getUsername());
+        model.addAttribute("userEmail",principal.getEmail());
+        model.addAttribute("userId", principal.getStudentId());
         model.addAttribute("page",
                 "../static/html/common/fragments.html::" + principal.getRole().toString().toLowerCase()+"_menu(999)");
         return "../static/html/common/userInfo";

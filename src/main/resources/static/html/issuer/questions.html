@@ -3,62 +3,41 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Questions</title>
-		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<style>
-            .black_overlay {
-                display: none;
-                position: absolute;
-                top: 0%;
-                left: 0%;
-                width: 100%;
-                height: 100%;
-                background-color: #c8c8c8;
-                z-index: 1001;
-                -moz-opacity: 0.8;
-                opacity: .80;
-                filter: alpha(opacity=78);
-            }
-
-            .pop_win {
-                display: none;
-                position: absolute;
-                top: 10%;
-                left: 23%;
-                width: 55%;
-                height: 75%;
-                padding: 10px;
-                /*border-radius: 36px 38px 49px 40px / 53px 47px 51px 54px;*/
-                border: 2px solid cornflowerblue;
-                background-color: white;
-                z-index: 9999;
-                overflow: auto;
-            }
-		</style>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link href="/css/table.css" rel="stylesheet" type="text/css">
+		<link href="/css/exam.css" rel="stylesheet" type="text/css">
+		<!--基础js-->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+		<!--markdown解析-->
+		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(2)"></nav>
 		<div class="container">
+			<h1><strong>所有问题</strong></h1>
 			<div th:align="left">
 				<button type="button" class="btn btn-success btn-lg" onclick="addQuestion()">添加问题</button>
 			</div>
 			<!--表单-->
-			<table class="table table-striped">
+			<table class="table table-striped" id="question-table">
 				<thead>
 					<tr>
 						<th>题目编号</th>
 						<th>题目类型</th>
-						<th>问题</th>
+						<th class="md">题目内容</th>
 						<th>正确答案</th>
 						<th>分值</th>
 						<th>最后更新时间</th>
-						<th>是否弃用</th>
+						<th data-width= "140">操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="question : ${questionLists}">
+					<tr th:each="question, questionStat : ${questionLists}">
 						<td th:text="${question.id}">100</td>
 						<div th:switch="${question.type.name()}">
 							<td th:case="JUDGE">判断题</td>
@@ -70,18 +49,17 @@
 						<td th:text="${question.infoTextContent}">题干</td>
 						<td th:text="${question.correctAnswer}">答案</td>
 						<td th:text="${question.score}">100</td>
-						<td th:text="${#temporals.format(question.updatedAt,'yyyy-MM-dd HH:ss')}"></td>
-						<td th:text="否" th:unless="${question.deleted}">否</td>
-						<td th:text="是" th:if="${question.deleted}">否</td>
+						<td th:text="${#temporals.format(question.updatedAt,'yyyy-MM-dd HH:mm')}"></td>
 						<td>
-							<button type="button" class="btn btn-info" th:id="'edit-btn'+${question.id}"
-							        th:onclick="'javascript:editQuestion(this.id,'  + ')'">修改
+							<button type="button" class="btn-sm btn-primary" th:id="${examList[questionStat.index]}">
+								<a th:href="@{'/issuer/updateExam/'+${examList[questionStat.index]}}" style="color: white" >查看所属试卷</a>
 							</button>
-						</td>
-						<td>
-							<button type="button" class="btn btn-danger" th:id="'delete-btn'+${question.id}"
-							        onclick="deleteQuestion(this.id, this.class)">删除
-							</button>
+<!--							<button type="button" class="btn-sm btn-info" th:id="'edit-btn'+${question.id}"-->
+<!--							        th:onclick="'javascript:editQuestion(this.id,'  + ')'">修改-->
+<!--							</button>-->
+<!--							<button type="button" class="btn-sm btn-danger" th:id="'delete-btn'+${question.id}"-->
+<!--							        onclick="deleteQuestion(this.id, this.class)">删除-->
+<!--							</button>-->
 						</td>
 					</tr>
 				</tbody>
@@ -128,24 +106,24 @@
 						<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>
 					</div>
 					<div class="form-group" id="question-edit-answer-A">
-						<label for="answer">选项A</label>
-						<input type="text"  class="form-control" placeholder="答案" required>
+						<label for="question-edit-input-A">选项A</label>
+						<input type="text"  class="form-control" placeholder="答案" id="question-edit-input-A" required>
 					</div>
 					<div class="form-group" id="question-edit-answer-B">
-						<label for="answer">选项B</label>
-						<input type="text"  class="form-control" placeholder="答案" required>
+						<label for="question-edit-input-B">选项B</label>
+						<input type="text"  class="form-control" placeholder="答案" id="question-edit-input-B" required>
 					</div>
 					<div class="form-group" id="question-edit-answer-C">
-						<label for="answer">选项C</label>
-						<input type="text"  class="form-control" placeholder="答案" required>
+						<label for="question-edit-input-C">选项C</label>
+						<input type="text"  class="form-control" placeholder="答案" id="question-edit-input-C" required>
 					</div>
 					<div class="form-group" id="question-edit-answer-D">
-						<label for="answer">选项D</label>
-						<input type="text"  class="form-control" placeholder="答案" required>
+						<label for="question-edit-input-D">选项D</label>
+						<input type="text"  class="form-control" placeholder="答案" id="question-edit-input-D" required>
 					</div>
 					<div class="form-group" id="question-edit-answer">
-						<label for="answer">答案</label>
-						<input type="text" id="answer" class="form-control" placeholder="答案" required>
+						<label for="question-edit-input-answer">答案</label>
+						<input type="text" id="question-edit-input-answer" class="form-control" placeholder="答案"  required>
 					</div>
 					<div class="form-group" id="question-edit-judge">
 						<label for="question-edit-judge">题目是否正确</label>
@@ -194,20 +172,20 @@
 					</div>
 
 					<div class="form-group" id="question-add-answer-A">
-						<label for="answer">选项A</label>
-						<input type="text"  class="form-control" placeholder="选项A" required>
+						<label for="question-add-input-A">选项A</label>
+						<input type="text"  class="form-control" placeholder="选项A"  id="question-add-input-A" required>
 					</div>
 					<div class="form-group" id="question-add-answer-B">
-						<label for="answer">选项B</label>
-						<input type="text"  class="form-control" placeholder="选项B" required>
+						<label for="question-add-input-B">选项B</label>
+						<input type="text"  class="form-control" placeholder="选项B" id="question-add-input-B" required>
 					</div>
 					<div class="form-group" id="question-add-answer-C">
-						<label for="answer">选项C</label>
-						<input type="text"  class="form-control" placeholder="选项C" required>
+						<label for="question-add-input-C">选项C</label>
+						<input type="text"  class="form-control" placeholder="选项C" id="question-add-input-C" required>
 					</div>
 					<div class="form-group" id="question-add-answer-D">
-						<label for="answer">选项D</label>
-						<input type="text"  class="form-control" placeholder="选项D" required>
+						<label for="question-add-input-D">选项D</label>
+						<input type="text"  class="form-control" placeholder="选项D" id="question-add-input-D" required>
 					</div>
 
 					<div class="form-group" id="question-add-judge">
@@ -218,8 +196,8 @@
 						</select>
 					</div>
 					<div class="form-group" id="question-add-answer">
-						<label for="answer">答案(多选中间选项中间需要空格)</label>
-						<input type="text"  class="form-control" placeholder="答案" required>
+						<label for="question-add-input-answer">答案(多选中间选项中间需要空格)</label>
+						<input type="text"  class="form-control" placeholder="答案" id="question-add-input-answer" required>
 					</div>
 
 					<div class="form-group">
@@ -243,6 +221,15 @@
 
 
 	<script th:inline="javascript">
+
+        $(function () {
+            let m = $(".md")
+            for (let i = 0; i < m.length; i++) {
+                let converter = new Markdown.Converter();
+                m[i].innerHTML = converter.makeHtml(m[i].innerText)
+            }
+        });
+
         //表单校验函数
         function validateForm() {
             var x = document.forms["myForm"]["fname"].value;
@@ -356,15 +343,16 @@
             let formData = JSON.stringify({
                 "id": $("#question-edit-id").val(),
                 "infoTextContent": $("#question-info").val(),
-                "option1":$("#question-edit-answer-A").val(),
-                "option2":$("#question-edit-answer-B").val(),
-                "option3":$("#question-edit-answer-C").val(),
-                "option4":$("#question-edit-answer-D").val(),
+                "option1":$("#question-edit-input-A").val(),
+                "option2":$("#question-edit-input-B").val(),
+                "option3":$("#question-edit-input-C").val(),
+                "option4":$("#question-edit-input-D").val(),
                 "score": $("#score").val(),
                 "type": $("#question-edit-type").val(),
-                "correctAnswer": $("#answer").val(),
+                "correctAnswer": $("#question-edit-input-answer").val(),
                 "deleted": $("#delete").val() == "是" ? true : false,
             })
+	        console.log(formData);
 
             $.ajax({
                 url: "/questions/"+ question_id,
@@ -382,18 +370,18 @@
             })
         })
 
-        //编辑窗口提交操作
+        //添加问题窗口提交操作
         $("#question-add-btn").click(function () {
             // alert("点了我！")
             let formData = JSON.stringify( {
                 "infoTextContent": $("#question-add-info").val(),
-                "option1":$("#question-add-answer-A").val(),
-                "option2":$("#question-add-answer-B").val(),
-                "option3":$("#question-add-answer-C").val(),
-                "option4":$("#question-add-answer-D").val(),
+                "option1":$("#question-add-input-A").val(),
+                "option2":$("#question-add-input-B").val(),
+                "option3":$("#question-add-input-C").val(),
+                "option4":$("#question-add-input-D").val(),
                 "score": $("#question-add-score").val(),
                 "type": $("#question-add-type").val(),
-                "correctAnswer": $("#question-add-answer").val(),
+                "correctAnswer": $("#question-add-input-answer").val(),
                 "deleted": $("#canUse").val() == "是" ? false : true
             })
             $.ajax({
@@ -427,7 +415,11 @@
             $("#question-edit-id").val(question.data.id);
             $("#question-edit-btn").val(question.data.type);
             $("#question-info").val(question.data.infoTextContent);
-            $("#answer").val(question.data.correctAnswer);
+            $("#question-edit-input-A").val(question.data.option1);
+            $("#question-edit-input-B").val(question.data.option2);
+            $("#question-edit-input-C").val(question.data.option3);
+            $("#question-edit-input-D").val(question.data.option4);
+            $("#question-edit-input-answer").val(question.data.correctAnswer);
             $("#score").val(question.data.score);
             $("#delete").val((question.data.deleted) ? "是" : "否");
             changEditForm();
@@ -442,5 +434,13 @@
             document.getElementById('fade').style.display = 'none';
             location.reload();
         }
+
+        $("#question-table").bootstrapTable({
+            search: true,
+            showRefresh: true,
+            showColumns: true,
+            striped: true,
+            sortable: true
+        });
 	</script>
 </html>

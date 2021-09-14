@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--试卷预览页面-->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -203,17 +204,6 @@
                             qe.appendChild(ul)
                             // div.insertBefore(span, div1[1])
                             switch (j) {
-                                // case 0:
-                                //     console.log(q[i].option1)
-                                //     qe.insertBefore(mk_choice('A.' + q[i].option1, q[i].id, 'A'),null); break;
-                                // case 1:
-                                //     qe.insertBefore(mk_choice('B.' + q[i].option2, q[i].id, 'B'),null); break;
-                                // case 2:
-                                //     qe.insertBefore(mk_choice('C.' + q[i].option3, q[i].id, 'C'),null); break;
-                                // case 3:
-                                //     qe.insertBefore(mk_choice('D.' + q[i].option4, q[i].id, 'D'),null); break;
-
-
                                 case 0:
                                     s.setAttribute('value', 'A');
                                     span.innerText = 'A.' + q[i].option1;
@@ -307,7 +297,6 @@
             console.log(err)
         })
     })
-    // $('div')[0].appendChild()
 </script>
 
 </html>

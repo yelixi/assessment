@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--试卷新增页面-->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
@@ -15,45 +16,7 @@
 		<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-
 	</head>
-	<style>
-        #question-table tr:nth-child(even) {
-            background: #f4f8fb;
-        }
-
-        .black_overlay {
-
-            display: none;
-            position: absolute;
-            top: 0%;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            background-color: #c8c8c8;
-            z-index: 1001;
-            -moz-opacity: 0.8;
-            opacity: .80;
-            filter: alpha(opacity=78);
-        }
-
-        .pop_win {
-
-            display: none;
-            position: absolute;
-            top: 10%;
-            left: 23%;
-            width: 55%;
-            height: 75%;
-            padding: 10px;
-            /*border-radius: 36px 38px 49px 40px / 53px 47px 51px 54px;*/
-            border: 2px solid cornflowerblue;
-            background-color: white;
-            z-index: 9999;
-            overflow: auto;
-        }
-	</style>
-
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 
@@ -128,60 +91,6 @@
             format: 'YYYY-MM-DD hh:mm:ss',
             locale: moment.locale('zh-cn')
         });
-
-
-        //编辑窗口提交操作
-        $("#question-add-btn").click(function () {
-            // alert("点了我！")
-            let questionToAdd = JSON.stringify({
-                "infoTextContent": $("#question-add-info").val(),
-                "score": $("#question-add-score").val(),
-                "type": $("#question-add-type").val(),
-                "correctAnswer": $("#question-add-answer").val(),
-                "deleted": $("#canUse").val() == "是" ? false : true
-            });
-            let s = JSON.stringify(exam.questions);
-            s = s.substr(0, s.length - 1) + ',' + questionToAdd + ']';
-            exam.questions = JSON.parse(s);
-            update();
-            closeWin();
-        })
-
-        /*窗口弹出添加修改函数*/
-        function popWinToAdd() {
-            document.getElementById('lightToAdd').style.display = 'block';
-            document.getElementById('fade').style.display = 'block';
-        }
-
-        /*窗口弹出编辑函数*/
-        function popWinToEdit(question) {
-            /*数据回显*/
-            document.getElementById("edit-title").innerText = "编辑问题" + question.data.id;
-            $("#question-edit-id").val(question.data.id);
-            $("#question-edit-btn").val(question.data.type);
-            $("#question-info").val(question.data.infoTextContent);
-            $("#answer").val(question.data.correctAnswer);
-            $("#score").val(question.data.score);
-            $("#delete").val((question.data.deleted) ? "是" : "否");
-            document.getElementById('lightToEdit').style.display = 'block';
-            document.getElementById('fade').style.display = 'block'
-        }
-
-        function flash() {
-            console.log("faf");
-            $('#bootstrap-table').bootstrapTable('destroy');
-            $('#question-table').bootstrapTable('refresh');
-        }
-
-        /*窗口关闭函数*/
-        function closeWin() {
-            document.getElementById('lightToEdit').style.display = 'none';
-            document.getElementById('lightToAdd').style.display = 'none';
-            document.getElementById('fade').style.display = 'none';
-
-            $('#question-table').bootstrapTable('refresh');
-            // location.reload();
-        }
 
 
 	</script>
