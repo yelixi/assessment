@@ -5,16 +5,19 @@
 		<meta charset="UTF-8">
 		<title>试卷编辑</title>
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<!--		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 		<link href="/css/exam.css" rel="stylesheet" type="text/css">
 		<link href="/css/table.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="/css/me.css">
+		<link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
+		<link href="/css/bootstrap-datetimepicker-min.css" rel="stylesheet" type="text/css">
 		<!--基础js-->
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<!--DateTimepicker-->
-		<script src="https://cdn.bootcss.com/moment.js/2.24.0/moment-with-locales.js"></script>
-		<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript" src = "/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+		<script type="text/javascript" src = "/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 		<!--markdown解析-->
@@ -41,7 +44,10 @@
 				<div class="form-group">
 					<label for="exam-start-time">开始时间</label>
 					<div class='input-group date form-date form_datetime' id='exam-start-time'>
-						<input type='text' class="form-control" id="start_time"/>
+						<input type='text' class="form-control" id="start_time" readonly/>
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-remove"></span>
+						</span>
 						<span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -50,8 +56,11 @@
 				<div class="form-group">
 					<label for="exam-end-time">结束时间</label>
 					<!--指定 date标记-->
-					<div class='input-group date' id='exam-end-time'>
-						<input type='text' class="form-control form_datetime" id="end_time"/>
+					<div class='input-group date form-date form_datetime' id='exam-end-time'>
+						<input type='text' class="form-control form_datetime" id="end_time" readonly/>
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-remove"></span>
+						</span>
 						<span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -224,9 +233,22 @@
         let exam = JSON.parse(examValue);
         $("#exam-id").val(exam.id);
         $("#exam-name").val(exam.name);
-        $("#start_time").val(exam.startTime);
-        $("#end_time").val(exam.endTime);
+        //日期切割成最小单位为分
+        let start_time = exam.startTime.toString().replace("T"," ").slice(0,16);
+        let end_time   = exam.endTime.toString().replace("T"," ").slice(0,16);
+        $("#start_time").val(start_time);
+        $("#end_time").val(end_time);
         document.getElementById("add-title").innerHTML =  '【' +exam.name +  '】';
+
+		/*日期控件格式化*/
+        $('.form_datetime').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            autoclose: 1,
+            todayBtn:  1,
+	        language: 'zh-CN',
+            todayHighlight: 1,
+	        startView: 2,
+        });
 
         /*表格初始化*/
         $('#question-table').bootstrapTable({
@@ -347,19 +369,16 @@
                     location.reload();
                 })
             }
-
         }
 
         //更新函数
         function update() {
-            let st = $("#start_time").val();
-            let et = $("#end_time").val();
             let formData = JSON.stringify({
                 "id": $("#exam-id").val(),
                 "name": $("#exam-name").val(),
                 "questions": exam.questions,
-                "startTime": $("#start_time").val(),
-                "endTime": $("#end_time").val(),
+                "startTime": $("#start_time").val()+":00",
+                "endTime": $("#end_time").val()+":00",
             });
             $.ajax({
                 url: "/issuer/updateExam",
@@ -375,15 +394,6 @@
                 } else alert("保存失败！");
             })
         }
-
-        $('#exam-start-time').datetimepicker({
-            format: 'YYYY-MM-DD hh:mm:ss',
-            locale: moment.locale('zh-cn')
-        });
-        $('#exam-end-time').datetimepicker({
-            format: 'YYYY-MM-DD hh:mm:ss',
-            locale: moment.locale('zh-cn')
-        });
 
         //编辑窗口提交操作
         $("#question-add-btn").click(function () {
@@ -415,7 +425,6 @@
         //编辑窗口修改操作
         $("#question-edit-btn").click(function () {
             let question_id = $("#question-edit-id").val();
-            // alert("点了我！")
             let formData = JSON.stringify({
                 "id": $("#question-edit-id").val(),
                 "infoTextContent": $("#question-info").val(),

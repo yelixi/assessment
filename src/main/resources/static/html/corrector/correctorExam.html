@@ -6,6 +6,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/css/me.css">
     <!--基础js-->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -25,7 +26,7 @@
                 <input type="text" disabled class="form-control" id="usr" th:value="${username}">
             </div>
             <div class="form-group">
-                <label for="question-info">问题题干</label>
+                <label for="question-info" th:text="'问题题干（' + ${question.score} + '分）'">问题题干</label>
                 <input type="text" disabled class="form-control" id="question-info" th:value="${question.infoTextContent}">
             </div>
             <div th:id="${paperAnswer}" class="a form-group">

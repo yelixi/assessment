@@ -1,5 +1,6 @@
 package com.sacc.assessment.service.impl;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.sacc.assessment.entity.*;
 import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperAnswerRepository;
@@ -54,6 +55,9 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         examPaper.setUpdatedAt(LocalDateTime.now());
         examPaper.getQuestions().forEach(x->x.setCreatedAt(LocalDateTime.now()));
         examPaper.getQuestions().forEach(x->x.setUpdatedAt(LocalDateTime.now()));
+        Integer totalScore = examPaper.getQuestions().stream().mapToInt(Question::getScore).sum();
+        examPaper.setExamTime(Math.toIntExact(LocalDateTimeUtil.between(examPaper.getStartTime(), examPaper.getEndTime()).toMinutes()));
+        examPaper.setExamTotalScore(totalScore);
         examPaperRepository.save(examPaper);
         return examPaper;
     }
@@ -84,7 +88,9 @@ public class ExamPaperServiceImpl implements ExamPaperService {
                 exam.getQuestions().add(question);
             }
         }
-
+        Integer totalScore = exam.getQuestions().stream().mapToInt(Question::getScore).sum();
+        exam.setExamTotalScore(totalScore);
+        exam.setExamTime(Math.toIntExact(LocalDateTimeUtil.between(exam.getStartTime(), exam.getEndTime()).toMinutes()));
         examPaperRepository.save(exam);
         return true;
     }
