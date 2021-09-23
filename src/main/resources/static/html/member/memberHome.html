@@ -5,6 +5,8 @@
     <title>考试系统-考试</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/css/me.css">
+    <link rel="stylesheet" href="/css/table.css">
     <!--基础js-->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -19,19 +21,20 @@
             <thead>
                 <tr>
                     <th data-sortable="true">考试名称</th>
-                    <th data-sortable="true">起始时间</th>
-                    <th>结束时间</th>
-                    <th>考试时间</th>
-                    <th>是否已参加</th>
-    <!--                <th></th>-->
+                    <th data-sortable="true">考试日期</th>
+                    <th data-sortable="true">考试时间</th>
+                    <th data-width="20" data-sortable="true">考试时长（分钟）</th>
+                    <th data-width="20" data-sortable="true">试卷总分</th>
+                    <th data-width="10">操作</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="exam,index:${examList}">
                     <td th:text="${exam.name}"></td>
-                    <td th:text="${exam.startTime}"></td>
-                    <td th:text="${exam.endTime}"></td>
+                    <td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd')}"></td>
+                    <td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '--' + ${#temporals.format(exam.endTime,'HH:mm')}"></td>
                     <td th:text="${exam.examTime}"></td>
+                    <td th:text="${exam.examTotalScore}"></td>
                     <td th:if="${list[index.index]==1}"><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >回顾考试</button></td>
                     <td th:if="${list[index.index]!=1}"><button type="button"  class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>
                 </tr>

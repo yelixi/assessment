@@ -6,14 +6,15 @@
 		<title>试卷创建</title>
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-		      rel="stylesheet">
+		<link rel="stylesheet" href="/css/me.css">
+		<link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
+		<link href="/css/bootstrap-datetimepicker-min.css" rel="stylesheet" type="text/css">
 
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<!--DateTimepicker-->
-		<script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
-		<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript" src = "/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+		<script type="text/javascript" src = "/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 	</head>
@@ -40,7 +41,7 @@
 				<div class="form-group">
 					<label for="exam-end-time">结束时间</label>
 					<!--指定 date标记-->
-					<div class='input-group date' id='exam-end-time'>
+					<div class='input-group date form-date form_datetime' id='exam-end-time'>
 						<input type='text' class="form-control" id="end_time"/>
 						<span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -57,16 +58,23 @@
 
 	</body>
 	<script>
+        $('.form_datetime').datetimepicker({
+	        format: 'yyyy-mm-dd hh:mm',
+            autoclose: 1,
+            todayBtn:  1,
+            language: 'zh-CN',
+            todayHighlight: 1,
+        });
+
         //更新函数
         function update() {
-            var st = $("#start_time").val();
-            var et = $("#end_time").val();
             let formData = JSON.stringify({
                 "name": $("#exam-name").val(),
                 "questions": [],
-                "startTime": $("#start_time").val(),
-                "endTime": $("#end_time").val()
+                "startTime": $("#start_time").val()+":00",
+                "endTime": $("#end_time").val()+":00"
             });
+            console.log(formData);
             $.ajax({
                 url: "/issuer/createExam",
                 type: "post",
@@ -81,16 +89,6 @@
                 } else alert("添加试卷失败!！");
             })
         }
-
-
-        $('#exam-start-time').datetimepicker({
-            format: 'YYYY-MM-DD hh:mm:ss',
-            locale: moment.locale('zh-cn')
-        });
-        $('#exam-end-time').datetimepicker({
-            format: 'YYYY-MM-DD hh:mm:ss',
-            locale: moment.locale('zh-cn')
-        });
 
 
 	</script>

@@ -41,6 +41,11 @@ public class ExamPaper {
     private String name;
 
     /**
+     * 试卷总分
+     */
+    private Integer examTotalScore;
+
+    /**
      * 考试开始时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
