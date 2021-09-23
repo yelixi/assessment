@@ -29,8 +29,8 @@
             <tbody>
                 <tr th:each="exam,index:${examList}">
                     <td th:text="${exam.name}"></td>
-                    <td th:text="${exam.startTime}"></td>
-                    <td th:text="${exam.endTime}"></td>
+                    <td th:text="${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')}"></td>
                     <td th:text="${exam.examTime}"></td>
                     <td th:if="${list[index.index]==1}"><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >回顾考试</button></td>
                     <td th:if="${list[index.index]!=1}"><button type="button"  class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>

@@ -132,14 +132,14 @@ public class UserServiceImpl implements UserDetailsService,UserService {
                     }
                     System.out.print(" "+ExcelUtils.getXSSFValue(xssCell));
                 }
-                String password = RandomUtil.randomString(10);
+                String password = RandomUtil.randomString(14);
                 user.setPassword(passwordEncoder.encode(password));
                 user.setCreatedAt(LocalDateTime.now());
                 user.setUpdatedAt(LocalDateTime.now());
                 user.setRole(Role.MEMBER);
 
                 String subject="【院科协招新考试系统】";
-                String text = "您的账号为:"+user.getStudentId()+",密码为:"+RandomUtil.randomString(10)+"请勿泄露给其他人";
+                String text = "您的账号为:"+user.getStudentId()+",密码为:"+password+",请勿泄露给其他人";
                 mailService.sendMail(subject, user.getEmail(), text);
                 //list.add(user);  //将excel每一行的数据封装到user对象,并将user对象添加到list
                 userRepository.save(user);
