@@ -6,13 +6,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title >模板</title>
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link rel="stylesheet" href="/css/navbar.css">
 		<!--基础js-->
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<!--BootStrap Table-->
-		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 	</head>
 	<body>
 		<!--Issuer导航-->
@@ -53,7 +50,7 @@
 					<ul class="nav navbar-nav">
 						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/home/member}">我的考试</a></li>
 <!--						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/questions/}" >我的考试</a></li>-->
-						<li th:classappend="${n == 3} ? 'active'"><a  th:href="@{/getMyFinishedExam}"  >考试记录</a></li>
+						<li th:classappend="${n == 3} ? 'active'"><a  href="#"  >考试记录</a></li>
 						<li th:classappend="${n == 5} ? 'active'"><a  href="#"  >消息窗口</a></li>
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
 					</ul>

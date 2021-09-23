@@ -6,6 +6,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/css/me.css">
     <!--基础js-->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,18 +21,18 @@
             <thead>
                 <tr>
                     <th>考试名称</th>
-                    <th>起始时间</th>
-                    <th>结束时间</th>
-                    <th>考试时间</th>
-                    <th data-width="10px"></th>
+                    <th data-sortable="true">考试日期</th>
+                    <th data-sortable="true">考试时间</th>
+                    <th data-width="20" data-sortable="true">试卷总分</th>
+                    <th data-width="10px">操作</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="exam:${examList}">
                     <td th:text="${exam.name}"></td>
-                    <td th:text="${exam.startTime}"></td>
-                    <td th:text="${exam.endTime}"></td>
-                    <td th:text="${exam.examTime}"></td>
+                    <td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd')}"></td>
+                    <td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '--' + ${#temporals.format(exam.endTime,'HH:mm')}"></td>
+                    <td th:text="${exam.examTotalScore}"></td>
                     <td><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >批改</button></td>
                 </tr>
             </tbody>
