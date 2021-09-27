@@ -18,17 +18,10 @@
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 		<div class="container">
 			<h1><strong>所有试卷</strong></h1>
-			<!--创建考试按钮-->
-			<div th:align="left">
-				<a th:href="@{/issuer/createExam}">
-					<button type="button" class="btn btn-success btn-lg">创建考试</button>
-				</a>
-			</div>
 			<!--表格-->
 			<div class="container">
-
 				<table class="table table-striped" id="exam-table">
-					<thead>
+					<thead class="table-thead">
 						<tr>
 							<th data-width="10">试卷编号</th>
 							<th data-sortable="true">试卷名称</th>
