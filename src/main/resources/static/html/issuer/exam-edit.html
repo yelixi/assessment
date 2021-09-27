@@ -37,12 +37,12 @@
 					<label for="exam-id">考试编号</label>
 					<input type="text" id="exam-id" class="form-control" placeholder="这里什么都没有" disabled>
 				</div>
-				<div class="form-group">
-					<label for="exam-name">考试名称</label>
-					<input type="text" id="exam-name" class="form-control" placeholder="这里什么都没有" required autofocus>
+				<div class="form-group required">
+					<label for="exam-name" class="control-label">考试名称</label>
+					<input type="text" id="exam-name" class="form-control" placeholder="这里什么都没有" required>
 				</div>
-				<div class="form-group">
-					<label for="exam-start-time">开始时间</label>
+				<div class="form-group required">
+					<label for="exam-start-time" class="control-label">开始时间</label>
 					<div class='input-group date form-date form_datetime' id='exam-start-time'>
 						<input type='text' class="form-control" id="start_time" readonly/>
 						<span class="input-group-addon">
@@ -53,8 +53,8 @@
                         </span>
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="exam-end-time">结束时间</label>
+				<div class="form-group required">
+					<label for="exam-end-time" class="control-label">结束时间</label>
 					<!--指定 date标记-->
 					<div class='input-group date form-date form_datetime' id='exam-end-time'>
 						<input type='text' class="form-control form_datetime" id="end_time" readonly/>
@@ -67,11 +67,8 @@
 					</div>
 				</div>
 
-				<div class="form-group" id="question-container">
-					<label for="exam-questions">题目选择</label>
-					<a href="#" class="btn btn-success btn-default" onclick="popWinToAdd()">
-						<span class="glyphicon glyphicon-plus"></span> 问题添加
-					</a>
+				<div class="form-group required" id="question-container">
+					<label for="exam-questions" class="control-label">题目选择</label>
 					<table id="question-table" class="table" search="true">
 					</table>
 				</div>
@@ -91,140 +88,158 @@
 		</div>
 
 		<!--悬浮修改窗口-->
-		<div id="lightToEdit" class="pop_win">
-			<button type="button" class="btn btn-danger" style="float: right" onclick="closeWin()">
-				<span class="glyphicon glyphicon-remove"></span>
-			</button>
-			<form class="form" method="post" role="form">
-				<h2 id="edit-title">问题编辑</h2>
-				<div class="form-group">
-					<label for="question-edit-id">题目编号</label>
-					<input readonly="readonly" id="question-edit-id" type="text" class="form-control">
-				</div>
-				<div class="form-group">
-					<label for="question-edit-type">题目类型</label>
-					<select id="question-edit-type" class="form-control" onchange="changEditForm()">
-						<option th:value="MULTIPLE_CHOICE">多选</option>
-						<option th:value="SINGLE_CHOICE">单选</option>
-						<option th:value="FILL_BLANK">填空</option>
-						<option th:value="JUDGE">判断</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="question-info">题干</label>
-					<!--<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>-->
-					<textarea  id="question-info" class="form-control" placeholder="题干" required autofocus></textarea>
-				</div>
-				<div class="form-group" id="question-edit-answer-A">
-					<label for="answer">选项A</label>
-					<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-A">
-				</div>
-				<div class="form-group" id="question-edit-answer-B">
-					<label for="answer">选项B</label>
-					<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-B">
-				</div>
-				<div class="form-group" id="question-edit-answer-C">
-					<label for="answer">选项C</label>
-					<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-C">
-				</div>
-				<div class="form-group" id="question-edit-answer-D">
-					<label for="answer">选项D</label>
-					<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-D">
-				</div>
-				<div class="form-group" id="question-edit-answer">
-					<label for="answer">答案</label>
-					<input type="text" id="answer" class="form-control" placeholder="答案" required>
-				</div>
-				<div class="form-group" id="question-edit-judge">
-					<label for="question-edit-judge">题目正确性</label>
-					<select  class="form-control">
-						<option value="True">正确</option>
-						<option value="False">错误</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="score">分值</label>
-					<input type="text" id="score" class="form-control" placeholder="Score" required>
-				</div>
-				<div class="form-group">
-					<label for="delete">是否弃用</label>
-					<select id="delete" class="form-control">
-						<option>是</option>
-						<option>否</option>
-					</select>
-				</div>
-				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-				<button class="btn btn-lg btn-primary btn-block" type="button" id="question-edit-btn">提交</button>
-			</form>
+		<div id="lightToEdit" class="modal fade" aria-hidden="true" aria-labelledby="edit-title" role="dialog"  tabindex="-1" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" >x
+						</button>
+						<h4 id="edit-title" class="modal-title">问题编辑</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form" method="post" role="form">
+							<div class="form-group">
+								<label for="question-edit-id">题目编号</label>
+								<input readonly="readonly" id="question-edit-id" type="text" class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="question-edit-type">题目类型</label>
+								<select id="question-edit-type" class="form-control" onchange="changEditForm()">
+									<option th:value="MULTIPLE_CHOICE">多选</option>
+									<option th:value="SINGLE_CHOICE">单选</option>
+									<option th:value="FILL_BLANK">填空</option>
+									<option th:value="JUDGE">判断</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="question-info">题干</label>
+								<!--<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>-->
+								<textarea  id="question-info" class="form-control" placeholder="题干" required autofocus></textarea>
+							</div>
+							<div class="form-group" id="question-edit-answer-A">
+								<label for="answer">选项A</label>
+								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-A">
+							</div>
+							<div class="form-group" id="question-edit-answer-B">
+								<label for="answer">选项B</label>
+								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-B">
+							</div>
+							<div class="form-group" id="question-edit-answer-C">
+								<label for="answer">选项C</label>
+								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-C">
+							</div>
+							<div class="form-group" id="question-edit-answer-D">
+								<label for="answer">选项D</label>
+								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-D">
+							</div>
+							<div class="form-group" id="question-edit-answer">
+								<label for="answer">答案</label>
+								<input type="text" id="answer" class="form-control" placeholder="答案" required>
+							</div>
+							<div class="form-group" id="question-edit-judge">
+								<label for="question-edit-judge">题目正确性</label>
+								<select  class="form-control">
+									<option value="True">正确</option>
+									<option value="False">错误</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="score">分值</label>
+								<input type="text" id="score" class="form-control" placeholder="Score" required>
+							</div>
+							<div class="form-group">
+								<label for="delete">是否弃用</label>
+								<select id="delete" class="form-control">
+									<option>是</option>
+									<option>否</option>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+						<button class="btn btn-lg btn-primary btn-block" type="button" id="question-edit-btn">提交</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
 		</div>
 		<!--添加问题窗口-->
-		<div id="lightToAdd" class="pop_win">
-			<button type="button" class="btn btn-danger" style="float: right" onclick="closeWin()">
-				<span class="glyphicon glyphicon-remove"></span>
-			</button>
-			<form class="form" method="post" role="form">
-				<h2>试卷问题添加</h2>
-				<div class="form-group">
-					<label for="question-add-type">题目类型</label>
-					<select id="question-add-type" class="form-control" onchange="changAddForm()">
-						<option th:value="MULTIPLE_CHOICE">多选</option>
-						<option th:value="SINGLE_CHOICE">单选</option>
-						<option th:value="FILL_BLANK">填空</option>
-						<option th:value="JUDGE">判断</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="question-add-info">题干</label>
-					<textarea  id="question-add-info" class="form-control" placeholder="题干" required autofocus></textarea>
-				</div>
+		<div id="lightToAdd" class="modal fade" aria-hidden="true" aria-labelledby="add-title-1" role="dialog"  tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"  >
+							×
+						</button>
+						<h2 id="add-title-1" class="modal-title">试卷问题添加</h2>
+					</div>
+					<div class="modal-body">
+						<form class="form" method="post" role="form">
 
-				<div class="form-group" id="question-add-answer-A">
-					<label for="answer">选项A</label>
-					<label class="in">
-						<input type="text"  class="form-control" placeholder="选项A" required>
-					</label>
-				</div>
-				<div class="form-group" id="question-add-answer-B">
-					<label for="answer">选项B</label>
-					<label class="in">
-						<input type="text"  class="form-control" placeholder="选项B" required>
-					</label>
-				</div>
-				<div class="form-group" id="question-add-answer-C">
-					<label for="answer">选项C</label>
-					<label class="in">
-						<input type="text"  class="form-control" placeholder="选项C" required>
-					</label>
-				</div>
-				<div class="form-group" id="question-add-answer-D">
-					<label for="answer">选项D</label>
-					<label class="in">
-						<input type="text"  class="form-control" placeholder="选项D" required>
-					</label>
-				</div>
+							<div class="form-group">
+								<label for="question-add-type">题目类型</label>
+								<select id="question-add-type" class="form-control" onchange="changAddForm()">
+									<option th:value="MULTIPLE_CHOICE">多选</option>
+									<option th:value="SINGLE_CHOICE">单选</option>
+									<option th:value="FILL_BLANK">填空</option>
+									<option th:value="JUDGE">判断</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="question-add-info">题干</label>
+								<textarea  id="question-add-info" class="form-control" placeholder="题干" required autofocus></textarea>
+							</div>
 
-				<div class="form-group" id="question-add-judge">
-					<label for="question-add-judge">题目是否正确</label>
-					<select  class="form-control">
-						<option th:value="True">正确</option>
-						<option th:value="False">错误</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="answer">答案</label>
-					<input type="text" id="question-add-answer" class="form-control" placeholder="答案" required>
-				</div>
+							<div class="form-group" id="question-add-answer-A">
+								<label for="answer">选项A</label>
+								<label class="in">
+									<input type="text"  class="form-control" placeholder="选项A" required>
+								</label>
+							</div>
+							<div class="form-group" id="question-add-answer-B">
+								<label for="answer">选项B</label>
+								<label class="in">
+									<input type="text"  class="form-control" placeholder="选项B" required>
+								</label>
+							</div>
+							<div class="form-group" id="question-add-answer-C">
+								<label for="answer">选项C</label>
+								<label class="in">
+									<input type="text"  class="form-control" placeholder="选项C" required>
+								</label>
+							</div>
+							<div class="form-group" id="question-add-answer-D">
+								<label for="answer">选项D</label>
+								<label class="in">
+									<input type="text"  class="form-control" placeholder="选项D" required>
+								</label>
+							</div>
 
-				<div class="form-group">
-					<label for="score">分值</label>
-					<input type="text" id="question-add-score" class="form-control" placeholder="分数" required>
-				</div>
-				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-				<button class="btn btn-lg btn-primary btn-block" type="button" id="question-add-btn">保存试卷</button>
-			</form>
+							<div class="form-group" id="question-add-judge">
+								<label for="question-add-judge">题目是否正确</label>
+								<select  class="form-control">
+									<option th:value="True">正确</option>
+									<option th:value="False">错误</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="answer">答案</label>
+								<input type="text" id="question-add-answer" class="form-control" placeholder="答案" required>
+							</div>
+
+							<div class="form-group">
+								<label for="score">分值</label>
+								<input type="text" id="question-add-score" class="form-control" placeholder="分数" required>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+						<button class="btn btn-lg btn-primary btn-block" type="button" id="question-add-btn">保存试卷</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
 		</div>
-		<div id="fade" class="black_overlay"></div>
-
 
 	</body>
 	<script>
@@ -276,9 +291,6 @@
                 sortable: true,
                 sortOrder: "asc",
                 width: 360,
-	            footerFormatter: function (rows) {
-                    return '题目总数: '+ rows.length;
-                }
 
             }, {
                 field: 'type',
@@ -287,7 +299,11 @@
 	            class: 'question-type',
                 sortable: true,
                 sortOrder: "asc",
-                align: "center"
+                align: "center",
+                footerFormatter: function (rows) {
+                    return '题目总数: '+ rows.length;
+                }
+
             }, {
                 field: 'score',
                 title: '分数',
@@ -308,8 +324,23 @@
                 width: 120,
                 align: 'center',
                 formatter: actionFormatter,
+                footerFormatter: function (rows) {
+                    return '\t\t\t\t\t<a href="#" class="btn btn-success btn-default" onclick="popWinToAdd()">\n' +
+                        '\t\t\t\t\t\t<span class="glyphicon glyphicon-plus"></span> 添加问题\n' +
+                        '\t\t\t\t\t</a>'
+
+                }
             }]
         });
+
+        /*图标初始化*/
+        function actionFormatter(value) {
+            let id = value;
+            let result = "";
+            result += "<a href='javascript:;' class='btn btn-xs green' onclick=\"ViewQuestionById('" + id + "')\" title='查看'><span class='glyphicon glyphicon-search'></span></a>";
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"DeleteQuestionByIds('" + id + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+            return result;
+        }
 
         /*Markdown转换 问题类型转换*/
         $(function (){
@@ -329,21 +360,24 @@
             }
         })
 
-
-        /*图标初始化*/
-        function actionFormatter(value, row, index) {
-            let id = value;
-            let result = "";
-            result += "<a href='javascript:;' class='btn btn-xs green' onclick=\"ViewQuestionById('" + id + "')\" title='查看'><span class='glyphicon glyphicon-search'></span></a>";
-            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"DeleteQuestionByIds('" + id + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
-            return result;
-        }
-
         //问题表格中的查看按钮
         function ViewQuestionById(questionId) {
             $.getJSON('/questions/' + questionId, function (result) {
                 popWinToEdit(result);
             })
+        }
+
+        //问题中的删除按钮
+        function DeleteQuestionByIds(questionId) {
+            if (confirm("确定是否删除该问题?")) {
+                exam.questions = arrRemoveJson(exam.questions, 'id', questionId);
+                $.ajax({
+                    url: '/questions/' + questionId,
+                    type: "delete"
+                }).done(function (data) {
+                    location.reload();
+                })
+            }
         }
 
         //3、如果要删除项为对象，我们需要知道该对象属性中的唯一值（不会重复的值）
@@ -358,105 +392,9 @@
             return newArr;
         }
 
-        //问题表格中的删除按钮
-        function DeleteQuestionByIds(questionId) {
-            if (confirm("确定是否删除该问题?")) {
-                exam.questions = arrRemoveJson(exam.questions, 'id', questionId);
-                $.ajax({
-                    url: '/questions/' + questionId,
-                    type: "delete"
-                }).done(function (data) {
-                    location.reload();
-                })
-            }
-        }
-
-        //更新函数
-        function update() {
-            let formData = JSON.stringify({
-                "id": $("#exam-id").val(),
-                "name": $("#exam-name").val(),
-                "questions": exam.questions,
-                "startTime": $("#start_time").val()+":00",
-                "endTime": $("#end_time").val()+":00",
-            });
-            $.ajax({
-                url: "/issuer/updateExam",
-                type: "post",
-                contentType: "application/json",
-                data: formData,
-                dataType: "json"
-            }).done(function (data) {
-                console.log(data.code);
-                if (data.code == 200) {
-                    alert("保存成功");
-                    location.reload();
-                } else alert("保存失败！");
-            })
-        }
-
-        //编辑窗口提交操作
-        $("#question-add-btn").click(function () {
-            // alert("点了我！")
-            let questionToAdd = JSON.stringify({
-                "infoTextContent": $("#question-add-info").val(),
-                "score": $("#question-add-score").val(),
-                "option1":$("#question-edit-answer-input-A").val(),
-                "option2":$("#question-edit-answer-input-B").val(),
-                "option3":$("#question-edit-answer-input-C").val(),
-                "option4":$("#question-edit-answer-input-D").val(),
-                "type": $("#question-add-type").val(),
-                "correctAnswer": $("#question-add-answer").val(),
-                "deleted": $("#canUse").val() == "是" ? false : true
-            });
-            let s = JSON.stringify(exam.questions);
-            if (s.length == 2) s = s.substr(0, s.length - 1) + questionToAdd + ']';
-            else s = s.substr(0, s.length - 1) + ',' + questionToAdd + ']';
-            exam.questions = JSON.parse(s);
-            update();
-            closeWin();
-        })
-
-		//试卷预览方法
-		$("#exam-view").click(function (){
-			window.location.href="/issuer/examView?examId="+$("#exam-id").val()
-		})
-
-        //编辑窗口修改操作
-        $("#question-edit-btn").click(function () {
-            let question_id = $("#question-edit-id").val();
-            let formData = JSON.stringify({
-                "id": $("#question-edit-id").val(),
-                "infoTextContent": $("#question-info").val(),
-                "option1":$("#question-edit-answer-input-A").val(),
-                "option2":$("#question-edit-answer-input-B").val(),
-                "option3":$("#question-edit-answer-input-C").val(),
-                "option4":$("#question-edit-answer-input-D").val(),
-                "score": $("#score").val(),
-                "type": $("#question-edit-type").val(),
-                "correctAnswer": $("#answer").val(),
-                "deleted": $("#delete").val() === "是",
-            })
-            // console.log(typeof formData.id);
-            $.ajax({
-                url: "/questions/" + question_id,
-                type: "put",
-                contentType: "application/json",
-                data: formData,
-                dataType: "json"
-            }).done(function (data) {
-                console.log(data.code);
-                if (data.code == 200) {
-                    alert("修改成功");
-                    location.reload();
-                } else alert("修改失败！");
-            })
-        })
-
         /*窗口弹出添加修改函数*/
         function popWinToAdd() {
-            document.getElementById('lightToAdd').style.display = 'block';
-            document.getElementById('fade').style.display = 'block';
+            $("#lightToAdd").modal();
             changAddForm();
         }
 
@@ -473,23 +411,8 @@
             $("#answer").val(question.data.correctAnswer);
             $("#score").val(question.data.score);
             $("#delete").val((question.data.deleted) ? "是" : "否");
-            document.getElementById('lightToEdit').style.display = 'block';
-            document.getElementById('fade').style.display = 'block'
+	        $("#lightToEdit").modal();
             changEditForm();
-        }
-
-        function flash() {
-            console.log("faf");
-            $('#bootstrap-table').bootstrapTable('destroy');
-            $('#question-table').bootstrapTable('refresh');
-        }
-
-        /*窗口关闭函数*/
-        function closeWin() {
-            document.getElementById('lightToEdit').style.display = 'none';
-            document.getElementById('lightToAdd').style.display = 'none';
-            document.getElementById('fade').style.display = 'none';
-            $('#question-table').bootstrapTable('refresh');
         }
 
         //根据题目类型来调整表单
@@ -548,5 +471,88 @@
                 $("#question-add-judge").show();
             }
         }
+
+        //更新问题函数
+        function update() {
+            let formData = JSON.stringify({
+                "id": $("#exam-id").val(),
+                "name": $("#exam-name").val(),
+                "questions": exam.questions,
+                "startTime": $("#start_time").val()+":00",
+                "endTime": $("#end_time").val()+":00",
+            });
+            $.ajax({
+                url: "/issuer/updateExam",
+                type: "post",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
+            }).done(function (data) {
+                console.log(data.code);
+                if (data.code == 200) {
+                    alert("保存成功");
+                    location.reload();
+                } else alert("保存失败！");
+            })
+        }
+
+        //编辑窗口提交操作
+        $("#question-add-btn").click(function () {
+            // alert("点了我！")
+            let questionToAdd = JSON.stringify({
+                "infoTextContent": $("#question-add-info").val(),
+                "score": $("#question-add-score").val(),
+                "option1":$("#question-edit-answer-input-A").val(),
+                "option2":$("#question-edit-answer-input-B").val(),
+                "option3":$("#question-edit-answer-input-C").val(),
+                "option4":$("#question-edit-answer-input-D").val(),
+                "type": $("#question-add-type").val(),
+                "correctAnswer": $("#question-add-answer").val(),
+                "deleted": $("#canUse").val() == "是" ? false : true
+            });
+            let s = JSON.stringify(exam.questions);
+            if (s.length == 2) s = s.substr(0, s.length - 1) + questionToAdd + ']';
+            else s = s.substr(0, s.length - 1) + ',' + questionToAdd + ']';
+            exam.questions = JSON.parse(s);
+            update();
+            $('#question-table').bootstrapTable('refresh');
+        })
+
+        //编辑窗口修改操作
+        $("#question-edit-btn").click(function () {
+            let question_id = $("#question-edit-id").val();
+            let formData = JSON.stringify({
+                "id": $("#question-edit-id").val(),
+                "infoTextContent": $("#question-info").val(),
+                "option1":$("#question-edit-answer-input-A").val(),
+                "option2":$("#question-edit-answer-input-B").val(),
+                "option3":$("#question-edit-answer-input-C").val(),
+                "option4":$("#question-edit-answer-input-D").val(),
+                "score": $("#score").val(),
+                "type": $("#question-edit-type").val(),
+                "correctAnswer": $("#answer").val(),
+                "deleted": $("#delete").val() === "是",
+            })
+            // console.log(typeof formData.id);
+            $.ajax({
+                url: "/questions/" + question_id,
+                type: "put",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
+            }).done(function (data) {
+                console.log(data.code);
+                if (data.code == 200) {
+                    alert("修改成功");
+                    location.reload();
+                } else alert("修改失败！");
+            })
+        })
+
+        //试卷预览方法
+        $("#exam-view").click(function (){
+            window.location.href="/issuer/examView?examId="+$("#exam-id").val()
+        })
+
 	</script>
 </html>
