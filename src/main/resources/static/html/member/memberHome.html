@@ -18,7 +18,7 @@
     <div class="container">
         <table
                 class="table table-hover" id="exam-table">
-            <thead>
+            <thead class="table-thead">
                 <tr>
                     <th data-sortable="true">考试名称</th>
                     <th data-sortable="true">考试日期</th>
@@ -31,8 +31,8 @@
             <tbody>
                 <tr th:each="exam,index:${examList}">
                     <td th:text="${exam.name}"></td>
-                    <td th:text="${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
-                    <td th:text="${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')}"></td>
+                    <td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd')}"></td>
+                    <td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '--' + ${#temporals.format(exam.endTime,'HH:mm')}"></td>
                     <td th:text="${exam.examTime}"></td>
                     <td th:text="${exam.examTotalScore}"></td>
                     <td th:if="${list[index.index]==1}"><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >回顾考试</button></td>

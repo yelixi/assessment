@@ -21,8 +21,21 @@
 				<div>
 					<ul class="nav navbar-nav">
 						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/home/issuer}">首页</a></li>
-						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/questions/}" >问题管理</a></li>
-						<li th:classappend="${n == 3} ? 'active'"><a  href="#" th:href="@{/issuer/getMyAllExamPaper}" >考试管理</a></li>
+						<li class="dropdown" th:classappend="${n == 3} ? 'active'">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								考试管理
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li class="divider"></li>
+								<li><a th:href="@{/issuer/getMyAllExamPaper}">所有考试</a></li>
+								<li class="divider"></li>
+								<li><a href="#" th:href="@{/issuer/createExam}">新增考试</a></li>
+								<li class="divider"></li>
+							</ul>
+						</li>
+						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/questions/}"  >问题管理</a></li>
+<!--						<li th:classappend="${n == 3} ? 'active'"><a  href="#" th:href="@{/issuer/getMyAllExamPaper}" >考试管理</a></li>-->
 						<li th:classappend="${n == 4} ? 'active'"><a  href="#" th:href="@{/questions/}" >用户成绩</a></li>\
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >我的信息</a></li>
 					</ul>

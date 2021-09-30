@@ -177,3 +177,24 @@ body {
         width: 100% !important;
     }
 }
+
+/*-------------table --------------*/
+.table-thead{
+    background-color: #4B4B4B;
+    color: white;
+}
+th{
+    text-align: center;
+}
+td{
+    text-align: center;
+}
+
+
+/*---------------Form-----------------*/
+.form-group.required .control-label:before {
+    color: red;
+    content: "*";
+    position: absolute;
+    margin-left: -15px;
+}
