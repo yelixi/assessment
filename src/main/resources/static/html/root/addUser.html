@@ -16,12 +16,16 @@
 			<form method="post" role="form" action="/root/register">
 				<h2 class="form-signin-heading">新增用户</h2>
 				<p>
+					<label for="studentId" class="sr-only">studentId</label>
+					<input type="text" id="studentId" name="studentId" class="form-control" placeholder="StudentId" required autofocus>
+				</p>
+				<p>
 					<label for="username" class="sr-only">Username</label>
 					<input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
 				</p>
 				<p>
 					<label for="password" class="sr-only">Password</label>
-					<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+					<input type="text" id="password" name="password" class="form-control" placeholder="Password" required>
 				</p>
 				<p>
 					<label for="role" class="sr-only">role</label>
@@ -42,6 +46,7 @@
 	<script>
         $("#btn").click(function (){
             let formData = JSON.stringify({
+				"studentId":$("#studentId").val(),
                 "username":$("#username").val(),
                 "password":$("#password").val(),
                 "role":$("#role").val()

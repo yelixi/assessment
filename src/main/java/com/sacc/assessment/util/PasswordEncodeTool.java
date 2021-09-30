@@ -11,6 +11,9 @@ public class PasswordEncodeTool {
 
     public static void main(String[] args) {
         BCryptPasswordEncoder passwordEncode = new BCryptPasswordEncoder();
-        System.out.println(passwordEncode.encode("123456"));
+        String s = "2790673868@qq.comsacc";
+        String s1 = passwordEncode.encode(s);
+        System.out.println(passwordEncode.matches(s,s1));
+        //System.out.println(passwordEncode.encode("B19031432sacc"));
     }
 }

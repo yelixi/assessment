@@ -81,7 +81,7 @@
     <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
     <h1  style="text-align: center; margin-top: 5px; margin-bottom: 10px"  th:text="${exam.getName()}"><strong></strong></h1>
 <!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
-    <div style="text-align: center; display: inline"> <p th:text="'考试时间 : ' +  ${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')} + ' - ' +     ${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')}"></p></div>
+    <div style="text-align: center; display: inline"> <p th:text="'考试时间 : ' +  ${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')} + ' - ' +     ${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')+'考试时间内均可提交,请及时提交以保存答案'}"></p></div>
     <div class="exam_container "  th:id="${exam.getId()}">
         <form id="answer-form" class="d1" ></form>
     </div>
@@ -137,12 +137,16 @@
             //console.log("answer["+i+"]:"+answer[i])
         }
         let answers = JSON.stringify(answer)
+            .replace(new RegExp("\\\\\"", "gm"), "\'")
+            /*.replace(new RegExp("\\n","gm"),"\n")*/
         console.log(answers)
         let bodyForm = JSON.stringify({
             "examPaperId": $(".exam_container ").attr("id"),
             //"answers": JSON.stringify(answer)
             "answers": answers
-        }).replace(new RegExp("\\\\\"", "gm"), "\"").replace("\"" + answers + "\"", answers)
+        }).replace(new RegExp("\\\\\"", "gm"), "\"")
+            .replace(new RegExp("\\\\n","gm"),"n")
+            .replace(new RegExp("\\\\t","gm"),"t").replace("\"" + answers + "\"", answers)
         console.log("body:" + bodyForm)
         $.ajax({
             url: "/uploadAnswer",
@@ -150,14 +154,34 @@
             contentType: "application/json",
             data: bodyForm
         }).done(function (data) {
-            if (data.code === 200)
+            if (data.code === 200) {
                 alert("提交成功")
-            window.location.href = "/home/member"
+                window.location.href = "/home/member"
+            }else
+                alert(data.message)
         })
     })
-    function replacer(key, value) {
-        return value.replace(/[^\w\s]/gi, '');
-    }
+    escape = function (str) {
+        return str
+            .replace(/[\\]/g, '\\\\')
+            .replace(/[\"]/g, '\\\"')
+            .replace(/[\/]/g, '\\/')
+            .replace(/[\b]/g, '\\b')
+            .replace(/[\f]/g, '\\f')
+            .replace(/[\n]/g, '\\n')
+            .replace(/[\r]/g, '\\r')
+            .replace(/[\t]/g, '\\t');
+    };
+    String.prototype.escapeSpecialChars = function() {
+        return this.replace(/\\n/g, "\\n")
+            .replace(/\\'/g, "\\'")
+            .replace(/\\"/g, '\\"')
+            .replace(/\\&/g, "\\&")
+            .replace(/\\r/g, "\\r")
+            .replace(/\\t/g, "\\t")
+            .replace(/\\b/g, "\\b")
+            .replace(/\\f/g, "\\f");
+    };
 
 
     $(function () {
@@ -184,7 +208,7 @@
                     console.log(markdown)*/
                     //转为md格式
                     let converter = new Markdown.Converter();
-                    label.innerHTML =  converter.makeHtml( i+1 + ' . ' + res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)') ;
+                    label.innerHTML =  converter.makeHtml( res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)') ;
                     // 插入元素
                     qe.insertBefore(label,null)
                     form.insertBefore(qe, null)
@@ -370,7 +394,7 @@
                                 console.log("这里是简答题")
                                 console.log(num)
                                 num++
-                                document.getElementById(q_id).value = preAnswers[i].answer
+                                document.getElementById(q_id).value = preAnswers[i].answer.replace(new RegExp("\'","gm"),"\"")
                             }
                         }
                     }

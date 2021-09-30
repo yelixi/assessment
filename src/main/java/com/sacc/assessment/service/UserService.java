@@ -2,6 +2,8 @@ package com.sacc.assessment.service;
 
 import com.sacc.assessment.entity.User;
 import com.sacc.assessment.enums.Role;
+import com.sacc.assessment.model.UserDetail;
+import com.sacc.assessment.vo.ChangePasswordVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -26,4 +28,6 @@ public interface UserService {
     boolean registerAll(MultipartFile file) throws IOException;
 
     boolean deleteAll(MultipartFile file) throws IOException;
+
+    boolean changePassword(ChangePasswordVo changePasswordVo, UserDetail userDetail);
 }

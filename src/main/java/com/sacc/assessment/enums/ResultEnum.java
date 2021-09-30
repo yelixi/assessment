@@ -21,6 +21,18 @@ public enum  ResultEnum {
     NO_PERMISSION_ACCESS(403,"没有权限访问")
     ,
     NO_SUCH_ELEMENT(600,"数据库查询异常")
+    ,
+    TIME_HAS_EXPIRED(601,"时间已截止")
+    ,
+    EXAM_IS_NOT_START(602,"考试尚未开始")
+    ,
+    EXAM_IS_END(603,"考试已结束,可继续参与考试但无法提交")
+    ,
+    USER_IS_EXIT(604,"用户不存在")
+    ,
+    NEW_PASSWORD_ID_NOT_EQUAL_CONFIRM_PASSWORD(605,"新密码与确认密码不相同")
+    ,
+    OLD_PASSWORD_ERROR(606,"旧密码错误")
     ;
 
 

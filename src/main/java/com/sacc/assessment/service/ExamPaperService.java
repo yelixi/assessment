@@ -29,4 +29,6 @@ public interface ExamPaperService {
     List<Answer> answerList(Integer questionId, Integer examPageId);
 
     boolean getAllScore(Integer examPaperId, HttpServletResponse resp);
+
+    boolean isInExamTime(Integer examId);
 }

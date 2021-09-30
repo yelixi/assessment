@@ -7,7 +7,9 @@ import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.UserService;
+import com.sacc.assessment.vo.ChangePasswordVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,30 +42,30 @@ public class UserController {
         return "../static/html/login.html";
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @PostMapping("/register")
     public RestResult<Boolean> register(@RequestBody User user){
         return RestResult.success(userService.register(user));
-    }
+    }*/
 
-    @GetMapping("/register")
+    /*@GetMapping("/register")
     public String register(){
         return "../static/html/user/register.html";
-    }
+    }*/
 
-    @PreAuthorize("hasRole('ROOT')")
+    @Secured({"ROLE_ROOT"})
     @GetMapping("/home/root")
     public String rootHome(){
         return "../static/html/root/rootHome.html";
     }
 
-    @PreAuthorize("hasRole('ISSUER')")
+    @Secured({"ROLE_ISSUER"})
     @GetMapping("/home/issuer")
     public String issuerHome(){
         return "../static/html/issuer/issuerHome.html";
     }
 
-    @PreAuthorize("hasRole('CORRECTOR')")
+    @Secured({"ROLE_CORRECTOR"})
     @GetMapping("/home/corrector")
     public String correctorHome(Model model){
         List<ExamPaper> examPaperList = examPaperService.getAllExam();
@@ -71,7 +73,7 @@ public class UserController {
         return "../static/html/corrector/correctorHome.html";
     }
 
-    @PreAuthorize("hasRole('MEMBER')")
+    @Secured({"ROLE_MEMBER"})
     @GetMapping("/home/member")
     public String memberHome(Model model, Authentication authentication){
         List<ExamPaper> examPaperList = examPaperService.getAllExam();
@@ -99,6 +101,17 @@ public class UserController {
         return "../static/html/common/userInfo";
     }
 
+    @PostMapping("/changePassword")
+    @ResponseBody
+    public RestResult<Boolean> changePassword(@RequestBody ChangePasswordVo changePasswordVo,Authentication authentication){
+        UserDetail principal = (UserDetail) authentication.getPrincipal();
+        return RestResult.success(userService.changePassword(changePasswordVo,principal));
+    }
+
+    @GetMapping("/password")
+    public String password(){
+        return "../static/html/member/changePassword.html";
+    }
    /* @ResponseBody
     @GetMapping("/js/{url}")
     public String getJs(@PathVariable String url){

@@ -1,10 +1,14 @@
 package com.sacc.assessment.service.impl;
 
 import com.sacc.assessment.entity.Answer;
+import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.ExamPaperAnswer;
+import com.sacc.assessment.enums.ResultEnum;
+import com.sacc.assessment.exception.BusinessException;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperAnswerRepository;
+import com.sacc.assessment.repository.ExamPaperRepository;
 import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.util.GetNullPropertyNamesUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +33,14 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
     @Resource
     public AnswerRepository answerRepository;
 
+    @Resource
+    public ExamPaperRepository examPaperRepository;
+
     @Override
     public boolean uploadAnswer(ExamPaperAnswer examPaperAnswer, UserDetail userDetail) {
+        ExamPaper examPaper = examPaperRepository.getOne(examPaperAnswer.getExamPaperId());
+        if(examPaper.getEndTime().isBefore(LocalDateTime.now()))
+            throw new BusinessException(ResultEnum.TIME_HAS_EXPIRED);
         ExamPaperAnswer exitAnswer = examPaperAnswerRepository.findByUserIdAndExamPaperId(userDetail.getId(),examPaperAnswer.getExamPaperId());
         if(exitAnswer==null) {
             examPaperAnswer.setUserId(userDetail.getId());

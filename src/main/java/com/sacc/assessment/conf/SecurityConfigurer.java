@@ -35,6 +35,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     public static final String[] NO_AUTH_LIST={
             "/login",
             "/static/**",
+            "/css/**"
     };
 
     @Override
@@ -58,6 +59,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 //设置登出
                 .and().logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler).deleteCookies("JSESSIONID").permitAll()
                 .and().authorizeRequests().antMatchers(NO_AUTH_LIST).permitAll()
+                .antMatchers("/*.svg","/*.png","/*.js","/*.css").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated();
     }
 

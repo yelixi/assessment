@@ -44,6 +44,8 @@
                 else
                     window.location.href='/home/member'
             }
+        }).fail(function (data){
+            alert(data.responseJSON.message)
         });
     })
 </script>

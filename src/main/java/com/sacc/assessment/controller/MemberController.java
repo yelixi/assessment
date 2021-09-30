@@ -2,6 +2,7 @@ package com.sacc.assessment.controller;
 
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.ExamPaperAnswer;
+import com.sacc.assessment.enums.ResultEnum;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.ExamPaperAnswerService;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,20 @@ public class MemberController {
     @GetMapping("/Exam")
     public String exam(@RequestParam Integer examId, Model model){
         ExamPaper examPaper = examPaperService.getExam(examId);
-        model.addAttribute("exam",examPaper);
-        return "../static/html/member/exam.html";
+        if(examPaper.getStartTime().isBefore(LocalDateTime.now())&&examPaper.getEndTime().isAfter(LocalDateTime.now())) {
+            model.addAttribute("exam", examPaper);
+            return "../static/html/member/exam.html";
+        }
+        else if(examPaper.getStartTime().isAfter(LocalDateTime.now()))
+            model.addAttribute("error", ResultEnum.EXAM_IS_NOT_START);
+        else model.addAttribute("error", ResultEnum.EXAM_IS_END);
+        return "../static/html/error.html";
+    }
+
+    @Secured({"ROLE_MEMBER"})
+    @GetMapping("/isInExamTime")
+    @ResponseBody
+    public RestResult<Boolean> isInExamTime(@RequestParam Integer examId){
+        return RestResult.success(examPaperService.isInExamTime(examId));
     }
 }

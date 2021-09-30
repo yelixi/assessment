@@ -2,6 +2,8 @@ package com.sacc.assessment.service.impl;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.sacc.assessment.entity.*;
+import com.sacc.assessment.enums.ResultEnum;
+import com.sacc.assessment.exception.BusinessException;
 import com.sacc.assessment.repository.AnswerRepository;
 import com.sacc.assessment.repository.ExamPaperAnswerRepository;
 import com.sacc.assessment.repository.ExamPaperRepository;
@@ -177,6 +179,16 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+        return true;
+    }
+
+    @Override
+    public boolean isInExamTime(Integer examId) {
+        ExamPaper examPaper = examPaperRepository.getOne(examId);
+        if(examPaper.getStartTime().isAfter(LocalDateTime.now()))
+            throw new BusinessException(ResultEnum.EXAM_IS_NOT_START);
+        if(examPaper.getEndTime().isBefore(LocalDateTime.now()))
+            throw new BusinessException(ResultEnum.EXAM_IS_END);
         return true;
     }
 }

@@ -34,6 +34,7 @@
                     <td th:text="${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
                     <td th:text="${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')}"></td>
                     <td th:text="${exam.examTime}"></td>
+                    <td th:text="${exam.examTotalScore}"></td>
                     <td th:if="${list[index.index]==1}"><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >回顾考试</button></td>
                     <td th:if="${list[index.index]!=1}"><button type="button"  class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>
                 </tr>
@@ -43,7 +44,17 @@
 </body>
 <script>
     function getExam(buttonId){
-        window.location.href="/Exam?examId="+buttonId;
+        $.ajax({
+            url: "/isInExamTime?examId="+buttonId,
+            type: "get"
+            }).done(function (data){
+                if(data.code=== 200)
+                    window.location.href="/Exam?examId="+buttonId;
+                else if(data.code===603) {
+                    alert('考试已结束,您可以继续参加考试但无法提交')
+                    window.location.href="/Exam?examId="+buttonId;
+                }else alert(data.message)
+        })
     }
     $("#exam-table").bootstrapTable({
         search: true,

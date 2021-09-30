@@ -2,12 +2,15 @@ package com.sacc.assessment.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import com.sacc.assessment.entity.User;
+import com.sacc.assessment.enums.ResultEnum;
 import com.sacc.assessment.enums.Role;
+import com.sacc.assessment.exception.BusinessException;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.repository.UserRepository;
 import com.sacc.assessment.service.MailService;
 import com.sacc.assessment.service.UserService;
 import com.sacc.assessment.util.ExcelUtils;
+import com.sacc.assessment.vo.ChangePasswordVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -52,6 +55,8 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.error("username=" + username);
         User u = userRepository.findByStudentId(username);
+        if (u==null)
+            throw new BusinessException(ResultEnum.USER_IS_EXIT);
         log.error(u.toString());
 //        u.get(0).setPassword("******");
         return new UserDetail(u);
@@ -61,6 +66,8 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     public boolean register(User user) {
         System.out.println(passwordEncoder.getClass().getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
         return true;
     }
@@ -132,15 +139,16 @@ public class UserServiceImpl implements UserDetailsService,UserService {
                     }
                     System.out.print(" "+ExcelUtils.getXSSFValue(xssCell));
                 }
-                String password = RandomUtil.randomString(14);
+                String password;
+                if(user.getEmail()!=null&&!user.getEmail().equals("")) {
+                    password = user.getEmail() + "sacc";
+                }else{
+                    password = user.getStudentId() + "sacc";
+                }
                 user.setPassword(passwordEncoder.encode(password));
                 user.setCreatedAt(LocalDateTime.now());
                 user.setUpdatedAt(LocalDateTime.now());
                 user.setRole(Role.MEMBER);
-
-                String subject="【院科协招新考试系统】";
-                String text = "您的账号为:"+user.getStudentId()+",密码为:"+password+",请勿泄露给其他人";
-                mailService.sendMail(subject, user.getEmail(), text);
                 //list.add(user);  //将excel每一行的数据封装到user对象,并将user对象添加到list
                 userRepository.save(user);
             }
@@ -180,19 +188,16 @@ public class UserServiceImpl implements UserDetailsService,UserService {
                     }
                     System.out.print(" "+ExcelUtils.getValue(cell));
                 }
-                if(user.getEmail()!=null) {
-                    String password = RandomUtil.randomString(14);
-                    user.setPassword(passwordEncoder.encode(password));
-                    user.setRole(Role.MEMBER);
-                    String subject = "【院科协招新考试系统】";
-                    String text = "您的账号为:" + user.getStudentId() + ",密码为:" + password + "请勿泄露给其他人";
-                    mailService.sendMail(subject, user.getEmail(), text);
+                String password;
+                if(user.getEmail()!=null&&!user.getEmail().equals("")) {
+                    password = user.getEmail() + "sacc";
                 }else{
-                    String password = user.getStudentId()+"@sacc";
-                    user.setPassword(password);
+                    password = user.getStudentId() + "sacc";
                 }
+                user.setPassword(passwordEncoder.encode(password));
                 user.setCreatedAt(LocalDateTime.now());
                 user.setUpdatedAt(LocalDateTime.now());
+                user.setRole(Role.MEMBER);
                 userRepository.save(user);
             }
 
@@ -248,6 +253,19 @@ public class UserServiceImpl implements UserDetailsService,UserService {
                 userRepository.deleteByStudentId((String) ExcelUtils.getValue(row.getCell(0)));
             }
         }
+        return true;
+    }
+
+    @Override
+    public boolean changePassword(ChangePasswordVo changePasswordVo, UserDetail userDetail) {
+        User user = userRepository.getOne(userDetail.getId());
+        if(!changePasswordVo.getNewPassword().equals(changePasswordVo.getConfirmPassword()))
+            throw new BusinessException(ResultEnum.NEW_PASSWORD_ID_NOT_EQUAL_CONFIRM_PASSWORD);
+        if(passwordEncoder.matches(changePasswordVo.getOldPassword(),user.getPassword())){
+            user.setPassword(passwordEncoder.encode(changePasswordVo.getNewPassword()));
+            userRepository.save(user);
+        }else
+            throw new BusinessException(ResultEnum.OLD_PASSWORD_ERROR);
         return true;
     }
 
