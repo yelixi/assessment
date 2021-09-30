@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -95,6 +96,11 @@ public class ExamPaperAnswerServiceImpl implements ExamPaperAnswerService {
         log.error(examPaperAnswer.get().getId().toString());
         if(examPaperAnswer.isPresent()) return examPaperAnswer.get();
         return null;
+    }
+
+    @Override
+    public List<ExamPaperAnswer> getExamPaperAnswerByExamId(Integer examPaperId) {
+        return examPaperAnswerRepository.findAllByExamPaperId(examPaperId);
     }
 
 

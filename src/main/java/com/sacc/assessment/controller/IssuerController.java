@@ -1,9 +1,13 @@
 package com.sacc.assessment.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.sacc.assessment.entity.Answer;
 import com.sacc.assessment.entity.ExamPaper;
+import com.sacc.assessment.entity.ExamPaperAnswer;
+import com.sacc.assessment.entity.Score;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.model.UserDetail;
+import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +34,9 @@ public class IssuerController {
 
     @Resource
     private ExamPaperService examPaperService;
+
+    @Resource
+    private ExamPaperAnswerService examPaperAnswerService;
 
     @Secured({"ROLE_ISSUER"})
     @ResponseBody
@@ -97,9 +105,22 @@ public class IssuerController {
     }
 
     @Secured({"ROLE_ISSUER"})
+    @GetMapping("/examPaper/result/{examPaperId}")
+    public String getExamResult(@PathVariable Integer examPaperId, Authentication authentication, Model model){
+        List<ExamPaperAnswer> byExamId = examPaperAnswerService.getExamPaperAnswerByExamId(examPaperId);
+        List<Integer> scores = new ArrayList<Integer>();
+        model.addAttribute("results", byExamId);
+        for(ExamPaperAnswer epa : byExamId){
+            scores.add(epa.getAnswers().stream().map(Answer::getScore).mapToInt(Score::getGrade).sum());
+        }
+        model.addAttribute("scores", scores);
+        return "../static/html/issuer/exam-result.html";
+    }
+
+    @Secured({"ROLE_ISSUER"})
     @ResponseBody
-    @GetMapping("/getAllScore")
-    public RestResult<Boolean> getAllScore(@RequestParam Integer examPaperId, HttpServletResponse resp){
+    @GetMapping("/getAllScore/{examPaperId}")
+    public RestResult<Boolean> getAllScore(@PathVariable Integer examPaperId, HttpServletResponse resp){
         return RestResult.success(examPaperService.getAllScore(examPaperId,resp));
     }
 
