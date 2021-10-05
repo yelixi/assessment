@@ -6,41 +6,49 @@
 		<title>用户管理</title>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
 		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/me.css">
 		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::root_menu(2)"></nav>
-		<div class="container" >
-			<form method="post" role="form" action="/root/register">
-				<h2 class="form-signin-heading">新增用户</h2>
-				<p>
-					<label for="studentId" class="sr-only">studentId</label>
-					<input type="text" id="studentId" name="studentId" class="form-control" placeholder="StudentId" required autofocus>
-				</p>
-				<p>
-					<label for="username" class="sr-only">Username</label>
-					<input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-				</p>
-				<p>
-					<label for="password" class="sr-only">Password</label>
-					<input type="text" id="password" name="password" class="form-control" placeholder="Password" required>
-				</p>
-				<p>
-					<label for="role" class="sr-only">role</label>
-					<select id="role" name="role" class="form-control ">
+		<div class="m-center" >
+			<h2 class="m-userinfo-heading"><img style="border: 5px solid green;background-color: green; margin-right: 10px"/>新增用户</h2>
+			<form method="post" role="form" action="/root/register" class="form-horizontal">
+				<div class="m-formGroup-margin">
+					<label for="studentId" class="control-label col-sm-2 m-userinfo-label">学号</label>
+					<div class="co-sm-10">
+						<input type="text" id="studentId" name="studentId" class="form-control m-input"  placeholder="StudentId" required autofocus>
+					</div>
+				</div>
+				<div class="m-formGroup-margin">
+					<label for="username" class="control-label col-sm-2 m-userinfo-label">姓名</label>
+					<div class="co-sm-10">
+						<input type="text" id="username" name="username" class="form-control m-input" placeholder="Username" required autofocus>
+					</div>
+				</div>
+				<div class="m-formGroup-margin">
+					<label for="password" class="control-label col-sm-2 m-userinfo-label">密码</label>
+					<div class="co-sm-10">
+						<input type="text" id="password" name="password" class="form-control m-input" placeholder="Password" required>
+					</div>
+				</div>
+				<div class="m-formGroup-margin">
+					<label for="role" class="control-label col-sm-2 m-userinfo-label">身份</label>
+					<select id="role" name="role" class="form-control m-select">
 						<option value="ROOT">超级用户</option>
 						<option value="CORRECTOR">批改人员</option>
 						<option value="ISSUER">管理人员</option>
 						<option value="MEMBER">普通人员</option>
 					</select>
-				</p>
-				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
-				<button class="btn btn-lg btn-primary btn-block" type="button" id="btn">注册</button>
-				<button class="btn btn-lg btn-primary btn-block" type="button" id="registerAll">批量注册</button>
+				</div>
+				<br>
 			</form>
-
+			<div style="margin-top: 50px">
+				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
+				<button class="m-button" type="button" id="btn">注册</button>
+				<button class="m-button" type="button" id="registerAll">去批量注册</button>
+			</div>
 		</div>
 	</body>
 	<script>

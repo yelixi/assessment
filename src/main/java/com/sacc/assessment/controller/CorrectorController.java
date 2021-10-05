@@ -7,7 +7,6 @@ import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.*;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +38,14 @@ public class CorrectorController {
 
     @Resource
     private ExamPaperAnswerService examPaperAnswerService;
+
+    @Secured({"ROLE_CORRECTOR"})
+    @GetMapping("/getAllExams")
+    public String getAllExams(Model model){
+        List<ExamPaper> examPaperList = examPaperService.getAllExam();
+        model.addAttribute("examList",examPaperList);
+        return "../static/html/corrector/exam.html";
+    }
 
     @Secured({"ROLE_CORRECTOR"})
     @ResponseBody
@@ -106,7 +113,7 @@ public class CorrectorController {
     public String getExam(@RequestParam Integer examId, Model model){
         ExamPaper exam = examPaperService.getExam(examId);
         model.addAttribute("exam",exam);
-        return "../static/html/corrector/exam.html";
+        return "../static/html/corrector/exam-questions.html";
     }
 
     @Secured({"ROLE_CORRECTOR"})

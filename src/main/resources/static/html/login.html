@@ -18,7 +18,7 @@
     <div>
         <h1 class="title">社团招新考核系统</h1>
     </div>
-    <form class="form" action="/login">
+    <form class="form" action="/login" onkeydown="keyLogin()">
         <div class="textBox" id="div1">
             <span>账号</span>
             <input type="text" placeholder="StudentId" id="studentId" name="studentId" onfocusin="clickOne()"  required>
@@ -46,6 +46,11 @@
         document.getElementById("div1").style.border=null
         document.getElementById("div2").style.border="1px solid #004CFF"
     }
+    $(document).keyup(function (e) {
+        if(e.keyCode == 13){
+            $("#btn").click();
+        }
+    })
     $("#btn").click(function (){
         $.ajax({
             url  : '/login?studentId='+$("#studentId").val()+'&password='+$("#password").val(),

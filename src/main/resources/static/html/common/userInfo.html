@@ -12,31 +12,33 @@
 	</head>
 	<body>
 		<nav th:replace="__${page}__" ></nav>
-		<div class="container">
-			<h1><strong>我的信息</strong></h1>
-			<hr>
+		<div class="m-center">
+			<h2 class="m-userinfo-heading"><img style="border: 5px solid blue;background-color: blue; margin-right: 10px"/>用户信息</h2>
 			<form role="form" class="form" >
 				<div class="form-group">
-					<label for="username"> 用户账号</label>
-					<input id="username" disabled th:value="${userName}">
+					<label for="username" class="m-userinfo-label"> 我的账号</label>
+					<input id="username" class="m-userinfo-input" disabled th:value="${userName}">
 				</div>
 				<div class="form-group" >
-					<label for="userId"> 我的学号</label>
-					<input id="userId" disabled th:value="${userId}">
+					<label for="userId" class="m-userinfo-label">我的学号</label>
+					<input id="userId" class="m-userinfo-input" disabled th:value="${userId}">
 				</div>
 				<div class="form-group">
-					<label for="ROlE"> 用户权限</label>
-					<input id="ROLE" disabled th:value="${ROLE}">
+					<label for="ROlE" class="m-userinfo-label"> 我的权限</label>
+					<input id="ROLE" class="m-userinfo-input" disabled th:value="${ROLE}">
 				</div>
 				<div class="form-group">
-					<label for="Email"> 我的邮箱</label>
-					<input id="Email" disabled th:value="${userEmail}">
+					<label for="Email" class="m-userinfo-label"> 我的邮箱</label>
+					<input id="Email" class="m-userinfo-input" disabled th:value="${userEmail}">
 				</div>
 
 			</form>
+			<div style="margin-top: 30px">
+				<button class="m-button m-userinfo-btn">
+					<a th:href="@{/password}" class="m-button-a">修改密码</a>
+				</button>
 
-			<a th:href="@{/logout}" class="btn btn-danger btn-lg">退出系统</a>
-			<a th:href="@{/password}" class="btn btn-danger btn-lg" style="background-color: #0044cc">修改密码</a>
+			</div>
 		</div>
 
 	</body>

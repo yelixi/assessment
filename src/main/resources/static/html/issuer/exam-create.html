@@ -20,39 +20,45 @@
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
-
-		<div class="container">
-			<form class="form" method="post" role="form">
-				<h1 id="add-title">创建一场考试</h1>
-				<br>
-				<div class="form-group">
-					<label for="exam-name">考试名称</label>
-					<input type="text" id="exam-name" class="form-control" placeholder="这里什么都没有" required autofocus>
+		<div class="m-center" style="width: 850px">
+			<h2 class="m-userinfo-heading"><img style="border: 5px solid green;background-color: green; margin-right: 10px"/>新增试卷</h2>
+			<form method="post" role="form"class="form-horizontal">
+				<div class="m-formGroup-margin">
+					<label for="exam-name" class="control-label col-sm-2 m-userinfo-label" th:width="10px">考试名称</label>
+					<div class="co-sm-10">
+						<input type="text" id="exam-name" class="form-control m-input" style="width: 488px" placeholder="给这场考试起个名字" required autofocus>
+					</div>
 				</div>
-				<div class="form-group">
-					<label for="exam-start-time">开始时间</label>
-					<div class='input-group date form-date form_datetime' id='exam-start-time'>
-						<input type='text' class="form-control" id="start_time"/>
+				<div class="m-formGroup-margin">
+					<label for="exam-start-time" class="control-label col-sm-2 m-userinfo-label" th:width="10px">开始时间</label>
+					<div class="input-group date form-date form_datetime co-sm-10" id="exam-start-time">
+						<input type="text" id="start_time" class="form-control m-input" placeholder="请填写开始时间" required autofocus>
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-remove"></span>
+						</span>
 						<span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="exam-end-time">结束时间</label>
+				<div class="m-formGroup-margin">
+					<label for="exam-start-time" class="control-label col-sm-2 m-userinfo-label" th:width="10px" >结束时间</label>
 					<!--指定 date标记-->
-					<div class='input-group date form-date form_datetime' id='exam-end-time'>
-						<input type='text' class="form-control" id="end_time"/>
+					<div class='input-group date form-date form_datetime col-sm-10' id='exam-end-time'>
+						<input type='text' class="form-control m-input" id="end_time" th:placeholder="请填写结束时间"/>
+						<span class="input-group-addon">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </span>
 						<span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
 					</div>
 				</div>
-				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-				<button class="btn btn-lg btn-primary btn-block" type="button" id="exam-update-btn" onclick="update()">
-					保存问题
-				</button>
 			</form>
+			<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+			<button class="m-button" type="button" id="exam-update-btn" style="margin-top: 10px" onclick="update()">
+				保存试卷
+			</button>
 		</div>
 
 
@@ -74,7 +80,6 @@
                 "startTime": $("#start_time").val()+":00",
                 "endTime": $("#end_time").val()+":00"
             });
-            console.log(formData);
             $.ajax({
                 url: "/issuer/createExam",
                 type: "post",
@@ -89,7 +94,5 @@
                 } else alert("添加试卷失败!！");
             })
         }
-
-
 	</script>
 </html>

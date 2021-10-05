@@ -29,7 +29,7 @@
 		<!--利用thymeleaf传数据给bootstrap生成js函数-->
 		<input type="hidden" th:value="${exam}" id="exam-questions"/>
 
-		<div class="container">
+		<div class="m-container-small">
 			<form class="form" method="post" role="form">
 				<h1 id="add-title" >查看考试</h1>
 				<br>
@@ -245,6 +245,7 @@
 	<script>
         /*数据回显*/
         let examValue = $("#exam-questions").val();
+
         let exam = JSON.parse(examValue);
         $("#exam-id").val(exam.id);
         $("#exam-name").val(exam.name);

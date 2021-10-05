@@ -31,4 +31,6 @@ public interface ExamPaperService {
     boolean getAllScore(Integer examPaperId, HttpServletResponse resp);
 
     boolean isInExamTime(Integer examId);
+
+    List<ExamPaper> getMyUnfinishedExamPaper(UserDetail userDetail);
 }

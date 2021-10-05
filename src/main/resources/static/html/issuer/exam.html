@@ -17,19 +17,27 @@
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 		<div class="container">
-			<h1><strong>所有试卷</strong></h1>
+			<div style="margin-left: 50px">
+				<strong style="font-size: 35px">所有试卷</strong>
+				<a th:href="@{/issuer/createExam}">
+					<button type="button" class=" m-button " style="margin-left: 13px; margin-bottom: 8px;">
+						 创建考试
+					</button>
+				</a>
+			</div>
+
 			<!--表格-->
 			<div class="container">
-				<table class="table table-bordered" id="exam-table">
+				<table class="table table-hover table-responsive table-white" id="exam-table">
 					<thead class="table-thead">
 						<tr>
-							<th data-width="10">试卷编号</th>
+							<th data-width="10">编号</th>
 							<th data-sortable="true">试卷名称</th>
 							<th data-sortable="true">考试日期</th>
 							<th>考试时间</th>
 							<th data-sortable="true">创建时间</th>
 							<th>更新时间</th>
-							<th >操作</th>
+							<th data-width="300px">操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -98,9 +106,9 @@
 
         $("#exam-table").bootstrapTable({
             search: true,
+            classes: "table table-hover table-white",
             showRefresh: true,
             showColumns: true,
-            striped: true,
             sortable: true
         });
 	</script>

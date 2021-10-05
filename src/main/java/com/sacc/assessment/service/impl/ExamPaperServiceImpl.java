@@ -191,4 +191,13 @@ public class ExamPaperServiceImpl implements ExamPaperService {
             throw new BusinessException(ResultEnum.EXAM_IS_END);
         return true;
     }
+
+    @Override
+    public List<ExamPaper> getMyUnfinishedExamPaper(UserDetail userDetail) {
+        List<ExamPaper> unfinishedExams = examPaperRepository.findUnfinishedExamByUserId(userDetail.getId());
+        List<ExamPaper> recentUnfinishedExams = new ArrayList<>();
+        for(ExamPaper exam : unfinishedExams)
+            if(exam.getEndTime().isAfter(LocalDateTime.now())) recentUnfinishedExams.add(exam);
+        return recentUnfinishedExams;
+    }
 }

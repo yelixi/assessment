@@ -20,7 +20,7 @@
 		<div class="container">
 			<h1><strong>所有问题</strong></h1>
 			<!--表单-->
-			<table class="table table-striped" id="question-table">
+			<table class="table table-hover table-responsive table-white" id="question-table">
 				<thead class="table-thead">
 					<tr>
 						<th>题目编号</th>
@@ -80,8 +80,8 @@
             search: true,
             showRefresh: true,
             showColumns: true,
-            striped: true,
-            sortable: true
+            sortable: true,
+            classes: "table table-hover table-white"
         });
 
         $(function () {

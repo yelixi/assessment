@@ -1,68 +1,88 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>考试系统-考试</title>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-    <link rel="stylesheet" href="/css/me.css">
-    <link rel="stylesheet" href="/css/table.css">
-    <!--基础js-->
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!--BootStrap Table-->
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-</head>
-<body>
-    <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
-    <div class="container">
-        <table
-                class="table table-hover" id="exam-table">
-            <thead class="table-thead">
-                <tr>
-                    <th data-sortable="true">考试名称</th>
-                    <th data-sortable="true">考试日期</th>
-                    <th data-sortable="true">考试时间</th>
-                    <th data-width="20" data-sortable="true">考试时长（分钟）</th>
-                    <th data-width="20" data-sortable="true">试卷总分</th>
-                    <th data-width="10">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="exam,index:${examList}">
-                    <td th:text="${exam.name}"></td>
-                    <td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd')}"></td>
-                    <td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '--' + ${#temporals.format(exam.endTime,'HH:mm')}"></td>
-                    <td th:text="${exam.examTime}"></td>
-                    <td th:text="${exam.examTotalScore}"></td>
-                    <td th:if="${list[index.index]==1}"><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >回顾考试</button></td>
-                    <td th:if="${list[index.index]!=1}"><button type="button"  class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)" >参加考试</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</body>
-<script>
-    function getExam(buttonId){
-        $.ajax({
-            url: "/isInExamTime?examId="+buttonId,
-            type: "get"
-            }).done(function (data){
-                if(data.code=== 200)
-                    window.location.href="/Exam?examId="+buttonId;
-                else if(data.code===603) {
-                    alert('考试已结束,您可以继续参加考试但无法提交')
-                    window.location.href="/Exam?examId="+buttonId;
-                }else alert(data.message)
-        })
-    }
-    $("#exam-table").bootstrapTable({
-        search: true,
-        showRefresh: true,
-        showColumns: true,
-        striped: true,
-        sortable: true
-    });
-</script>
-</html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>root</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/index.css">
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
+        <div class="father">
+            <div id="blueK">
+                <span class="small" id="obvious">考试系统 <span style="color: rgba(255,255,255,0.5)">● 近期考试</span></span>
+                <span class="big" id="welcome">welcome</span>
+                <span class="big" id="status"  style="color: rgba(255,255,255,0.5)" hidden></span>
 
+            </div>
+            <div class="background ">
+                <img src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/First.png">
+            </div>
+            <button class="button access-exam" id="access-exam" onclick="goToExam(this.id)" disabled>
+                <div class="b1">MEMBER<br/></div>
+                <div class="b2">你好同学！</div>
+                <!-- 用变文本内容的js即可
+                b1的样式除粗细以外可行但有点没达到要求，希望多多调试-->
+            </button>
+
+        </div>
+    </body>
+    <script>
+        $.ajax({
+            url: "/myRecentExam",
+            type: "GET"
+        }).done(function (result) {
+            // setInterval(function(){ alert("Hello"); }, 3000);
+            timer(result);
+        })
+        function  goToExam(examId){
+            // if(document.getElementsByClassName("access-exam")[0].hasAttribute("disabled")){
+            //     window.alert("考试未开始或者是没有考试！")
+            // }
+            window.location.href = "/Exam?examId=" + examId;
+        }
+        function timer(result){
+            if (result.data != null){
+                document.getElementById("status").removeAttribute("hidden");
+                document.getElementById("welcome").innerText= result.data.name;
+                console.log(result.data.startTime)
+                console.log(result.data.name);
+                var date1 = new Date();  //现在时间
+                var date2 = new Date(result.data.startTime);    //考试开始时间
+                var date3 = Math.abs(date2.getTime() - date1.getTime()); //时间差的毫秒数
+                //计算出相差天数
+                var days = Math.floor(date3 / (24 * 3600 * 1000));
+                //计算出小时数
+                var leave1 = date3 % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
+                var hours = Math.floor(leave1 / (3600 * 1000));
+                //计算相差分钟数
+                var leave2 = leave1 % (3600 * 1000);        //计算小时数后剩余的毫秒数
+                var minutes = Math.floor(leave2 / (60 * 1000));
+
+                //计算相差秒数
+
+                var leave3 = leave2 % (60 * 1000);      //计算分钟数后剩余的毫秒数
+                var seconds = Math.round(leave3 / 1000);
+                if(date1.getTime() > date2.getTime()){
+                    // alert(" 考试已经进行了： " + days + "天 " + hours + "小时 " + minutes + " 分钟" + seconds + " 秒")
+                    document.getElementById("status").style="color: rgba(255,0,0,0.8)"
+                    document.getElementById("status").innerText = "考试正在进行中...";
+                    document.getElementsByClassName("b2")[0].innerHTML = "参加考试";
+                    document.getElementsByClassName("access-exam")[0].removeAttribute("disabled");
+                    document.getElementsByClassName("access-exam")[0].setAttribute("id", result.data.id);
+                }else{
+                    document.getElementById("status").style.fontSize="15px";
+                    document.getElementById("status").innerText = " 距离本次考试开始还剩： " + days + "天 " + hours + "时 " + minutes + " 分" + seconds + "秒" ;
+                }
+            }else{
+                document.getElementById("welcome").innerText= "Yep！最近无考试~";
+            }
+
+        }
+
+
+    </script>
+</html>

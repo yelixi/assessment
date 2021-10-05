@@ -50,20 +50,20 @@
 			</div>
 		</nav>
 		<!--Member导航-->
-		<nav th:fragment="member_menu(n)"  class="navbar navbar-inverse" role="navigation" >
+		<nav th:fragment="member_menu(n)"  class="navbar navbar-default" role="navigation" >
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" th:href="@{/home/issuer}" style="color: black">
+					<a class="navbar-brand" th:href="@{/home/member}" style="color: black">
 						<img src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/SACC_logo_png_3000px.png" width="30" height="30" class="visible-lg-inline-block align-top"/>
 						考试系统
 					</a>
 				</div>
 				<div>
 					<ul class="nav navbar-nav">
-						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/home/member}">我的考试</a></li>
-<!--						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/questions/}" >我的考试</a></li>-->
-						<li th:classappend="${n == 3} ? 'active'"><a  href="#"  >考试记录</a></li>
-						<li th:classappend="${n == 5} ? 'active'"><a  href="#"  >消息窗口</a></li>
+						<li th:classappend="${n == 1} ? 'active'"><a href="" th:href="@{/home/member}">首页</a></li>
+						<li th:classappend="${n == 2} ? 'active'"><a href="" th:href="@{/getMyExams}">我的考试</a></li>
+<!--						<li th:classappend="${n == 3} ? 'active'"><a  href="#"  >考试记录</a></li>-->
+<!--						<li th:classappend="${n == 5} ? 'active'"><a  href="#"  >消息窗口</a></li>-->
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
 					</ul>
 				</div>
@@ -83,7 +83,7 @@
 		<!--Root菜单-->
 		<nav th:fragment="root_menu(n)"  class="navbar navbar-default" role="navigation" >
 			<div class="container-fluid">
-				<a class="navbar-brand" th:href="@{/home/issuer}" style="color: black">
+				<a class="navbar-brand" th:href="@{/home/root}" style="color: black">
 					<img src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/SACC_logo_png_3000px.png" width="30" height="30" class="visible-lg-inline-block align-top"/>
 					考试系统
 				</a>
@@ -124,13 +124,14 @@
 		<!--Corrector导航-->
 		<nav th:fragment="corrector_menu(n)"  class="navbar navbar-default" role="navigation" >
 			<div class="container-fluid">
-				<a class="navbar-brand" th:href="@{/home/issuer}" style="color: black">
+				<a class="navbar-brand" th:href="@{/home/corrector}" style="color: black">
 					<img src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/SACC_logo_png_3000px.png" width="30" height="30" class="visible-lg-inline-block align-top"/>
 					考试系统
 				</a>
 				<div>
 					<ul class="nav navbar-nav">
-						<li th:classappend="${n == 1} ? 'active'"><a  href="#" th:href="@{/home/corrector}"  >试卷批改</a></li>
+						<li th:classappend="${n == 1} ? 'active'"><a  href="#" th:href="@{/home/corrector}"  >首页</a></li>
+						<li th:classappend="${n == 2} ? 'active'"><a  href="#" th:href="@{/getAllExams}"  >试卷批改</a></li>
 <!--						<li th:classappend="${n == 3} ? 'active'"><a  href="#" th:href="@{/questions/}" >网站管理</a></li>-->
 						<li th:classappend="${n == 999} ? 'active'"><a  href="#" th:href="@{/myInfo}" >个人信息</a></li>
 					</ul>
