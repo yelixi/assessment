@@ -12,25 +12,29 @@
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::root_menu(2)"></nav>
-		<div class="m-center" >
-			<h2 class="m-userinfo-heading"><img style="border: 5px solid green;background-color: green; margin-right: 10px"/>新增用户</h2>
+		<div class="m-center">
+			<h2 class="m-userinfo-heading"><img
+					style="border: 5px solid green;background-color: green; margin-right: 10px"/>新增用户</h2>
 			<form method="post" role="form" action="/root/register" class="form-horizontal">
 				<div class="m-formGroup-margin">
 					<label for="studentId" class="control-label col-sm-2 m-userinfo-label">学号</label>
 					<div class="co-sm-10">
-						<input type="text" id="studentId" name="studentId" class="form-control m-input"  placeholder="StudentId" required autofocus>
+						<input type="text" id="studentId" name="studentId" class="form-control m-input"
+						       placeholder="StudentId" required autofocus>
 					</div>
 				</div>
 				<div class="m-formGroup-margin">
 					<label for="username" class="control-label col-sm-2 m-userinfo-label">姓名</label>
 					<div class="co-sm-10">
-						<input type="text" id="username" name="username" class="form-control m-input" placeholder="Username" required autofocus>
+						<input type="text" id="username" name="username" class="form-control m-input"
+						       placeholder="Username" required autofocus>
 					</div>
 				</div>
 				<div class="m-formGroup-margin">
 					<label for="password" class="control-label col-sm-2 m-userinfo-label">密码</label>
 					<div class="co-sm-10">
-						<input type="text" id="password" name="password" class="form-control m-input" placeholder="Password" required>
+						<input type="text" id="password" name="password" class="form-control m-input"
+						       placeholder="Password" required>
 					</div>
 				</div>
 				<div class="m-formGroup-margin">
@@ -45,39 +49,38 @@
 				<br>
 			</form>
 			<div style="margin-top: 50px">
-				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
+				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
 				<button class="m-button" type="button" id="btn">注册</button>
 				<button class="m-button" type="button" id="registerAll">去批量注册</button>
 			</div>
 		</div>
 	</body>
 	<script>
-        $("#btn").click(function (){
+        $("#btn").click(function () {
             let formData = JSON.stringify({
-				"studentId":$("#studentId").val(),
-                "username":$("#username").val(),
-                "password":$("#password").val(),
-                "role":$("#role").val()
+                "studentId": $("#studentId").val(),
+                "username": $("#username").val(),
+                "password": $("#password").val(),
+                "role": $("#role").val()
             })
             $.ajax({
-                url:"/root/register",
-                type:"post",
-                contentType:"application/json",
-                data:formData,
-                dataType:"json"
-            }).done(function (data){
-                if(data.code===200) {
+                url: "/root/register",
+                type: "post",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
+            }).done(function (data) {
+                if (data.code === 200) {
                     alert("注册成功")
                     $("#username").val("")
                     $("#password").val("")
                     $("#role").val("")
-                }
-                else
+                } else
                     alert(data.message)
             })
         })
-		$("#registerAll").click(function (){
-			window.location.href="/root/registerAll";
-		})
+        $("#registerAll").click(function () {
+            window.location.href = "/root/registerAll";
+        })
 	</script>
 </html>

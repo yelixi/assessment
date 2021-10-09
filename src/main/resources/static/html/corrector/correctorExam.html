@@ -1,106 +1,120 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-    <link rel="stylesheet" href="/css/me.css">
-    <!--基础js-->
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!--BootStrap Table-->
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-</head>
-<body th:id="${examPageId}" class="body">
-    <nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+		      rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link rel="stylesheet" href="/css/me.css">
+		<!--基础js-->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+	</head>
+	<body th:id="${examPageId}" class="body">
+		<nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
 
-    <!--Corrector用户表单-->
-    <div class="container">
-        <h1><strong>试卷批改</strong></h1>
-        <hr>
-        <form class="form">
-            <div class="form-group">
-                <label for="usr">用户名称</label>
-                <input type="text" disabled class="form-control" id="usr" th:value="${username}">
-            </div>
-            <div class="form-group">
-                <label for="question-info" th:text="'问题题干（' + ${question.score} + '分）'">问题题干</label>
-                <input type="text" disabled class="form-control" id="question-info" th:value="${question.infoTextContent}">
-            </div>
-            <div th:id="${paperAnswer}" class="a form-group">
-                <label th:for="${answer.id}">用户答案</label>
-                <input type="text" disabled class="answer form-control"  th:id="${answer.id}" th:value="${answer.answer}">
-            </div>
-            <div  class="form-group">
-                <label th:for="check-answer">题目参考答案</label>
-                <input type="text" disabled class="form-control"  th:id="check-answer" th:value="${question.correctAnswer}">
-            </div>
-            <div class="form-group">
-                <label for="score">分数</label>
-                <input type="text" class="form-control" id="score" th:if="${answer.score!=null}" th:value="${answer.score.grade}" placeholder="打上你的分数">
-                <input type="text" class="form-control" id="score" th:unless="${answer.score!=null}" placeholder="打上你的分数">
-            </div>
-            <div class="form-group">
-                <label for="comment">评价</label>
-                <textarea class="form-control" rows="3" id="comment" th:if="${answer.score!=null}" th:id="comment" th:text="${answer.score.comment}" placeholder="填入评价"></textarea>
-                <textarea class="form-control" rows="3" id="comment" th:unless="${answer.score!=null}" th:id="comment" placeholder="填入评价"></textarea>
-            </div>
-            <div style="text-align: center" >
-                <button type="button" th:id="${pre}" class="pre btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                    </svg>
-                    上一个
-                </button>
-                <button type="button" id="btn" class="btn-success btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                        <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-                    </svg>提交
-                </button>
-                <button type="button" th:id="${next}" class="next btn-primary btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                    </svg>
-                    下一个
-                </button>
-            </div>
-        </form>
-    </div>
-</body>
-<script>
-    $("#btn").click(function (){
-        let form = JSON.stringify({
-            "examPaperAnswerId": $(".a").attr("id"),
-            "answerId": $(".answer").attr("id"),
-            "grade": $("#score").val(),
-            "comment": $("#comment").val()
+		<!--Corrector用户表单-->
+		<div class="container">
+			<h1><strong>试卷批改</strong></h1>
+			<hr>
+			<form class="form m-form">
+				<div class="form-group">
+					<label for="usr">用户名称</label>
+					<input type="text" disabled class="form-control" id="usr" th:value="${username}">
+				</div>
+				<div class="form-group">
+					<label for="question-info" th:text="'问题题干（' + ${question.score} + '分）'">问题题干</label>
+					<input type="text" disabled class="form-control" id="question-info"
+					       th:value="${question.infoTextContent}">
+				</div>
+				<div th:id="${paperAnswer}" class="a form-group">
+					<label th:for="${answer.id}">用户答案</label>
+					<input type="text" disabled class="answer form-control" th:id="${answer.id}"
+					       th:value="${answer.answer}">
+				</div>
+				<div class="form-group">
+					<label th:for="check-answer">题目参考答案</label>
+					<input type="text" disabled class="form-control" th:id="check-answer"
+					       th:value="${question.correctAnswer}">
+				</div>
+				<div class="form-group">
+					<label for="score">分数</label>
+					<input type="text" class="form-control" id="score" th:if="${answer.score!=null}"
+					       th:value="${answer.score.grade}" placeholder="打上你的分数">
+					<input type="text" class="form-control" id="score" th:unless="${answer.score!=null}"
+					       placeholder="打上你的分数">
+				</div>
+				<div class="form-group">
+					<label for="comment">评价</label>
+					<textarea class="form-control" rows="3" id="comment" th:if="${answer.score!=null}" th:id="comment"
+					          th:text="${answer.score.comment}" placeholder="填入评价"></textarea>
+					<textarea class="form-control" rows="3" id="comment" th:unless="${answer.score!=null}"
+					          th:id="comment" placeholder="填入评价"></textarea>
+				</div>
+				<div style="text-align: center">
+					<button type="button" th:id="${pre}" class="pre btn m-button-color">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+						     class="bi bi-arrow-left" viewBox="0 0 16 16">
+							<path fill-rule="evenodd"
+							      d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+						</svg>
+						上一个
+					</button>
+					<button type="button" id="btn" class="btn-success btn">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+						     class="bi bi-check-lg" viewBox="0 0 16 16">
+							<path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
+						</svg>
+						提交
+					</button>
+					<button type="button" th:id="${next}" class="next btn m-button-color">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+						     class="bi bi-arrow-right" viewBox="0 0 16 16">
+							<path fill-rule="evenodd"
+							      d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+						</svg>
+						下一个
+					</button>
+				</div>
+			</form>
+		</div>
+	</body>
+	<script>
+        $("#btn").click(function () {
+            let form = JSON.stringify({
+                "examPaperAnswerId": $(".a").attr("id"),
+                "answerId": $(".answer").attr("id"),
+                "grade": $("#score").val(),
+                "comment": $("#comment").val()
+            })
+            console.log(form);
+            $.ajax({
+                url: "/correction",
+                contentType: "application/json",
+                type: "post",
+                data: form
+            }).done(function (data) {
+                if (data.code === 200)
+                    alert("成功")
+            })
         })
-        console.log(form);
-        $.ajax({
-            url: "/correction",
-            contentType: "application/json",
-            type: "post",
-            data: form
-        }).done(function (data){
-            if(data.code===200)
-                alert("成功")
+        $(".pre").click(function () {
+            let preId = $(".pre").attr("id")
+            if (preId === "-1")
+                alert("这已经是第一个了")
+            else
+                window.location.href = "/getAnswer?answerId=" + preId + "&examPageId=" + $(".body").attr("id")
         })
-    })
-    $(".pre").click(function (){
-        let preId = $(".pre").attr("id")
-        if(preId==="-1")
-            alert("这已经是第一个了")
-        else
-            window.location.href="/getAnswer?answerId="+preId+"&examPageId="+$(".body").attr("id")
-    })
-    $(".next").click(function (){
-        let nextId = $(".next").attr("id")
-        if(nextId==="-1")
-            alert("这已经是最后一个了")
-        else
-            window.location.href="/getAnswer?answerId="+nextId+"&examPageId="+$(".body").attr("id")
-    })
-</script>
+        $(".next").click(function () {
+            let nextId = $(".next").attr("id")
+            if (nextId === "-1")
+                alert("这已经是最后一个了")
+            else
+                window.location.href = "/getAnswer?answerId=" + nextId + "&examPageId=" + $(".body").attr("id")
+        })
+	</script>
 </html>

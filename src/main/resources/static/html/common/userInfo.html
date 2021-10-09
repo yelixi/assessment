@@ -11,15 +11,16 @@
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<nav th:replace="__${page}__" ></nav>
+		<nav th:replace="__${page}__"></nav>
 		<div class="m-center">
-			<h2 class="m-userinfo-heading"><img style="border: 5px solid blue;background-color: blue; margin-right: 10px"/>用户信息</h2>
-			<form role="form" class="form" >
+			<h2 class="m-userinfo-heading"><img
+					style="border: 5px solid blue;background-color: blue; margin-right: 10px"/>用户信息</h2>
+			<form role="form" class="form">
 				<div class="form-group">
 					<label for="username" class="m-userinfo-label"> 我的账号</label>
 					<input id="username" class="m-userinfo-input" disabled th:value="${userName}">
 				</div>
-				<div class="form-group" >
+				<div class="form-group">
 					<label for="userId" class="m-userinfo-label">我的学号</label>
 					<input id="userId" class="m-userinfo-input" disabled th:value="${userId}">
 				</div>

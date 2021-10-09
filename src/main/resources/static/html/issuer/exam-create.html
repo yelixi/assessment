@@ -13,26 +13,30 @@
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<!--DateTimepicker-->
-		<script type="text/javascript" src = "/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-		<script type="text/javascript" src = "/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 		<div class="m-center" style="width: 850px">
-			<h2 class="m-userinfo-heading"><img style="border: 5px solid green;background-color: green; margin-right: 10px"/>新增试卷</h2>
-			<form method="post" role="form"class="form-horizontal">
+			<h2 class="m-userinfo-heading"><img
+					style="border: 5px solid green;background-color: green; margin-right: 10px"/>新增试卷</h2>
+			<form method="post" role="form" class="form-horizontal">
 				<div class="m-formGroup-margin">
 					<label for="exam-name" class="control-label col-sm-2 m-userinfo-label" th:width="10px">考试名称</label>
 					<div class="co-sm-10">
-						<input type="text" id="exam-name" class="form-control m-input" style="width: 488px" placeholder="给这场考试起个名字" required autofocus>
+						<input type="text" id="exam-name" class="form-control m-input" style="width: 488px"
+						       placeholder="给这场考试起个名字" required autofocus>
 					</div>
 				</div>
 				<div class="m-formGroup-margin">
-					<label for="exam-start-time" class="control-label col-sm-2 m-userinfo-label" th:width="10px">开始时间</label>
+					<label for="exam-start-time" class="control-label col-sm-2 m-userinfo-label"
+					       th:width="10px">开始时间</label>
 					<div class="input-group date form-date form_datetime co-sm-10" id="exam-start-time">
-						<input type="text" id="start_time" class="form-control m-input" placeholder="请填写开始时间" required autofocus>
+						<input type="text" id="start_time" class="form-control m-input" placeholder="请填写开始时间" required
+						       autofocus>
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-remove"></span>
 						</span>
@@ -42,7 +46,8 @@
 					</div>
 				</div>
 				<div class="m-formGroup-margin">
-					<label for="exam-start-time" class="control-label col-sm-2 m-userinfo-label" th:width="10px" >结束时间</label>
+					<label for="exam-start-time" class="control-label col-sm-2 m-userinfo-label"
+					       th:width="10px">结束时间</label>
 					<!--指定 date标记-->
 					<div class='input-group date form-date form_datetime col-sm-10' id='exam-end-time'>
 						<input type='text' class="form-control m-input" id="end_time" th:placeholder="请填写结束时间"/>
@@ -65,9 +70,9 @@
 	</body>
 	<script>
         $('.form_datetime').datetimepicker({
-	        format: 'yyyy-mm-dd hh:mm',
+            format: 'yyyy-mm-dd hh:mm',
             autoclose: 1,
-            todayBtn:  1,
+            todayBtn: 1,
             language: 'zh-CN',
             todayHighlight: 1,
         });
@@ -77,8 +82,8 @@
             let formData = JSON.stringify({
                 "name": $("#exam-name").val(),
                 "questions": [],
-                "startTime": $("#start_time").val()+":00",
-                "endTime": $("#end_time").val()+":00"
+                "startTime": $("#start_time").val() + ":00",
+                "endTime": $("#end_time").val() + ":00"
             });
             $.ajax({
                 url: "/issuer/createExam",

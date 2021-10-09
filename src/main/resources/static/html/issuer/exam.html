@@ -21,7 +21,7 @@
 				<strong style="font-size: 35px">所有试卷</strong>
 				<a th:href="@{/issuer/createExam}">
 					<button type="button" class=" m-button " style="margin-left: 13px; margin-bottom: 8px;">
-						 创建考试
+						创建考试
 					</button>
 				</a>
 			</div>
@@ -45,8 +45,10 @@
 							<td th:text="${exam.id}" hidden data-hidden="true">100</td>
 							<td th:text="${exam.name}">题干</td>
 							<td th:text="${#temporals.format(exam.startTime,'yyyy年MM月dd日')}">猴年马月</td>
-							<td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '—' + ${#temporals.format(exam.endTime,'HH:mm')}">猴年马月</td>
-<!--							<td th:text="">猴年马月</td>-->
+							<td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '—' + ${#temporals.format(exam.endTime,'HH:mm')}">
+								猴年马月
+							</td>
+							<!--							<td th:text="">猴年马月</td>-->
 							<td th:text="${#temporals.format(exam.createdAt,'yyyy-MM-dd HH:mm')}">猴年马月</td>
 							<td th:text="${#temporals.format(exam.updatedAt,'yyyy-MM-dd HH:mm')}">猴年马月</td>
 							<td>

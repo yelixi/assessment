@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/me.css">
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
-    <nav th:replace="../static/html/common/fragments.html::root_menu(2)"></nav>
-    <div class="m-center" >
-        <h2 class="m-userinfo-heading"><img style="border: 5px solid dodgerblue;background-color: dodgerblue; margin-right: 10px;  margin-left: 57px;"/>批量新增用户</h2>
-        <form method="post" role="form" enctype="multipart/form-data" action="/root/registerAll" class="form-horizontal">
-            <div>
-                <a href="javascript:;" class="file">选择文件
-                    <input type="file" name="file" id="fileToAdd">
-                </a>
-                <p class="fileErrorTip" style="color: red"></p>
-                <p class="showFileName"></p>
-                <button type="button" class="m-button"  id="registerAll" onclick="checkAndCommit()" style="margin-top: 80px;">批量注册</button>
-            </div>
-        </form>
-    </div>
-    <div>
-</div>
-    <script>
-        $(".file").on("change","input[type='file']",function(){
-            var filePath=$(this).val();
-            if(filePath.indexOf("xlsx")!=-1 || filePath.indexOf("xls")!=-1){
-                $(".fileErrorTip").html("").hide();
-                var arr=filePath.split('\\');
-                var fileName=arr[arr.length-1];
-                $(".showFileName").html(fileName);
-            }else{
-                $(".showFileName").html("");
-                $(".fileErrorTip").html("请上传.xlsx或者.xls文件！").show();
-                return false
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/me.css">
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<nav th:replace="../static/html/common/fragments.html::root_menu(2)"></nav>
+		<div class="m-center">
+			<h2 class="m-userinfo-heading"><img
+					style="border: 5px solid dodgerblue;background-color: dodgerblue; margin-right: 10px;  margin-left: 57px;"/>批量新增用户
+			</h2>
+			<form method="post" role="form" enctype="multipart/form-data" action="/root/registerAll"
+			      class="form-horizontal">
+				<div>
+					<a href="javascript:;" class="file">选择文件
+						<input type="file" name="file" id="fileToAdd">
+					</a>
+					<p class="fileErrorTip" style="color: red"></p>
+					<p class="showFileName"></p>
+					<button type="button" class="m-button" id="registerAll" onclick="checkAndCommit()"
+					        style="margin-top: 80px;">批量注册
+					</button>
+				</div>
+			</form>
+		</div>
+		<div>
+		</div>
+		<script>
+            $(".file").on("change", "input[type='file']", function () {
+                var filePath = $(this).val();
+                if (filePath.indexOf("xlsx") != -1 || filePath.indexOf("xls") != -1) {
+                    $(".fileErrorTip").html("").hide();
+                    var arr = filePath.split('\\');
+                    var fileName = arr[arr.length - 1];
+                    $(".showFileName").html(fileName);
+                } else {
+                    $(".showFileName").html("");
+                    $(".fileErrorTip").html("请上传.xlsx或者.xls文件！").show();
+                    return false
+                }
+            })
+
+            function checkAndCommit() {
+                if (!$("#fileToAdd").val()) $(".fileErrorTip").html("请先上传.xlsx或者.xls文件！").show();
+                else {
+                    let files = $("#fileToAdd").prop('files');
+                    let data = new FormData();
+                    data.append('file', files[0]);
+                    // console.log(data)
+                    $.ajax({
+                        type: 'POST',
+                        url: '/root/registerAll',
+                        data: data,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function () {
+                            window.alert("添加成功！")
+                        }
+                    })
+                }
             }
-        })
-        function checkAndCommit(){
-            if(!$("#fileToAdd").val())  $(".fileErrorTip").html("请先上传.xlsx或者.xls文件！").show();
-            else{
-                let files = $("#fileToAdd").prop('files');
-                let data = new FormData();
-                data.append('file', files[0]);
-                // console.log(data)
-                $.ajax({
-                    type: 'POST',
-                    url: '/root/registerAll',
-                    data: data,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success: function () {
-                        window.alert("添加成功！")
-                    }
-                })
-            }
-        }
-    </script>
-</body>
+		</script>
+	</body>
 </html>

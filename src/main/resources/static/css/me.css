@@ -9,6 +9,7 @@ body {
     -moz-transform: scale(1);
     -moz-transform-origin: 0 0;
 }
+
 .m-padded-mini {
     padding: 0.2em !important;
 }
@@ -16,37 +17,46 @@ body {
 .m-padded-tiny {
     padding: 0.3em !important;
 }
+
 .m-padded {
     padding: 1em !important;
 }
+
 .m-padded-tb-mini {
     padding-top: 0.2em !important;
     padding-bottom: 0.2em !important;
 }
+
 .m-padded-tb-tiny {
     padding-top: 0.3em !important;
     padding-bottom: 0.3em !important;
 }
+
 .m-padded-tb-small {
     padding-top: 0.5em !important;
     padding-bottom: 0.5em !important;
 }
+
 .m-padded-tb {
     padding-top: 1em !important;
     padding-bottom: 1em !important;
 }
+
 .m-padded-tb-large {
     padding-top: 2em !important;
     padding-bottom: 2em !important;
 }
+
 .m-padded-tb-big {
     padding-top: 3em !important;
     padding-bottom: 3em !important;
 }
+
 .m-padded-tb-huge {
     padding-top: 4em !important;
     padding-bottom: 4em !important;
 }
+
 .m-padded-tb-massive {
     padding-top: 5em !important;
     padding-bottom: 5em !important;
@@ -65,12 +75,15 @@ body {
     letter-spacing: 1px !important;
     line-height: 1.8;
 }
+
 .m-text-thin {
     font-weight: 300 !important;
 }
+
 .m-text-spaced {
     letter-spacing: 1px !important;
 }
+
 .m-text-lined {
     line-height: 1.8;
 }
@@ -78,11 +91,13 @@ body {
 /*-----margin------*/
 
 .m-margin-top-small {
-    margin-top:0.5em !important;
+    margin-top: 0.5em !important;
 }
+
 .m-margin-top {
     margin-top: 1em !important;
 }
+
 .m-margin-top-large {
     margin-top: 2em !important;
 }
@@ -101,14 +116,16 @@ body {
 .m-opacity-mini {
     opacity: 0.8 !important;
 }
+
 .m-opacity-tiny {
     opacity: 0.6 !important;
 }
+
 /*------position---*/
 
 .m-right-top {
     position: absolute;
-    top:0;
+    top: 0;
     right: 0;
 }
 
@@ -124,6 +141,7 @@ body {
     max-width: 72em !important;
     margin: auto !important;
 }
+
 .m-container-small {
     max-width: 60em !important;
     margin: auto !important;
@@ -131,8 +149,8 @@ body {
 
 /*------shadow------*/
 .m-shadow-small {
-    -webkit-box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
 /*------positon-----*/
@@ -152,31 +170,35 @@ body {
 .m-black {
     color: #333 !important;
 }
+
 .m-teal {
     color: #00B5AD !important;
 }
-
 
 
 .m-mobile-show {
     display: none !important;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
     .m-mobile-hide {
         display: none !important;
     }
+
     .m-mobile-show {
         display: block !important;
     }
+
     .m-padded-lr-responsive {
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
+
     .m-mobile-lr-clear {
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
+
     .m-mobile-wide {
         width: 100% !important;
     }
@@ -184,22 +206,35 @@ body {
 
 
 /*-------------table --------------*/
-.table-thead{
+table{
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 43px;
+}
+.table-thead {
     background-color: #004CFF;
     color: white;
 }
-th{
+
+th {
     text-align: center;
 }
-td{
+
+td {
     text-align: center;
 }
-.table-white{
+
+.table-white {
     background-color: white;
 }
 
 
 /*---------------Form-----------------*/
+.m-form {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 43px;
+    border-radius: 32px;
+}
+
 .form-group.required .control-label:before {
     color: red;
     content: "*";
@@ -207,7 +242,7 @@ td{
     margin-left: -15px;
 }
 
-.m-select{
+.m-select {
     width: 226px;
     height: 39px;
     float: left;
@@ -215,14 +250,14 @@ td{
     border-radius: 18px;
 }
 
-.m-input{
+.m-input {
     width: 226px;
     height: 39px;
     position: relative;
     border-radius: 18px;
 }
 
-.m-formGroup-margin{
+.m-formGroup-margin {
     margin-left: 21%;
     margin-right: 10%;
     margin-bottom: 2%;
@@ -232,7 +267,7 @@ td{
     position: relative;
     display: inline-block;
     background: #CED4DE;
-    border: 8px solid #CED4DE ;
+    border: 8px solid #CED4DE;
     border-radius: 14px;
     padding: 4px 12px;
     overflow: hidden;
@@ -243,6 +278,7 @@ td{
     font-size: 25px;
     margin-top: 50px;
 }
+
 .file input {
     position: absolute;
     font-size: 100px;
@@ -250,17 +286,34 @@ td{
     top: 0;
     opacity: 0;
 }
+
 .file:hover {
-    background:  #65789B;
-    border-color:  #65789B;
+    background: #65789B;
+    border-color: #65789B;
     color: white;
     text-decoration: none;
 }
 
 
 /*--------------button-------------------------*/
-.m-button{
-    background-color:  #004cff;
+.m-button-color {
+    background-color: #004cff;
+    border-color: #004cff;
+    color: white;
+}
+
+.m-button-color:active:hover,
+.m-button-color:active,
+.m-button-color:focus,
+.m-button-color:hover {
+    color: white;
+    outline: none;
+    border-color: #0a43c9;
+    background-color: #0a43c9;
+}
+
+.m-button {
+    background-color: #004cff;
     border-radius: 20px;
     padding: 6px 12px;
     font-weight: 400;
@@ -271,19 +324,19 @@ td{
 
 .m-button:active,
 .m-button:focus,
-.m-button:hover{
+.m-button:hover {
     color: white;
     outline: none;
     background-color: #0a43c9;
 }
 
 /*--------------UserInfo界面-------------------*/
-.m-center{
+.m-center {
     text-align: center; /*让div内部文字居中*/
     background-color: #fff;
     border-radius: 54px;
-    width: 600px;
-    height: 380px;
+    width: 513px;
+    height: 358px;
     margin: auto;
     position: absolute;
     top: 0;
@@ -291,32 +344,85 @@ td{
     right: 0;
     bottom: 0;
 }
-.m-userinfo-input{
+
+.m-userinfo-input {
     margin-left: 3px;
     border: none;
-    background: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
 }
-.m-userinfo-label{
+
+.m-userinfo-label {
     font: lighter 15px 华文中宋;
     font-weight: 600;
 }
-.m-userinfo-heading{
+
+.m-userinfo-heading {
     margin-bottom: 48px;
     line-height: 45px;
-    font-family:  华文中宋;
+    font-family: 华文中宋;
     position: relative;
     left: -30%;
     top: 23px;
 }
-.m-userinfo-btn{
+
+.m-userinfo-btn {
     padding: 9px 16px;
     border-radius: 50px;
     margin-left: 2px;
 }
+
 .m-button-a:hover,
-.m-button-a{
+.m-button-a {
     color: white;
     text-decoration: none;
 }
+/*--------------navbar---------------*/
+nav{
+    background-color: white  !important;
+    color: black !important;
+    min-height: 63px !important;
+}
+.m-nav>li{
+    margin-left: 17px;
+    margin-right: 17px;
+    font-size: 14px;
+    font-family: "sans-serif", 华文中宋;
+}
+.m-nav>li>a{
+    color: #333333 !important;
+    background-color: rgba(0,0,0,0) !important;
+    padding: 20px 15px 0px 15px;
+}
+.m-nav>.active>a{
+    color: black !important;
+    padding: 20px 15px 0px 15px;
+}
+.m-nav>.active{
+    padding-bottom: 11px;
+}
+.m-nav>.active:after{
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: auto;
+    margin: auto;
+    bottom: 0px;
+    right: auto;
+    height: 5px;
+    width: 39px;
+    border-radius: 24px;
+    background-color: #004cff;
+}
+.m-nav-logo{
+    margin-top: 9px;
+    margin-right: 6px;
+    width: 40px;
+    height: 40px;
+}
+.m-nav-brand{
+    font: 20px 华文中宋;
+    margin-bottom: 1px;
+    color: black;
 
+}
 

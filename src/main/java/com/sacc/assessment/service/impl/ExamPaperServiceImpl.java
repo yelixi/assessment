@@ -98,8 +98,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     }
 
     @Override
-    public Page<ExamPaper> getMyAllExamPaper(UserDetail userDetail, Pageable pageable) {
-        return examPaperRepository.findAllByUserId(userDetail.getId(),pageable);
+    public Page<ExamPaper> getMyAllExamPaper(Pageable pageable) {
+        return examPaperRepository.findAll(pageable);
     }
 
     @Override

@@ -26,4 +26,6 @@ public interface ExamPaperRepository extends JpaRepository<ExamPaper,Integer> {
 
             nativeQuery = true)
     List<ExamPaper> findUnfinishedExamByUserId(Integer userId);
+
+    Page<ExamPaper> findAll(Pageable pageable);
 }

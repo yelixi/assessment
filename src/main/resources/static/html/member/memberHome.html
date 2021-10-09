@@ -1,53 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>root</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/index.css">
-        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
-        <div class="father">
-            <div id="blueK">
-                <span class="small" id="obvious">考试系统 <span style="color: rgba(255,255,255,0.5)">● 近期考试</span></span>
-                <span class="big" id="welcome">welcome</span>
-                <span class="big" id="status"  style="color: rgba(255,255,255,0.5)" hidden></span>
-
-            </div>
-            <div class="background ">
-                <img src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/First.png">
-            </div>
-            <button class="button access-exam" id="access-exam" onclick="goToExam(this.id)" disabled>
-                <div class="b1">MEMBER<br/></div>
-                <div class="b2">你好同学！</div>
-                <!-- 用变文本内容的js即可
-                b1的样式除粗细以外可行但有点没达到要求，希望多多调试-->
-            </button>
-
-        </div>
-    </body>
-    <script>
+	<head>
+		<meta charset="UTF-8">
+		<title>root</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/index.css">
+		<link rel="stylesheet" href="/css/me.css">
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
+		<div class="father">
+			<div id="blueK">
+				<span class="small" id="obvious">考试系统<span style="color: rgba(255,255,255,0.5)">● 近期考试</span></span>
+				<span class="big" id="welcome">welcome</span>
+				<!--考试状态，当没有考试的时候会隐藏，当检测到考试的时候，会取消隐藏。 -->
+				<span class="big status" id="status" hidden></span>
+			</div>
+			<div class="background ">
+				<img src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/First.png">
+			</div>
+			<!--当有考试的时候，点击会进入考试页面-->
+			<button class="button access-exam" id="access-exam" onclick="goToExam(this.id)" disabled>
+				<div class="b1">MEMBER<br/></div>
+				<div class="b2">祝考试顺利！</div>
+			</button>
+		</div>
+	</body>
+	<script>
         $.ajax({
             url: "/myRecentExam",
             type: "GET"
         }).done(function (result) {
-            // setInterval(function(){ alert("Hello"); }, 3000);
             timer(result);
         })
-        function  goToExam(examId){
-            // if(document.getElementsByClassName("access-exam")[0].hasAttribute("disabled")){
-            //     window.alert("考试未开始或者是没有考试！")
-            // }
+
+        function goToExam(examId) {
             window.location.href = "/Exam?examId=" + examId;
         }
-        function timer(result){
-            if (result.data != null){
+
+        function timer(result) {
+            if (result.data != null) {
                 document.getElementById("status").removeAttribute("hidden");
-                document.getElementById("welcome").innerText= result.data.name;
+                document.getElementById("welcome").innerText = result.data.name;
                 console.log(result.data.startTime)
                 console.log(result.data.name);
                 var date1 = new Date();  //现在时间
@@ -61,28 +58,26 @@
                 //计算相差分钟数
                 var leave2 = leave1 % (3600 * 1000);        //计算小时数后剩余的毫秒数
                 var minutes = Math.floor(leave2 / (60 * 1000));
-
                 //计算相差秒数
-
                 var leave3 = leave2 % (60 * 1000);      //计算分钟数后剩余的毫秒数
                 var seconds = Math.round(leave3 / 1000);
-                if(date1.getTime() > date2.getTime()){
+                if (date1.getTime() > date2.getTime()) {
                     // alert(" 考试已经进行了： " + days + "天 " + hours + "小时 " + minutes + " 分钟" + seconds + " 秒")
-                    document.getElementById("status").style="color: rgba(255,0,0,0.8)"
-                    document.getElementById("status").innerText = "考试正在进行中...";
+                    // document.getElementById("status").style="color: rgba(255,0,0,0.8)"
+                    document.getElementById("status").innerText = "● 考试正在进行中";
                     document.getElementsByClassName("b2")[0].innerHTML = "参加考试";
                     document.getElementsByClassName("access-exam")[0].removeAttribute("disabled");
                     document.getElementsByClassName("access-exam")[0].setAttribute("id", result.data.id);
-                }else{
-                    document.getElementById("status").style.fontSize="15px";
-                    document.getElementById("status").innerText = " 距离本次考试开始还剩： " + days + "天 " + hours + "时 " + minutes + " 分" + seconds + "秒" ;
+                } else {
+                    // document.getElementById("status").style.fontSize="15px";
+                    document.getElementById("status").innerText = " ● 距离本次考试开始还剩： " + days + "天 " + hours + "时 " + minutes + " 分" + seconds + "秒";
                 }
-            }else{
-                document.getElementById("welcome").innerText= "Yep！最近无考试~";
+            } else {
+                document.getElementById("welcome").innerText = "Yep！最近无考试~";
             }
 
         }
 
 
-    </script>
+	</script>
 </html>

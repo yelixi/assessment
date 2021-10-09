@@ -31,7 +31,9 @@
 						<tr th:each="result, resultStat : ${results}">
 							<td th:text="${result.userId}" hidden data-hidden="true">100</td>
 							<td th:text="${scores[resultStat.index]}" hidden data-hidden="true">100</td>
-							<td th:text="${#temporals.format(result.createdAt,'yyyy-MM-dd HH:mm')}" hidden data-hidden="true">100</td>
+							<td th:text="${#temporals.format(result.createdAt,'yyyy-MM-dd HH:mm')}" hidden
+							    data-hidden="true">100
+							</td>
 						</tr>
 					</tbody>
 				</table>

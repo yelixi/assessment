@@ -1,55 +1,61 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>考试系统-试卷批改</title>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-    <link rel="stylesheet" href="/css/me.css">
-    <!--基础js-->
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!--BootStrap Table-->
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-</head>
-<body>
-    <nav th:replace="../static/html/common/fragments.html::corrector_menu(2)"></nav>
-    <div class="container">
-        <h1><strong>所有考试</strong></h1>
-        <table class="table table-hover" id="exam-table" search="true" sortable="true">
-            <thead class="table-thead">
-                <tr>
-                    <th>考试名称</th>
-                    <th data-sortable="true">考试日期</th>
-                    <th data-sortable="true">考试时间</th>
-                    <th data-width="20" data-sortable="true">试卷总分</th>
-                    <th data-width="10px">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="exam:${examList}">
-                    <td th:text="${exam.name}"></td>
-                    <td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd')}"></td>
-                    <td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '--' + ${#temporals.format(exam.endTime,'HH:mm')}"></td>
-                    <td th:text="${exam.examTotalScore}"></td>
-                    <td><button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)" >批改</button></td>
-                </tr>
-            </tbody>
+	<head>
+		<meta charset="UTF-8">
+		<title>考试系统-试卷批改</title>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+		      rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link rel="stylesheet" href="/css/me.css">
+		<!--基础js-->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+	</head>
+	<body>
+		<nav th:replace="../static/html/common/fragments.html::corrector_menu(2)"></nav>
+		<div class="container">
+			<h1><strong>所有考试</strong></h1>
+			<table class="table table-hover" id="exam-table" search="true" sortable="true">
+				<thead class="table-thead">
+					<tr>
+						<th>考试名称</th>
+						<th data-sortable="true">考试日期</th>
+						<th data-sortable="true">考试时间</th>
+						<th data-width="20" data-sortable="true">试卷总分</th>
+						<th data-width="10px">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="exam:${examList}">
+						<td th:text="${exam.name}"></td>
+						<td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd')}"></td>
+						<td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '--' + ${#temporals.format(exam.endTime,'HH:mm')}"></td>
+						<td th:text="${exam.examTotalScore}"></td>
+						<td>
+							<button type="button" class="btn m-button-color" th:id="${exam.id}"
+							        onclick="getExam(this.id)">批改
+							</button>
+						</td>
+					</tr>
+				</tbody>
 
-        </table>
-    </div>
-</body>
-<script>
-    function getExam(buttonId){
-        window.location.href="/corrector/getExam?examId="+buttonId
-    }
-    $("#exam-table").bootstrapTable({
-        search: true,
-        showRefresh: true,
-        showColumns: true,
-        striped: true,
-        sortable: true
-    });
-</script>
+			</table>
+		</div>
+	</body>
+	<script>
+        function getExam(buttonId) {
+            window.location.href = "/corrector/getExam?examId=" + buttonId
+        }
+
+        $("#exam-table").bootstrapTable({
+            search: true,
+            showRefresh: true,
+            showColumns: true,
+            striped: true,
+            sortable: true
+        });
+	</script>
 </html>

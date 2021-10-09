@@ -18,7 +18,7 @@ public interface ExamPaperService {
 
     boolean updateExam(ExamPaper examPaper);
 
-    Page<ExamPaper> getMyAllExamPaper(UserDetail userDetail, Pageable pageable);
+    Page<ExamPaper> getMyAllExamPaper( Pageable pageable);
 
     ExamPaper getExamPaper(Integer examPaperId, UserDetail userDetail);
 
