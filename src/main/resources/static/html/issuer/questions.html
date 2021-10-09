@@ -4,7 +4,8 @@
 		<meta charset="UTF-8">
 		<title>试卷问题</title>
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+		      rel="stylesheet">
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 		<link rel="stylesheet" href="/css/me.css">
 		<!--基础js-->
@@ -20,7 +21,7 @@
 		<div class="container">
 			<h1><strong>所有问题</strong></h1>
 			<!--表单-->
-			<table class="table table-striped" id="question-table">
+			<table class="table table-hover table-responsive table-white" id="question-table">
 				<thead class="table-thead">
 					<tr>
 						<th>题目编号</th>
@@ -29,7 +30,7 @@
 						<th>正确答案</th>
 						<th>分值</th>
 						<th>最后更新时间</th>
-						<th data-width= "140">操作</th>
+						<th data-width="140">操作</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -47,8 +48,9 @@
 						<td th:text="${question.score}">100</td>
 						<td th:text="${#temporals.format(question.updatedAt,'yyyy-MM-dd HH:mm')}"></td>
 						<td>
-							<button type="button" class="btn-sm btn-primary" th:id="${examList[questionStat.index]}">
-								<a th:href="@{'/issuer/updateExam/'+${examList[questionStat.index]}}" style="color: white" >查看所属试卷</a>
+							<button type="button" class="btn-sm m-button-color" th:id="${examList[questionStat.index]}">
+								<a class="m-button-a" th:href="@{'/issuer/updateExam/'+${examList[questionStat.index]}}"
+								   style="color: white;">查看所属试卷</a>
 							</button>
 						</td>
 					</tr>
@@ -80,8 +82,8 @@
             search: true,
             showRefresh: true,
             showColumns: true,
-            striped: true,
-            sortable: true
+            sortable: true,
+            classes: "table table-hover table-white"
         });
 
         $(function () {

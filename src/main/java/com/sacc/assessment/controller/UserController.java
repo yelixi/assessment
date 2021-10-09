@@ -1,7 +1,6 @@
 package com.sacc.assessment.controller;
 
 import com.sacc.assessment.entity.ExamPaper;
-import com.sacc.assessment.entity.User;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
@@ -10,15 +9,10 @@ import com.sacc.assessment.service.UserService;
 import com.sacc.assessment.vo.ChangePasswordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,26 +61,13 @@ public class UserController {
 
     @Secured({"ROLE_CORRECTOR"})
     @GetMapping("/home/corrector")
-    public String correctorHome(Model model){
-        List<ExamPaper> examPaperList = examPaperService.getAllExam();
-        model.addAttribute("examList",examPaperList);
+    public String correctorHome(){
         return "../static/html/corrector/correctorHome.html";
     }
 
     @Secured({"ROLE_MEMBER"})
     @GetMapping("/home/member")
     public String memberHome(Model model, Authentication authentication){
-        List<ExamPaper> examPaperList = examPaperService.getAllExam();
-        model.addAttribute("examList",examPaperList);
-        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
-        List<Integer> list = new ArrayList<>();
-        for (ExamPaper examPaper : examPaperList) {
-            if(examPaperAnswerService.findByUserIdAndExamPaperId(userDetail.getId(),examPaper.getId())!=null){
-                list.add(1);
-            }
-            else list.add(0);
-        }
-        model.addAttribute("list",list);
         return "../static/html/member/memberHome.html";
     }
     @GetMapping("/myInfo")
@@ -109,8 +90,11 @@ public class UserController {
     }
 
     @GetMapping("/password")
-    public String password(){
-        return "../static/html/member/changePassword.html";
+    public String password(Model model, Authentication authentication){
+        UserDetail principal = (UserDetail)authentication.getPrincipal();
+        model.addAttribute("page",
+                "../static/html/common/fragments.html::" + principal.getRole().toString().toLowerCase()+"_menu(999)");
+        return "../static/html/common/changePassword.html";
     }
    /* @ResponseBody
     @GetMapping("/js/{url}")

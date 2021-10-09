@@ -1,57 +1,80 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-</head>
-<body>
-    <nav th:replace="../static/html/common/fragments.html::root_menu(2)"></nav>
-<div class="container">
-    <h2>用户列表</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Role</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="user,loopStatus :${userList}">
-                <td th:text="${user.username}" th:id="'td'+${loopStatus.count}"></td>
-                <td th:text="${user.role}"></td>
-                <td><button th:id="'btn'+${loopStatus.count}" class="btn">删除</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link href="/css/table.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="/css/me.css">
+		<!--基础js-->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+	</head>
+	<body>
+		<nav th:replace="../static/html/common/fragments.html::root_menu(2)"></nav>
+		<div class="container">
+			<h2>用户列表</h2>
+			<br>
+			<table class="table table-hover table-responsive table-white" id="exam-table">
+				<thead class="table-thead">
+					<tr>
+						<th>用户ID</th>
+						<th>用户学号</th>
+						<th>用户邮箱</th>
+						<th>加入时间</th>
+						<th>用户身份</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user,loopStatus :${userList}">
+						<td th:text="${user.username}" th:id="'td'+${loopStatus.count}"></td>
+						<td th:text="${user.studentId}"></td>
+						<td th:text="${user.email}"></td>
+						<td th:text="${user.createdAt}"></td>
+						<td th:text="${user.role}"></td>
+						<td>
+							<button th:id="'btn'+${loopStatus.count}" class="btn btn-danger" style="border-radius: 4">
+								删除
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-</body>
-<script th:inline="javascript">
-    for(let i=1;i<=$(".btn").length;i++){
-        let btn = 'btn'+i;
-        console.log(btn)
-        /*$(btn).click(function (){
-            alert("点了第"+i+"个")
-        })*/
-        let b = document.getElementById(btn)
-        b.addEventListener("click",function (){
-            let td = 'td'+i
-            let username = document.getElementById(td).innerText
-            $.ajax({
-                url  : '/root/deleteUser?username='+username,
-                type : 'delete'
-            }).done(function(data){
-                if(data.code===200) {
-                    alert("删除成功")
-                    window.location.href="/root/getAllUser"
-                }
+	</body>
+	<script th:inline="javascript">
+        $("#exam-table").bootstrapTable({
+            search: true,
+            classes: "table table-hover table-white",
+            showRefresh: true,
+            showColumns: true,
+            sortable: true
+        });
+        for (let i = 1; i <= $(".btn").length; i++) {
+            let btn = 'btn' + i;
+            console.log(btn)
+            /*$(btn).click(function (){
+				alert("点了第"+i+"个")
+			})*/
+            let b = document.getElementById(btn)
+            b.addEventListener("click", function () {
+                let td = 'td' + i
+                let username = document.getElementById(td).innerText
+                $.ajax({
+                    url: '/root/deleteUser?username=' + username,
+                    type: 'delete'
+                }).done(function (data) {
+                    if (data.code === 200) {
+                        alert("删除成功")
+                        window.location.href = "/root/getAllUser"
+                    }
+                })
             })
-        })
-    }
-</script>
+        }
+	</script>
 </html>

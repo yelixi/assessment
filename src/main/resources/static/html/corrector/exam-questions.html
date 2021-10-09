@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>考试批改-试卷查阅</title>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+		      rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link rel="stylesheet" href="/css/table.css">
+		<link rel="stylesheet" href="/css/me.css">
+		<!--基础js-->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+		<!--md解析js-->
+		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+		<style>
+            code {
+
+                /*元素内的空白保留，并允许换行*/
+                white-space: pre-wrap !important;
+                /*是否允许在单词内断句*/
+                word-wrap: break-word !important;
+                /*强调怎么样断句*/
+                /*word-break: break-all !important;*/
+                background-color: #F5F5F5;
+            }
+		</style>
+	</head>
+	<body>
+		<nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
+		<div class="container">
+			<h1><strong>试卷的所有题目</strong></h1>
+			<br>
+			<table
+					th:id="${exam.id}" class="t table">
+				<thead class="table-thead">
+					<tr>
+						<th>题目编号</th>
+						<th>题目内容</th>
+						<th>问题类型</th>
+						<th data-width="10px">状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="question,loopStatus: ${exam.questions}">
+						<td th:text="第+${loopStatus.count}+题"></td>
+						<td th:text="${question.infoTextContent}" class="md"></td>
+						<td th:text="${question.type}"></td>
+						<td>
+							<button type="button" class="btn m-button-color" th:id="${question.id}"
+							        onclick="getAnswer(this.id)">批改
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</body>
+	<script>
+        let examPaperId = $(".t").attr("id")
+
+        function getAnswer(questionId) {
+            window.location.href = "/answer?questionId=" + questionId + "&examPaperId=" + examPaperId
+        }
+
+        $(function () {
+            let m = $(".md")
+            for (let i = 0; i < m.length; i++) {
+                let converter = new Markdown.Converter();
+                m[i].innerHTML = converter.makeHtml(m[i].innerText)
+            }
+        })
+
+        $("#" + examPaperId).bootstrapTable({
+            search: true,
+            showRefresh: true,
+            showColumns: true,
+            striped: true,
+            sortable: true
+        });
+	</script>
+</html>

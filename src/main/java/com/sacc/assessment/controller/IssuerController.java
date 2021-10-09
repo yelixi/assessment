@@ -82,7 +82,7 @@ public class IssuerController {
         if(pageSize == null) pageSize = 10;
         //默认一页10，按照题目序号升序。
         PageRequest pageRequest = PageRequest.of(page,pageSize, Sort.by(Sort.Direction.ASC,"id"));
-        Page<ExamPaper> examPage = examPaperService.getMyAllExamPaper(userDetail,pageRequest);
+        Page<ExamPaper> examPage = examPaperService.getMyAllExamPaper(pageRequest);
         int totalPages = examPage.getTotalPages();
         //拿出集合
         List<ExamPaper> exams = examPage.getContent();
