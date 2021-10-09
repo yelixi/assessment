@@ -1,6 +1,10 @@
+/*------------主题色------------------*/
+
 
 body {
-    background: url("../images/bg2.png");
+    background: url("https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/background.png") no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
     zoom: 1.05;
     -moz-transform: scale(1);
     -moz-transform-origin: 0 0;
@@ -180,7 +184,7 @@ body {
 
 /*-------------table --------------*/
 .table-thead{
-    background-color: #4B4B4B;
+    background-color: #004CFF;
     color: white;
 }
 th{

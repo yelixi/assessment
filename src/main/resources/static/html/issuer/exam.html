@@ -20,7 +20,7 @@
 			<h1><strong>所有试卷</strong></h1>
 			<!--表格-->
 			<div class="container">
-				<table class="table table-striped" id="exam-table">
+				<table class="table table-bordered" id="exam-table">
 					<thead class="table-thead">
 						<tr>
 							<th data-width="10">试卷编号</th>
@@ -29,7 +29,7 @@
 							<th>考试时间</th>
 							<th data-sortable="true">创建时间</th>
 							<th>更新时间</th>
-							<th data-width="180">操作</th>
+							<th >操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -43,10 +43,13 @@
 							<td th:text="${#temporals.format(exam.updatedAt,'yyyy-MM-dd HH:mm')}">猴年马月</td>
 							<td>
 								<a th:href="@{'/issuer/updateExam/'+${exam.id}}">
-									<button type="button" class="btn-sm btn-info">查看详情</button>
+									<button type="button" class="btn-sm btn-info">查看试卷</button>
 								</a>
 								<a th:href="@{'/issuer/getAllScore/'+${exam.id}}">
 									<button type="button" class="btn-sm btn-success">导出成绩</button>
+								</a>
+								<a th:href="@{'/issuer/examPaper/result/'+${exam.id}}">
+									<button type="button" class="btn-sm btn-warning">考试结果</button>
 								</a>
 							</td>
 						</tr>

@@ -30,11 +30,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled=true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    private final TigerLogoutSuccessHandler logoutSuccessHandler = new TigerLogoutSuccessHandler("/");
+    private final TigerLogoutSuccessHandler logoutSuccessHandler = new TigerLogoutSuccessHandler("/login");
 
     public static final String[] NO_AUTH_LIST={
             "/login",
             "/static/**",
+            "/images/**",
             "/css/**"
     };
 
