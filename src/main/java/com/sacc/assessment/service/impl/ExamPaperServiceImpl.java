@@ -98,8 +98,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
     }
 
     @Override
-    public Page<ExamPaper> getMyAllExamPaper(UserDetail userDetail, Pageable pageable) {
-        return examPaperRepository.findAllByUserId(userDetail.getId(),pageable);
+    public Page<ExamPaper> getMyAllExamPaper(Pageable pageable) {
+        return examPaperRepository.findAll(pageable);
     }
 
     @Override
@@ -190,5 +190,14 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         if(examPaper.getEndTime().isBefore(LocalDateTime.now()))
             throw new BusinessException(ResultEnum.EXAM_IS_END);
         return true;
+    }
+
+    @Override
+    public List<ExamPaper> getMyUnfinishedExamPaper(UserDetail userDetail) {
+        List<ExamPaper> unfinishedExams = examPaperRepository.findUnfinishedExamByUserId(userDetail.getId());
+        List<ExamPaper> recentUnfinishedExams = new ArrayList<>();
+        for(ExamPaper exam : unfinishedExams)
+            if(exam.getEndTime().isAfter(LocalDateTime.now())) recentUnfinishedExams.add(exam);
+        return recentUnfinishedExams;
     }
 }

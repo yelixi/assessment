@@ -19,52 +19,50 @@
     <script type="text/javascript" src="/js/marked.js" charset="UTF-8"></script>
     <style>
 
-        div {
-            color: black;
-            margin-top: 2px;
-        }
-        input[type="radio"] {
-            width: 16px;
-            height: 16px;
-        }
+            input[type="radio"] {
+                width: 16px;
+                height: 16px;
+            }
 
-        input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-        }
-        .question{
-            margin-top: 10px;
-            margin-left: 10px;
-        }
-        label{
-            font-size: 17px;
-        }
-        span {
-            margin-left: 5px;
-            font-size: 17px;
-            font-family: 宋体;
-        }
-        li {
-            display: inline-block;
-            list-style: none;
-        }
-        .d1{
-            box-shadow: 1px 1px 1px 1px grey;
-            border-radius: 25px;
-            border:1px solid #96C2F1;
-            background-color:#F5F5F5;
-            padding: 6px;
-            margin: 6px;
-        }
-        hr{
-            color: grey;
-            size: 10px;
-        }
-        .btn1{
-            padding: 10px;
-            margin: 10px;
-        }
-        code {
+            input[type="checkbox"] {
+                width: 16px;
+                height: 16px;
+            }
+
+            .question {
+                margin-top: 10px;
+                margin-left: 10px;
+            }
+
+            label {
+                font-size: 17px;
+            }
+
+            span {
+                margin-left: 5px;
+                font-size: 17px;
+                font-family: 宋体;
+            }
+
+            .question>ul>li {
+                display: inline-block;
+                list-style: none;
+            }
+
+            .d1 {
+                border-radius: 25px;
+                background-color: rgba(255,255,255,0.6);
+                padding: 20px;
+                margin: 6px;
+	            font-family: "sans-serif";
+            }
+
+            hr {
+                color: grey;
+                size: 10px;
+            }
+
+            code {
 
             /*元素内的空白保留，并允许换行*/
             white-space: pre-wrap !important;
@@ -103,21 +101,21 @@
         <form id="special-questions-answer-form" class="d1" ></form>
     </div>
 
-
-<!--       提交按钮-->
-        <div style="text-align: center">
-            <button type="button" id="btn" class="btn btn-primary btn1" style="text-align: center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-patch-check" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z">
-                    </path>
-                    <path
-                        d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z">
-                    </path>
-                </svg> 提交答案
-            </button>
-        </div>
+		<!--       提交按钮-->
+		<div style="text-align: center">
+			<button type="button" id="btn" class="btn m-button" style="text-align: center; margin-top: 10px">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+				     class="bi bi-patch-check" viewBox="0 0 16 16">
+					<path fill-rule="evenodd"
+					      d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z">
+					</path>
+					<path
+							d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z">
+					</path>
+				</svg>
+				提交答案
+			</button>
+		</div>
 
     </div>
 </body>
@@ -255,101 +253,117 @@
                                 // console.log(this.value)
                             })
 
-                            let span = document.createElement('span')
-                            li.appendChild(s)
-                            li.appendChild(span)
-                            ul.appendChild(li)
-                            ul.appendChild(document.createElement('br'))
-                            qe.appendChild(ul)
-                            // div.insertBefore(span, div1[1])
-                            switch (j) {
+                                let span = document.createElement('span')
+                                li.appendChild(s)
+                                li.appendChild(span)
+                                ul.appendChild(li)
+                                ul.appendChild(document.createElement('br'))
+                                qe.appendChild(ul)
+                                // div.insertBefore(span, div1[1])
+                                switch (j) {
 
-                                case 0:
-                                    s.setAttribute('value', 'A');
-                                    span.innerText = 'A.' + q[i].option1;
-                                    break
-                                case 1:
-                                    s.setAttribute('value', 'B');
-                                    span.innerText = 'B.' + q[i].option2;
-                                    break
-                                case 2:
-                                    s.setAttribute('value', 'C');
-                                    span.innerText = 'C.' + q[i].option3;
-                                    break
-                                case 3:
-                                    s.setAttribute('value', 'D');
-                                    span.innerText = 'D.' + q[i].option4;
-                                    break
+                                    case 0:
+                                        s.setAttribute('value', 'A');
+                                        span.innerText = 'A.' + q[i].option1;
+                                        break
+                                    case 1:
+                                        s.setAttribute('value', 'B');
+                                        span.innerText = 'B.' + q[i].option2;
+                                        break
+                                    case 2:
+                                        s.setAttribute('value', 'C');
+                                        span.innerText = 'C.' + q[i].option3;
+                                        break
+                                    case 3:
+                                        s.setAttribute('value', 'D');
+                                        span.innerText = 'D.' + q[i].option4;
+                                        break
+                                }
                             }
-                        }
 
-                        // var s1 = document.createElement('input')
-                        // var s2 = document.createElement('input')
-                        // var s3 = document.createElement('input')
-                        // var s4 = document.createElement('input')
+                            // var s1 = document.createElement('input')
+                            // var s2 = document.createElement('input')
+                            // var s3 = document.createElement('input')
+                            // var s4 = document.createElement('input')
 
-                        // s1.setAttribute('type', 'radio')
-                        // s1.setAttribute('name', q[i].id)
-                        // s2.setAttribute('type', 'radio')
-                        // s2.setAttribute('name', q[i].id)
-                        // s3.setAttribute('type', 'radio')
-                        // s3.setAttribute('name', q[i].id)
-                        // s4.setAttribute('type', 'radio')
-                        // s4.setAttribute('name', q[i].id)
-                        // div.insertBefore(s1, div1[1])
-                        // div.insertBefore(s2, div1[1])
-                        // div.insertBefore(s3, div1[1])
-                        // div.insertBefore(s4, div1[1])
+                            // s1.setAttribute('type', 'radio')
+                            // s1.setAttribute('name', q[i].id)
+                            // s2.setAttribute('type', 'radio')
+                            // s2.setAttribute('name', q[i].id)
+                            // s3.setAttribute('type', 'radio')
+                            // s3.setAttribute('name', q[i].id)
+                            // s4.setAttribute('type', 'radio')
+                            // s4.setAttribute('name', q[i].id)
+                            // div.insertBefore(s1, div1[1])
+                            // div.insertBefore(s2, div1[1])
+                            // div.insertBefore(s3, div1[1])
+                            // div.insertBefore(s4, div1[1])
 
-                    } else if (q[i].type === 'MULTIPLE_CHOICE') {
-                        // 创建多选题的题目和答案
-                        qe.setAttribute('question_type','MULTIPLE_CHOICE')
-                        let ul = document.createElement('ul')
-                        for (let j = 0; j < 4; j++) {
+                        } else if (q[i].type === 'MULTIPLE_CHOICE') {
+                            // 创建多选题的题目和答案
+                            qe.setAttribute('question_type', 'MULTIPLE_CHOICE')
+                            let ul = document.createElement('ul')
+                            for (let j = 0; j < 4; j++) {
 
-                            let li = document.createElement('li')
-                            let m = document.createElement('input')
-                            m.setAttribute('type', 'checkbox')
-                            m.setAttribute('class','a')
-                            m.addEventListener('click', function () {
-                                if(this.getAttribute('class')==='an')
-                                    this.setAttribute('class', 'a')
-                                else
-                                    this.setAttribute('class','an')
-                                // console.log(this.value)
-                            })
+                                let li = document.createElement('li')
+                                let m = document.createElement('input')
+                                m.setAttribute('type', 'checkbox')
+                                m.setAttribute('class', 'a')
+                                m.addEventListener('click', function () {
+                                    if (this.getAttribute('class') === 'an')
+                                        this.setAttribute('class', 'a')
+                                    else
+                                        this.setAttribute('class', 'an')
+                                    // console.log(this.value)
+                                })
 
-                            let span = document.createElement('span')
-                            li.appendChild(m)
-                            li.appendChild(span)
-                            // li.addEventListener('click',function () {
-                            //     console.log(this.index)
-                            // })
-                            ul.appendChild(li)
-                            ul.appendChild(document.createElement('br'))
-                            qe.appendChild(ul)
-                            // div.insertBefore(span, div1[1])
-                            switch (j) {
-                                case 0: m.setAttribute('value', 'A'); span.innerText = 'A.'+q[i].option1; m.checked=false; break
-                                case 1: m.setAttribute('value', 'B'); span.innerText = 'B.'+q[i].option2; m.checked=false;break
-                                case 2: m.setAttribute('value', 'C'); span.innerText = 'C.'+q[i].option3; m.checked=false;break
-                                case 3: m.setAttribute('value', 'D'); span.innerText = 'D.'+q[i].option4; m.checked=false;break
+                                let span = document.createElement('span')
+                                li.appendChild(m)
+                                li.appendChild(span)
+                                // li.addEventListener('click',function () {
+                                //     console.log(this.index)
+                                // })
+                                ul.appendChild(li)
+                                ul.appendChild(document.createElement('br'))
+                                qe.appendChild(ul)
+                                // div.insertBefore(span, div1[1])
+                                switch (j) {
+                                    case 0:
+                                        m.setAttribute('value', 'A');
+                                        span.innerText = 'A.' + q[i].option1;
+                                        m.checked = false;
+                                        break
+                                    case 1:
+                                        m.setAttribute('value', 'B');
+                                        span.innerText = 'B.' + q[i].option2;
+                                        m.checked = false;
+                                        break
+                                    case 2:
+                                        m.setAttribute('value', 'C');
+                                        span.innerText = 'C.' + q[i].option3;
+                                        m.checked = false;
+                                        break
+                                    case 3:
+                                        m.setAttribute('value', 'D');
+                                        span.innerText = 'D.' + q[i].option4;
+                                        m.checked = false;
+                                        break
+                                }
                             }
+                        } else if (q[i].type === 'FILL_BLANK') {
+                            // 创建简答题的题目和答案
+                            qe.setAttribute('question_type', 'FILL_BLANK')
+                            let ta = document.createElement('textarea')
+                            ta.setAttribute('placeholder', '请在此处输入答案')
+                            ta.setAttribute('id', q[i].id)
+                            ta.setAttribute('class', 'an form-control')
+                            // var answer = ta.innerHTML
+                            // console.log(answer)
+                            // setInterval(function () {
+                            //     console.log($('#1').val())
+                            // },1000)
+                            qe.appendChild(ta)
                         }
-                    } else if (q[i].type === 'FILL_BLANK') {
-                        // 创建简答题的题目和答案
-                        qe.setAttribute('question_type','FILL_BLANK')
-                        let ta = document.createElement('textarea')
-                        ta.setAttribute('placeholder', '请在此处输入答案')
-                        ta.setAttribute('id', q[i].id)
-                        ta.setAttribute('class', 'an form-control')
-                        // var answer = ta.innerHTML
-                        // console.log(answer)
-                        // setInterval(function () {
-                        //     console.log($('#1').val())
-                        // },1000)
-                        qe.appendChild(ta)
-                    }
 
                 }
             }

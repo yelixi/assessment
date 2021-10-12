@@ -21,5 +21,7 @@ public interface ExamPaperAnswerService {
 
     ExamPaperAnswer findExamPaperAnswerByAnswerId(Integer answerId);
 
+    List<ExamPaperAnswer> getExamPaperAnswerByExamId(Integer examPaperId);
+
 
 }

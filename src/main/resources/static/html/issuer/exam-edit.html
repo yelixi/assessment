@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <!--试卷编辑页面-->
+
+<!--TODO修复-->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<title>试卷编辑</title>
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<!--		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-		<link href="/css/exam.css" rel="stylesheet" type="text/css">
-		<link href="/css/table.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="/css/me.css">
 		<link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 		<link href="/css/bootstrap-datetimepicker-min.css" rel="stylesheet" type="text/css">
@@ -16,22 +15,22 @@
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<!--DateTimepicker-->
-		<script type="text/javascript" src = "/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-		<script type="text/javascript" src = "/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 		<!--markdown解析-->
+		<script type="text/javascript" src="/js/marked.min.js" charset="UTF-8"></script>
 		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
-
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 		<!--利用thymeleaf传数据给bootstrap生成js函数-->
 		<input type="hidden" th:value="${exam}" id="exam-questions"/>
 
-		<div class="container">
-			<form class="form" method="post" role="form">
-				<h1 id="add-title" >查看考试</h1>
+		<div class="m-container-small">
+			<form class="form m-form" method="post" role="form">
+				<h1 id="add-title">查看考试</h1>
 				<br>
 				<div class="form-group form-group-sm">
 					<label for="exam-id">考试编号</label>
@@ -72,27 +71,28 @@
 					<table id="question-table" class="table" search="true">
 					</table>
 				</div>
-
 				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-				<div class="form-group">
-					<button class="btn btn-lg btn-primary btn-block" type="button" id="exam-update-btn" onclick="update()">
-						保存试卷
+				<div align="center" style="margin-bottom: 4px; margin-top: 40px">
+					<button class="btn m-button" style="width: 500px; height: 40px" type="button" id="exam-view">
+						试卷预览
 					</button>
 				</div>
-				<div class="form-group">
-					<button class="btn btn-lg btn-primary btn-block" type="button" id="exam-view">
-						试卷预览
+				<div align="center">
+					<button class="btn m-button" style="width: 500px;height: 40px" type="button" id="exam-update-btn"
+					        onclick="update()">
+						保存试卷
 					</button>
 				</div>
 			</form>
 		</div>
 
 		<!--悬浮修改窗口-->
-		<div id="lightToEdit" class="modal fade" aria-hidden="true" aria-labelledby="edit-title" role="dialog"  tabindex="-1" >
+		<div id="lightToEdit" class="modal fade" aria-hidden="true" aria-labelledby="edit-title" role="dialog"
+		     tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" >x
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x
 						</button>
 						<h4 id="edit-title" class="modal-title">问题编辑</h4>
 					</div>
@@ -114,31 +114,36 @@
 							<div class="form-group">
 								<label for="question-info">题干</label>
 								<!--<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>-->
-								<textarea  id="question-info" class="form-control" placeholder="题干" required autofocus></textarea>
+								<textarea id="question-info" class="form-control" placeholder="题干" required
+								          autofocus></textarea>
 							</div>
 							<div class="form-group" id="question-edit-answer-A">
 								<label for="answer">选项A</label>
-								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-A">
+								<input type="text" class="form-control" placeholder="答案" required
+								       id="question-edit-answer-input-A">
 							</div>
 							<div class="form-group" id="question-edit-answer-B">
 								<label for="answer">选项B</label>
-								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-B">
+								<input type="text" class="form-control" placeholder="答案" required
+								       id="question-edit-answer-input-B">
 							</div>
 							<div class="form-group" id="question-edit-answer-C">
 								<label for="answer">选项C</label>
-								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-C">
+								<input type="text" class="form-control" placeholder="答案" required
+								       id="question-edit-answer-input-C">
 							</div>
 							<div class="form-group" id="question-edit-answer-D">
 								<label for="answer">选项D</label>
-								<input type="text"  class="form-control" placeholder="答案" required id="question-edit-answer-input-D">
+								<input type="text" class="form-control" placeholder="答案" required
+								       id="question-edit-answer-input-D">
 							</div>
 							<div class="form-group" id="question-edit-answer">
-								<label for="answer">答案</label>
-								<input type="text" id="answer" class="form-control" placeholder="答案" required>
+								<label for="answer">参考答案</label>
+								<input type="text" id="answer" class="form-control" placeholder="参考答案" required>
 							</div>
 							<div class="form-group" id="question-edit-judge">
 								<label for="question-edit-judge">题目正确性</label>
-								<select  class="form-control">
+								<select class="form-control">
 									<option value="True">正确</option>
 									<option value="False">错误</option>
 								</select>
@@ -162,19 +167,23 @@
 						</div>
 						</form>
 					</div>
-					<div class="modal-footer">
+					<div class="modal-footer" align="center">
 						<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-						<button class="btn btn-lg btn-primary btn-block" type="button" id="question-edit-btn">提交</button>
+						<div align="center">
+							<button class="btn m-button" type="button" style="width: 100px;" id="question-edit-btn">提交
+							</button>
+						</div>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div>
 		<!--添加问题窗口-->
-		<div id="lightToAdd" class="modal fade" aria-hidden="true" aria-labelledby="add-title-1" role="dialog"  tabindex="-1">
+		<div id="lightToAdd" class="modal fade" aria-hidden="true" aria-labelledby="add-title-1" role="dialog"
+		     tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"  >
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 							×
 						</button>
 						<h2 id="add-title-1" class="modal-title">试卷问题添加</h2>
@@ -193,49 +202,52 @@
 							</div>
 							<div class="form-group">
 								<label for="question-add-info">题干</label>
-								<textarea  id="question-add-info" class="form-control" placeholder="题干" required autofocus></textarea>
+								<textarea id="question-add-info" class="form-control" placeholder="题干" required
+								          autofocus></textarea>
 							</div>
 
 							<div class="form-group" id="question-add-answer-A">
 								<label for="answer">选项A</label>
 								<label class="in">
-									<input type="text"  class="form-control" placeholder="选项A" required>
+									<input type="text" class="form-control" id="question-add-answer-input-A" placeholder="选项A" required>
 								</label>
 							</div>
 							<div class="form-group" id="question-add-answer-B">
 								<label for="answer">选项B</label>
 								<label class="in">
-									<input type="text"  class="form-control" placeholder="选项B" required>
+									<input type="text" class="form-control" id="question-add-answer-input-B" placeholder="选项B" required>
 								</label>
 							</div>
 							<div class="form-group" id="question-add-answer-C">
 								<label for="answer">选项C</label>
 								<label class="in">
-									<input type="text"  class="form-control" placeholder="选项C" required>
+									<input type="text" class="form-control" id="question-add-answer-input-C" placeholder="选项C" required>
 								</label>
 							</div>
 							<div class="form-group" id="question-add-answer-D">
 								<label for="answer">选项D</label>
 								<label class="in">
-									<input type="text"  class="form-control" placeholder="选项D" required>
+									<input type="text" class="form-control"id="question-add-answer-input-D"  placeholder="选项D" required>
 								</label>
 							</div>
 
 							<div class="form-group" id="question-add-judge">
 								<label for="question-add-judge">题目是否正确</label>
-								<select  class="form-control">
+								<select class="form-control">
 									<option th:value="True">正确</option>
 									<option th:value="False">错误</option>
 								</select>
 							</div>
 							<div class="form-group">
-								<label for="answer">答案</label>
-								<input type="text" id="question-add-answer" class="form-control" placeholder="答案" required>
+								<label for="answer">参考答案</label>
+								<input type="text" id="question-add-answer" class="form-control" placeholder="参考答案"
+								       required>
 							</div>
 
 							<div class="form-group">
 								<label for="score">分值</label>
-								<input type="text" id="question-add-score" class="form-control" placeholder="分数" required>
+								<input type="text" id="question-add-score" class="form-control" placeholder="分数"
+								       required>
 							</div>
 							<div class="form-group">
 								<label for="question-add_type">题目类型</label>
@@ -248,7 +260,11 @@
 					</div>
 					<div class="modal-footer">
 						<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-						<button class="btn btn-lg btn-primary btn-block" type="button" id="question-add-btn">保存试卷</button>
+						<div align="center">
+							<button class="btn btn-lg btn-block m-button" style="width: 200px" type="button"
+							        id="question-add-btn">保存试卷
+							</button>
+						</div>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
@@ -258,24 +274,25 @@
 	<script>
         /*数据回显*/
         let examValue = $("#exam-questions").val();
+
         let exam = JSON.parse(examValue);
         $("#exam-id").val(exam.id);
         $("#exam-name").val(exam.name);
         //日期切割成最小单位为分
-        let start_time = exam.startTime.toString().replace("T"," ").slice(0,16);
-        let end_time   = exam.endTime.toString().replace("T"," ").slice(0,16);
+        let start_time = exam.startTime.toString().replace("T", " ").slice(0, 16);
+        let end_time = exam.endTime.toString().replace("T", " ").slice(0, 16);
         $("#start_time").val(start_time);
         $("#end_time").val(end_time);
-        document.getElementById("add-title").innerHTML =  '【' +exam.name +  '】';
+        document.getElementById("add-title").innerHTML = '【' + exam.name + '】';
 
-		/*日期控件格式化*/
+        /*日期控件格式化*/
         $('.form_datetime').datetimepicker({
             format: 'yyyy-mm-dd hh:ii',
             autoclose: 1,
-            todayBtn:  1,
-	        language: 'zh-CN',
+            todayBtn: 1,
+            language: 'zh-CN',
             todayHighlight: 1,
-	        startView: 2,
+            startView: 2,
         });
 
         /*表格初始化*/
@@ -283,9 +300,10 @@
             uniqueId: 'id',
             striped: true,
             search: true,
+            classes: "table table-hover table-white",
             showRefresh: true,
             showColumns: true,
-	        showFooter: true,
+            showFooter: true,
             data: exam.questions,
             columns: [{
                 field: 'id',
@@ -294,13 +312,13 @@
                 sortOrder: "asc",
                 align: "center",
                 width: 10,
-	            footerFormatter: function () {
-		            return '试卷总况'
+                footerFormatter: function () {
+                    return '试卷总况'
                 }
             }, {
                 field: 'infoTextContent',
                 title: '问题题干',
-	            class: 'md',
+                class: 'md',
                 sortable: true,
                 sortOrder: "asc",
                 width: 360,
@@ -309,12 +327,12 @@
                 field: 'type',
                 title: '题目类型',
                 width: 120,
-	            class: 'question-type',
+                class: 'question-type',
                 sortable: true,
                 sortOrder: "asc",
                 align: "center",
                 footerFormatter: function (rows) {
-                    return '题目总数: '+ rows.length;
+                    return '题目总数: ' + rows.length;
                 }
 
             }, {
@@ -322,14 +340,14 @@
                 title: '分数',
                 sortable: true,
                 sortOrder: "asc",
-                width: 60,
+                width: 100,
                 align: "center",
-	            footerFormatter: function (rows) {
+                footerFormatter: function (rows) {
                     let count = 0;
-                    for(let i in rows){
+                    for (let i in rows) {
                         count += rows[i].score;
                     }
-                    return '总分: '+ count;
+                    return '总分: ' + count;
                 }
             }, {
                 field: 'id',
@@ -338,13 +356,14 @@
                 align: 'center',
                 formatter: actionFormatter,
                 footerFormatter: function (rows) {
-                    return '\t\t\t\t\t<a href="#" class="btn btn-success btn-default" onclick="popWinToAdd()">\n' +
-                        '\t\t\t\t\t\t<span class="glyphicon glyphicon-plus"></span> 添加问题\n' +
+                    return '\t\t\t\t\t<a href="#" class="btn btn-success btn-default m-button" onclick="popWinToAdd()">\n' +
+                        '\t\t\t\t\t\t<span class="glyphicon glyphicon-plus" ></span> 添加问题\n' +
                         '\t\t\t\t\t</a>'
 
                 }
             }]
         });
+        $("thead").addClass("table-thead");
 
         /*图标初始化*/
         function actionFormatter(value) {
@@ -356,19 +375,19 @@
         }
 
         /*Markdown转换 问题类型转换*/
-        $(function (){
+        $(function () {
             let m = $(".md")
-            for(let i=0;i<m.length;i++){
+            for (let i = 0; i < m.length; i++) {
                 let converter = new Markdown.Converter();
-                m[i].innerHTML=converter.makeHtml(m[i].innerText)
+                m[i].innerHTML = converter.makeHtml(m[i].innerText)
             }
             let type = $(".question-type")
-            for(let i=0;i<type.length;i++){
+            for (let i = 0; i < type.length; i++) {
                 let t = type[i].innerText;
-                if(t == "SINGLE_CHOICE") type[i].innerText="单选题"
-	            else if(t == "MULTIPLE_CHOICE") type[i].innerText="多选题"
-	            else if(t == "FILL_BLANK") type[i].innerText="填空题"
-	            else if(t == "JUDGE")type[i].innerText="选择题"
+                if (t == "SINGLE_CHOICE") type[i].innerText = "单选题"
+                else if (t == "MULTIPLE_CHOICE") type[i].innerText = "多选题"
+                else if (t == "FILL_BLANK") type[i].innerText = "填空题"
+                else if (t == "JUDGE") type[i].innerText = "选择题"
 
             }
         })
@@ -415,7 +434,7 @@
         function popWinToEdit(question) {
             document.getElementById("edit-title").innerText = "编辑问题" + question.data.id;
             $("#question-edit-id").val(question.data.id);
-            $("#question-type").val(question.data.type);
+            $("#question-edit-type").val(question.data.type);
             $("#question-info").val(question.data.infoTextContent);
             $("#question-edit-answer-input-A").val(question.data.option1)
             $("#question-edit-answer-input-B").val(question.data.option2)
@@ -430,25 +449,25 @@
         }
 
         //根据题目类型来调整表单
-        function changEditForm(){
+        function changEditForm() {
             let type = $("#question-edit-type").val();
             // alert("当前选项"+ $("#question--type").val());
             console.log(type);
-            if(type == 'MULTIPLE_CHOICE' || type == "SINGLE_CHOICE") {
+            if (type == 'MULTIPLE_CHOICE' || type == "SINGLE_CHOICE") {
                 $("#question-edit-answer").show();
                 $("#question-edit-answer-A").show();
                 $("#question-edit-answer-B").show();
                 $("#question-edit-answer-C").show();
                 $("#question-edit-answer-D").show();
                 $("#question-edit-judge").hide();
-            }else if(type == 'FILL_BLANK'){
+            } else if (type == 'FILL_BLANK') {
                 $("#question-edit-answer").show();
                 $("#question-edit-answer-A").hide();
                 $("#question-edit-answer-B").hide();
                 $("#question-edit-answer-C").hide();
                 $("#question-edit-answer-D").hide();
                 $("#question-edit-judge").hide();
-            }else{
+            } else {
                 $("#question-edit-answer").hide();
                 $("#question-edit-answer-A").hide();
                 $("#question-edit-answer-B").hide();
@@ -459,24 +478,24 @@
         }
 
         //根据题目类型来调整表单
-        function changAddForm(){
+        function changAddForm() {
             var type = $("#question-add-type").val();
             console.log(type);
-            if(type == 'MULTIPLE_CHOICE' || type == "SINGLE_CHOICE") {
+            if (type == 'MULTIPLE_CHOICE' || type == "SINGLE_CHOICE") {
                 $("#question-add-answer").show();
                 $("#question-add-answer-A").show();
                 $("#question-add-answer-B").show();
                 $("#question-add-answer-C").show();
                 $("#question-add-answer-D").show();
                 $("#question-add-judge").hide();
-            }else if(type == 'FILL_BLANK'){
+            } else if (type == 'FILL_BLANK') {
                 $("#question-add-answer").show();
                 $("#question-add-answer-A").hide();
                 $("#question-add-answer-B").hide();
                 $("#question-add-answer-C").hide();
                 $("#question-add-answer-D").hide();
                 $("#question-add-judge").hide();
-            }else{
+            } else {
                 $("#question-add-answer").hide();
                 $("#question-add-answer-A").hide();
                 $("#question-add-answer-B").hide();
@@ -492,8 +511,8 @@
                 "id": $("#exam-id").val(),
                 "name": $("#exam-name").val(),
                 "questions": exam.questions,
-                "startTime": $("#start_time").val()+":00",
-                "endTime": $("#end_time").val()+":00",
+                "startTime": $("#start_time").val() + ":00",
+                "endTime": $("#end_time").val() + ":00",
             });
             $.ajax({
                 url: "/issuer/updateExam",
@@ -516,10 +535,10 @@
             let questionToAdd = JSON.stringify({
                 "infoTextContent": $("#question-add-info").val(),
                 "score": $("#question-add-score").val(),
-                "option1":$("#question-edit-answer-input-A").val(),
-                "option2":$("#question-edit-answer-input-B").val(),
-                "option3":$("#question-edit-answer-input-C").val(),
-                "option4":$("#question-edit-answer-input-D").val(),
+                "option1": $("#question-add-answer-input-A").val(),
+                "option2": $("#question-add-answer-input-B").val(),
+                "option3": $("#question-add-answer-input-C").val(),
+                "option4": $("#question-add-answer-input-D").val(),
                 "type": $("#question-add-type").val(),
                 "correctAnswer": $("#question-add-answer").val(),
 				"questionType": $("#question-add_type").val() === "通识题" ? "generalQuestions" : "specialQuestions",
@@ -539,10 +558,10 @@
             let formData = JSON.stringify({
                 "id": $("#question-edit-id").val(),
                 "infoTextContent": $("#question-info").val(),
-                "option1":$("#question-edit-answer-input-A").val(),
-                "option2":$("#question-edit-answer-input-B").val(),
-                "option3":$("#question-edit-answer-input-C").val(),
-                "option4":$("#question-edit-answer-input-D").val(),
+                "option1": $("#question-edit-answer-input-A").val(),
+                "option2": $("#question-edit-answer-input-B").val(),
+                "option3": $("#question-edit-answer-input-C").val(),
+                "option4": $("#question-edit-answer-input-D").val(),
                 "score": $("#score").val(),
                 "type": $("#question-edit-type").val(),
 				"questionType": $("#question_type").val()==="通识题"?"generalQuestions":"specialQuestions",
@@ -566,8 +585,8 @@
         })
 
         //试卷预览方法
-        $("#exam-view").click(function (){
-            window.location.href="/issuer/examView?examId="+$("#exam-id").val()
+        $("#exam-view").click(function () {
+            window.location.href = "/issuer/examView?examId=" + $("#exam-id").val()
         })
 
 	</script>

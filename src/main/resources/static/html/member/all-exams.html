@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>考试系统-考试</title>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+		<link rel="stylesheet" href="/css/me.css">
+		<!--基础js-->
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!--BootStrap Table-->
+		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+	</head>
+	<body>
+		<nav th:replace="../static/html/common/fragments.html::member_menu(2)"></nav>
+		<div class="container">
+			<table id="exam-table">
+				<thead class="table-thead">
+					<tr>
+						<th data-sortable="true">考试名称</th>
+						<th data-sortable="true">考试日期</th>
+						<th data-sortable="true">考试时间</th>
+						<th data-width="20" data-sortable="true">考试时长（分钟）</th>
+						<th data-width="20" data-sortable="true">试卷总分</th>
+						<th data-width="10">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="exam,index:${examList}">
+						<td th:text="${exam.name}"></td>
+						<td th:text="${#temporals.format(exam.startTime,'yyyy-MM-dd')}"></td>
+						<td th:text="${#temporals.format(exam.startTime,'HH:mm')} + '--' + ${#temporals.format(exam.endTime,'HH:mm')}"></td>
+						<td th:text="${exam.examTime}"></td>
+						<td th:text="${exam.examTotalScore}"></td>
+						<td th:if="${list[index.index]==1}">
+							<button type="button" class="btn btn-info" th:id="${exam.id}" onclick="getExam(this.id)">
+								回顾考试
+							</button>
+						</td>
+						<td th:if="${list[index.index]!=1}">
+							<button type="button" class="btn btn-success" th:id="${exam.id}" onclick="getExam(this.id)">
+								参加考试
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+	<script>
+        function getExam(buttonId) {
+            $.ajax({
+                url: "/isInExamTime?examId=" + buttonId,
+                type: "get"
+            }).done(function (data) {
+                if (data.code === 200)
+                    window.location.href = "/Exam?examId=" + buttonId;
+                else if (data.code === 603) {
+                    alert('考试已结束,您可以继续参加考试但无法提交')
+                    window.location.href = "/Exam?examId=" + buttonId;
+                } else alert(data.message)
+            })
+        }
+
+        $("#exam-table").bootstrapTable({
+            search: true,
+            showRefresh: true,
+            showColumns: true,
+            sortable: true,
+            classes: "table table-hover table-white",
+            striped: false,
+
+        });
+	</script>
+</html>
+

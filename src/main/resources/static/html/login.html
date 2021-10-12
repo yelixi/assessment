@@ -1,52 +1,78 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Please sign in</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="/css/me.css">
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-</head>
-<body>
-<div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">请 登 录</h2>
-        <p>
-            <label for="studentId" class="sr-only">Username</label>
-            <input type="text" id="studentId" name="studentId" class="form-control" placeholder="studentId" required autofocus>
-        </p>
-        <p>
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6" />
-        <button class="btn btn-lg btn-primary btn-block" type="button" id="btn">Sign in</button>
-    </form>
-</div>
-</body>
-<script>
-    $("#btn").click(function (){
-        $.ajax({
-            url  : '/login?studentId='+$("#studentId").val()+'&password='+$("#password").val(),
-            type : 'post'
-        }).done(function(data){
-            if(data.code===200) {
-                if (data.data.role === "ROOT")
-                    window.location.href = '/home/root'
-                else if (data.data.role === "ISSUER")
-                    window.location.href = '/home/issuer'
-                else if(data.data.role==="CORRECTOR")
-                    window.location.href='/home/corrector'
-                else
-                    window.location.href='/home/member'
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Please sign in</title>
+		<link rel="stylesheet" href="/css/me.css">
+		<link rel="stylesheet" href="/css/login.css">
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="father">
+			<div class="logo">
+				<img src="/images/Logo.png"/>
+			</div>
+			<div>
+				<h1 class="title">社团招新考核系统</h1>
+			</div>
+			<form class="form" action="/login" onkeydown="keyLogin()">
+				<div class="textBox" id="div1">
+					<span>账号</span>
+					<input type="text" placeholder="StudentId" id="studentId" name="studentId" onfocusin="clickOne()"
+					       required>
+				</div>
+				<div class="textBox" id="div2">
+					<span>密码</span>
+					<input type="password" id="password" name="password" placeholder="Password" onfocusin="clickTwo()"
+					       required>
+				</div>
+				<div style="text-align: center">
+					<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+					<input class="button" type="button" value="登录" id="btn" style="zoom: 1.18"/>
+				</div>
+				<div class="tail">
+					Community Recruitment Assessment System
+				</div>
+			</form>
+		</div>
+	</body>
+	<script>
+        function clickOne() {
+            document.getElementById("div2").style.border = null
+            document.getElementById("div1").style.border = "1px solid #004CFF"
+        }
+
+        function clickTwo() {
+            document.getElementById("div1").style.border = null
+            document.getElementById("div2").style.border = "1px solid #004CFF"
+        }
+
+        $(document).keyup(function (e) {
+            if (e.keyCode == 13) {
+                $("#btn").click();
             }
-        }).fail(function (data){
-            alert(data.responseJSON.message)
-        });
-    })
-</script>
+        })
+        $("#btn").click(function () {
+            $.ajax({
+                url: '/login?studentId=' + $("#studentId").val() + '&password=' + $("#password").val(),
+                type: 'post'
+            }).done(function (data) {
+                if (data.code === 200) {
+                    if (data.data.role === "ROOT")
+                        window.location.href = '/home/root'
+                    else if (data.data.role === "ISSUER")
+                        window.location.href = '/home/issuer'
+                    else if (data.data.role === "CORRECTOR")
+                        window.location.href = '/home/corrector'
+                    else
+                        window.location.href = '/home/member'
+                }
+            }).fail(function (data) {
+                alert(data.responseJSON.message)
+            });
+        })
+	</script>
 </html>

@@ -1,5 +1,7 @@
 package com.sacc.assessment.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sacc.assessment.entity.ExamPaper;
 import com.sacc.assessment.entity.ExamPaperAnswer;
 import com.sacc.assessment.enums.ResultEnum;
@@ -24,6 +26,8 @@ import java.util.List;
  * Created by 林夕
  * Date 2021/6/15 10:18
  */
+
+/*TODO:获取最近的一次考试, 优化表单*/
 //@PreAuthorize("hasRole('MEMBER')")
 @Controller
 public class MemberController {
@@ -70,5 +74,31 @@ public class MemberController {
     @ResponseBody
     public RestResult<Boolean> isInExamTime(@RequestParam Integer examId){
         return RestResult.success(examPaperService.isInExamTime(examId));
+    }
+
+    @Secured({"ROLE_MEMBER"})
+    @GetMapping("/getMyExams")
+    public String getMyExams(Model model, Authentication authentication){
+        List<ExamPaper> examPaperList = examPaperService.getAllExam();
+        model.addAttribute("examList",examPaperList);
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+        List<Integer> list = new ArrayList<>();
+        for (ExamPaper examPaper : examPaperList) {
+            if(examPaperAnswerService.findByUserIdAndExamPaperId(userDetail.getId(),examPaper.getId())!=null){
+                list.add(1);
+            }
+            else list.add(0);
+        }
+        model.addAttribute("list",list);
+        return "../static/html/member/all-exams.html";
+    }
+
+    @Secured({"ROLE_MEMBER"})
+    @ResponseBody
+    @GetMapping("/myRecentExam")
+    public RestResult<ExamPaper> getUnfinishedExam(Authentication authentication){
+        UserDetail principal = (UserDetail)authentication.getPrincipal();
+        List<ExamPaper> u = examPaperService.getMyUnfinishedExamPaper(principal);
+        return RestResult.success(200, u.isEmpty() ? null : u.get(0));
     }
 }
