@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+</head>
+<body>
+<div id="d">```
+  public class Son extends Father{
+
+     static{
+         System.out.println("Son static");
+     }
+
+     public Son(){
+         System.out.println("Son constructor");
+     }
+
+     public static void main(String[] args) {
+         new Son();
+     }
+  }
+
+  class Father{
+
+     static{
+         System.out.println("Father static");
+     }
+
+     public Father(){
+         System.out.println("Father constructor");
+     }
+  }
+
+  ```</div>
+</body>
+<script>
+  let converter = new Markdown.Converter()
+  let d = document.getElementById('d')
+  d.innerHTML = converter.makeHtml(d.innerText)
+</script>
+</html>

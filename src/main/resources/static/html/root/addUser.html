@@ -24,6 +24,10 @@
 					<input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
 				</p>
 				<p>
+					<label for="email" class="sr-only">studentId</label>
+					<input type="text" id="email" name="email" class="form-control" placeholder="Email" required autofocus>
+				</p>
+				<p>
 					<label for="password" class="sr-only">Password</label>
 					<input type="text" id="password" name="password" class="form-control" placeholder="Password" required>
 				</p>
@@ -49,6 +53,7 @@
 				"studentId":$("#studentId").val(),
                 "username":$("#username").val(),
                 "password":$("#password").val(),
+				"email":$("#email").val(),
                 "role":$("#role").val()
             })
             $.ajax({
@@ -60,9 +65,10 @@
             }).done(function (data){
                 if(data.code===200) {
                     alert("注册成功")
+					$("#email").val("")
+					$("#studentId").val("")
                     $("#username").val("")
                     $("#password").val("")
-                    $("#role").val("")
                 }
                 else
                     alert(data.message)

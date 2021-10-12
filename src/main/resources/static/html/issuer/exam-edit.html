@@ -105,9 +105,9 @@
 							<div class="form-group">
 								<label for="question-edit-type">题目类型</label>
 								<select id="question-edit-type" class="form-control" onchange="changEditForm()">
-									<option th:value="MULTIPLE_CHOICE">多选</option>
-									<option th:value="SINGLE_CHOICE">单选</option>
 									<option th:value="FILL_BLANK">填空</option>
+									<option th:value="SINGLE_CHOICE">单选</option>
+									<option th:value="MULTIPLE_CHOICE">多选</option>
 									<option th:value="JUDGE">判断</option>
 								</select>
 							</div>
@@ -153,7 +153,13 @@
 									<option>是</option>
 									<option>否</option>
 								</select>
-							</div>
+							</div><div class="form-group">
+							<label for="question_type">题目类型</label>
+							<select id="question_type" class="form-control">
+								<option>通识题</option>
+								<option>专项题</option>
+							</select>
+						</div>
 						</form>
 					</div>
 					<div class="modal-footer">
@@ -179,9 +185,9 @@
 							<div class="form-group">
 								<label for="question-add-type">题目类型</label>
 								<select id="question-add-type" class="form-control" onchange="changAddForm()">
-									<option th:value="MULTIPLE_CHOICE">多选</option>
-									<option th:value="SINGLE_CHOICE">单选</option>
 									<option th:value="FILL_BLANK">填空</option>
+									<option th:value="SINGLE_CHOICE">单选</option>
+									<option th:value="MULTIPLE_CHOICE">多选</option>
 									<option th:value="JUDGE">判断</option>
 								</select>
 							</div>
@@ -230,6 +236,13 @@
 							<div class="form-group">
 								<label for="score">分值</label>
 								<input type="text" id="question-add-score" class="form-control" placeholder="分数" required>
+							</div>
+							<div class="form-group">
+								<label for="question-add_type">题目类型</label>
+								<select id="question-add_type" class="form-control">
+									<option th:value="generalQuestions">通识题</option>
+									<option th:value="specialQuestions">专项题</option>
+								</select>
 							</div>
 						</form>
 					</div>
@@ -411,6 +424,7 @@
             $("#answer").val(question.data.correctAnswer);
             $("#score").val(question.data.score);
             $("#delete").val((question.data.deleted) ? "是" : "否");
+			$("#question_type").val((question.data.questionType==="generalQuestion") ? "通识题" : "专项题");
 	        $("#lightToEdit").modal();
             changEditForm();
         }
@@ -508,6 +522,7 @@
                 "option4":$("#question-edit-answer-input-D").val(),
                 "type": $("#question-add-type").val(),
                 "correctAnswer": $("#question-add-answer").val(),
+				"questionType": $("#question-add_type").val() === "通识题" ? "generalQuestions" : "specialQuestions",
                 "deleted": $("#canUse").val() == "是" ? false : true
             });
             let s = JSON.stringify(exam.questions);
@@ -530,6 +545,7 @@
                 "option4":$("#question-edit-answer-input-D").val(),
                 "score": $("#score").val(),
                 "type": $("#question-edit-type").val(),
+				"questionType": $("#question_type").val()==="通识题"?"generalQuestions":"specialQuestions",
                 "correctAnswer": $("#answer").val(),
                 "deleted": $("#delete").val() === "是",
             })

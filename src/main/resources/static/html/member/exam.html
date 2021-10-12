@@ -15,8 +15,8 @@
     <!--BootStrap Table-->
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
     <!--markdown-->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+    <!--<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>-->
+    <script type="text/javascript" src="/js/marked.js" charset="UTF-8"></script>
     <style>
 
         div {
@@ -74,16 +74,33 @@
             /*word-break: break-all !important;*/
             background-color: #F5F5F5;
         }
+        td,
+        th {
+            border: solid #add9c0;
+            border-width: 0 1px 1px 0;
+        }
+
+        table {
+            border: solid #add9c0;
+            border-width: 1px 0 0 1px;
+        }
+        img{
+            max-width: 600px;
+            max-height: 400px;
+        }
     </style>
 </head>
-<body>
+<body style="position: relative;">
     <!-- // md -->
     <nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
     <h1  style="text-align: center; margin-top: 5px; margin-bottom: 10px"  th:text="${exam.getName()}"><strong></strong></h1>
 <!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
     <div style="text-align: center; display: inline"> <p th:text="'考试时间 : ' +  ${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')} + ' - ' +     ${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')+'考试时间内均可提交,请及时提交以保存答案'}"></p></div>
-    <div class="exam_container "  th:id="${exam.getId()}">
-        <form id="answer-form" class="d1" ></form>
+    <div class="exam_container "  th:id="'exam_'+${exam.getId()}" style="width: 70%;left: 15%;position: relative;">
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px"><strong>通 识 题</strong></h2>
+        <form id="general-questions-answer-form" class="d1" ></form>
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px"><strong>专 项 题</strong></h2>
+        <form id="special-questions-answer-form" class="d1" ></form>
     </div>
 
 
@@ -137,16 +154,18 @@
             //console.log("answer["+i+"]:"+answer[i])
         }
         let answers = JSON.stringify(answer)
-            .replace(new RegExp("\\\\\"", "gm"), "\'")
+            .replace(new RegExp("\\\\\"", "gm"), "\'").replace(new RegExp("\\\\","gm"),"\\")
             /*.replace(new RegExp("\\n","gm"),"\n")*/
         console.log(answers)
+
         let bodyForm = JSON.stringify({
-            "examPaperId": $(".exam_container ").attr("id"),
+            "examPaperId": $(".exam_container ").attr("id").substring(5),
             //"answers": JSON.stringify(answer)
             "answers": answers
         }).replace(new RegExp("\\\\\"", "gm"), "\"")
             .replace(new RegExp("\\\\n","gm"),"n")
-            .replace(new RegExp("\\\\t","gm"),"t").replace("\"" + answers + "\"", answers)
+            .replace(new RegExp("\\\\t","gm"),"t")
+            .replace(new RegExp("\\\\\\\\","gm"),"\\").replace("\"" + answers + "\"", answers)
         console.log("body:" + bodyForm)
         $.ajax({
             url: "/uploadAnswer",
@@ -186,15 +205,19 @@
 
     $(function () {
         $.ajax({
-            url: '/getExam?examId='+$(".exam_container").attr("id"),
+            url: '/getExam?examId='+$(".exam_container").attr("id").substring(5),
             type: 'get',
         }).done(function (res) {
             if (res.code === 200) {
                 console.log(res)
                 let q = res.data.questions
-                let form = document.getElementById('answer-form')
                 // console.log(q)
                 for (let i = 0; i < q.length; i++) {
+                    let form;
+                    if(q[i].questionType==='generalQuestions')
+                        form = document.getElementById('general-questions-answer-form')
+                    else
+                        form = document.getElementById('special-questions-answer-form')
                     let answerNum=0
                     // 创建div用于存放 解析后的 .md 格式的文档 以及普通文本样式的题目
                     let qe = document.createElement('div')
@@ -207,14 +230,12 @@
                     /*let markdown = new Reader(res.data.questions[i].infoTextContent)
                     console.log(markdown)*/
                     //转为md格式
-                    let converter = new Markdown.Converter();
-                    label.innerHTML =  converter.makeHtml( res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)') ;
+                    //let converter = new Markdown.Converter();
+                    label.innerHTML =  marked( res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)') ;
                     // 插入元素
                     qe.insertBefore(label,null)
                     form.insertBefore(qe, null)
                     form.insertBefore(document.createElement('hr'),null);
-
-
 
                     if (q[i].type === 'SINGLE_CHOICE') {
                         // 创建单选题的题目和答案
@@ -333,8 +354,15 @@
                 }
             }
         }).then(function (){
+            /*let m = document.getElementsByClassName('question')
+            for (let i = 0; i < m.length; i++) {
+                let label = m[i].getElementsByTagName('label')
+                let converter = new Markdown.Converter();
+                console.log(label[0].innerText)
+                label[0].innerHTML = converter.makeHtml(label[0].innerText)
+            }*/
             $.ajax({
-                url: '/getOneAnswer?examId='+$(".exam_container").attr("id"),
+                url: '/getOneAnswer?examId='+$(".exam_container").attr("id").substring(5),
                 type: 'get',
             }).done(function (res){
                 console.log(res)
@@ -348,6 +376,9 @@
                         //console.log(q_class_id)
                         let d = document.getElementById(q_class_id)
                         //let d = document.getElementById('question-1')
+                        console.log(q_class_id)
+                        console.log(d)
+
                         console.log(d.getAttribute('question_type'))
                         switch (d.getAttribute('question_type')) {
                             case 'SINGLE_CHOICE':
