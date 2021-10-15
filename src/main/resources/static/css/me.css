@@ -258,9 +258,9 @@ td {
 }
 
 .m-formGroup-margin {
-    margin-left: 21%;
-    margin-right: 10%;
-    margin-bottom: 2%;
+    margin-left: 21%; !important;
+    margin-right: 10%; !important;
+    margin-bottom: 2%;!important;
 }
 
 .file {

@@ -34,6 +34,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     public static final String[] NO_AUTH_LIST={
             "/login",
+            "/register",
             "/static/**",
             "/images/**",
             "/css/**",

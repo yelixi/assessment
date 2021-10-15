@@ -51,10 +51,10 @@ public class UserController {
         return RestResult.success(userService.register(user));
     }*/
 
-    /*@GetMapping("/register")
+    @GetMapping("/register")
     public String register(){
-        return "../static/html/user/register.html";
-    }*/
+        return "../static/html/register.html";
+    }
 
     @Secured({"ROLE_ROOT"})
     @GetMapping("/home/root")
@@ -105,11 +105,6 @@ public class UserController {
                 "../static/html/common/fragments.html::" + principal.getRole().toString().toLowerCase()+"_menu(999)");
         return "../static/html/common/changePassword.html";
     }
-   /* @ResponseBody
-    @GetMapping("/js/{url}")
-    public String getJs(@PathVariable String url){
-        return "../static/js"+url;
-    }*/
 
     @GetMapping("/img/{filename}")
     public void getImg(@PathVariable String filename, HttpServletResponse resp) throws IOException {

@@ -7,6 +7,32 @@
 		<title>模板</title>
 	</head>
 	<body>
+		<nav th:fragment="default_menu" class="navbar navbar-default " role="navigation">
+			<div class="container-fluid">
+				<div style=" margin-left: 7%">
+					<div style="float: left;">
+						<img src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/assessment/SACC_logo_png_3000px.png"
+						     alt="加载失败" title="科协头像" class="m-nav-logo"/>
+					</div>
+					<a class="navbar-brand m-nav-brand" style="color: black" th:href="@{/home/}">社团招新系统</a>
+				</div>
+				<div class="pull-right" style=" margin-right: 12%;">
+					<ul class="nav navbar-nav m-nav">
+						<li>
+							<a href="#" th:href="@{/login}" class="text-decoration-none">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+								     class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+									<path fill-rule="evenodd"
+									      d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"></path>
+									<path fill-rule="evenodd"
+									      d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+								</svg>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 		<!--Issuer导航-->
 		<nav th:fragment="issuer_menu(n)" class="navbar navbar-default " role="navigation">
 			<div class="container-fluid">

@@ -2,10 +2,7 @@
       xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<title>Please sign in</title>
+		<title>登录</title>
 		<link rel="stylesheet" href="/css/me.css">
 		<link rel="stylesheet" href="/css/login.css">
 		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -31,7 +28,10 @@
 				</div>
 				<div style="text-align: center">
 					<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-					<input class="button" type="button" value="登录" id="btn" style="zoom: 1.18"/>
+					<input class="button" type="button" value="登录" id="btn" style="zoom: 1.15"/>
+				</div>
+				<div style="text-align: center">
+					<input class="button" type="button" value="注册" id="register-btn" style="zoom: 1.15 ;margin-top: 5px;"/>
 				</div>
 				<div class="tail">
 					Community Recruitment Assessment System
@@ -40,6 +40,7 @@
 		</div>
 	</body>
 	<script>
+
         function clickOne() {
             document.getElementById("div2").style.border = null
             document.getElementById("div1").style.border = "1px solid #004CFF"
@@ -55,6 +56,9 @@
                 $("#btn").click();
             }
         })
+        $("#register-btn").click(function (){
+           window.location.href ="/register"
+        }),
         $("#btn").click(function () {
             $.ajax({
                 url: '/login?studentId=' + $("#studentId").val() + '&password=' + $("#password").val(),
@@ -74,5 +78,6 @@
                 alert(data.responseJSON.message)
             });
         })
+
 	</script>
 </html>
