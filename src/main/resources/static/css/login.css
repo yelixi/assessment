@@ -42,11 +42,13 @@ input {
     width: 80%;
     height: 25px;
     border: none;
+    background-color: white;
 }
 
 input:focus {
     outline: none;
     zoom: 1.09;
+    background-color: white;
     /*background-color: #fffbf7;*/
 }
 

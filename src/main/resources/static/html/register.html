@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--试卷新增页面-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>用户注册</title>
+		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="/css/me.css">
+		<link rel="stylesheet" href="/css/bootstrapValidator.min.css">
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/js/bootstrapValidator.min.js" charset="UTF-8"></script>
+	</head>
+	<style>
+        .m-register-center{
+            width: 625px; !important;
+            height: 460px; !important;
+        }
+        .m-register-heading{
+            left: -36%
+        }
+        .m-register-margin{
+            margin-left: 14%;
+            margin-right: -31%;
+        }
+	</style>
+	<body>
+		<nav th:replace="../static/html/common/fragments.html::default_menu"></nav>
+		<div class="m-center m-register-center">
+			<h2 class="m-userinfo-heading m-register-heading" ><img
+					style="border: 5px solid green;background-color: green; margin-right: 10px"/>注册</h2>
+			<form method="post" role="form" action="/member/register" class="form-horizontal" id="register-form" style="margin-left:90px;">
+				<div class="form-group">
+					<label for="studentId" class="control-label col-sm-3 m-userinfo-label">学号</label>
+					<div class="col-sm-6">
+						<input type="text" id="studentId" name="studentId" class="form-control m-input"
+						       placeholder="输入你的学号" required autofocus>
+					</div>
+				</div>
+				<div class="form-group m-formGroup-margin m-register-margin">
+					<label for="username" class="control-label col-sm-3 m-userinfo-label">姓名</label>
+					<div class="col-sm-6">
+						<input type="text" id="username" name="username" class="form-control m-input"
+						       placeholder="输入你的姓名" required autofocus>
+					</div>
+				</div>
+				<div class="form-group m-formGroup-margin m-register-margin">
+					<label for="email" class="control-label col-sm-3 m-userinfo-label">邮箱</label>
+					<div class="col-sm-6">
+						<input type="text" id="email" name="email" class="form-control m-input"
+						       placeholder="输入你的电子邮箱" required autofocus>
+					</div>
+				</div>
+				<div class="form-group m-formGroup-margin m-register-margin">
+					<label for="password" class="control-label col-sm-3 m-userinfo-label">密码</label>
+					<div class="col-sm-6">
+						<input type="text" id="password" name="password" class="form-control m-input"
+						       placeholder="输入你的密码" required>
+					</div>
+				</div>
+				<div class="form-group m-formGroup-margin m-register-margin">
+					<label for="check_password" class="control-label col-sm-3 m-userinfo-label">确认密码</label>
+					<div class="col-sm-6">
+						<input type="text" id="check_password" name="check_password" class="form-control m-input"
+						       placeholder="再次输入你的密码" required>
+					</div>
+				</div>
+				<br>
+			</form>
+			<div style="margin-top: 5px">
+				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+				<button class="m-button" type="button" style="width: 120px" id="btn">注册</button>
+			</div>
+		</div>
+	</body>
+	<script>
+		$("#register-form").bootstrapValidator({
+            message: 'This value is not valid',
+            // 表单框里右侧的icon
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+			fields:{
+                studentId:{
+                    validators:{
+                        notEmpty: {
+                            message: "学号不能为空!"
+                        },
+	                    regexp:{
+                            regexp: "^[A-Z]\\d{8}$",
+		                    message:"学号格式不正确！"
+	                    }
+                    }
+                },
+                username:{
+                    validators:{
+                        notEmpty:{
+                            message:"姓名不能为空！"
+                        },
+                        stringLength:{
+                            min: 2,
+                            max: 10,
+                            message: "姓名长度必须在2~10位之间！！"
+                        },
+
+
+                    }
+                },
+				email:{
+                    validators:{
+                        notEmpty:{
+                            message:"邮箱不能为空！"
+                        },
+                        regexp: {
+                            regexp:"[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?",
+	                        message:"邮箱格式不正确！"
+                        }
+                    }
+				},
+                password:{
+                    validators:{
+                        notEmpty:{
+                            message:"密码不能为空！"
+                        },
+                        stringLength:{
+                            min: 6,
+                            max: 15,
+                            message: "密码长度必须在6-15位之间！！"
+                        },
+                        regexp: {
+                            message: "密码由小写字母、数字组成！",
+                            regexp: /^[a-z0-9]{6,10}$/
+                        },
+                    }
+                },
+                check_password:{
+                    validators:{
+                        identical:{
+                            field : "password",
+                            message:"两次密码不一致！"
+                        }
+                    }
+				}
+			}
+		});
+        $("#btn").click(function () {
+            let formData = JSON.stringify({
+                "studentId":$("#studentId").val(),
+                "username":$("#username").val(),
+                "password":$("#password").val(),
+                "email":$("#email").val(),
+            })
+            $.ajax({
+                url: "/register",
+                type: "post",
+                contentType: "application/json",
+                data: formData,
+                dataType: "json"
+            }).done(function (data) {
+                if (data.code === 200) {
+                    alert("注册成功")
+                    $("#email").val("")
+                    $("#studentId").val("")
+                    $("#username").val("")
+                    $("#password").val("")
+                    $("#role").val("")
+                } else
+                    alert(data.message)
+            })
+        })
+	</script>
+</html>

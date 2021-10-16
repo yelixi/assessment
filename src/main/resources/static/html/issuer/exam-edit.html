@@ -9,6 +9,7 @@
 		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 		<link rel="stylesheet" href="/css/me.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.4.3/css/animsition.min.css">
 		<link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 		<link href="/css/bootstrap-datetimepicker-min.css" rel="stylesheet" type="text/css">
 		<!--基础js-->
@@ -20,14 +21,18 @@
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 		<!--markdown解析-->
+<!--		<script type="text/javascript" src="/js/marked.min.js" charset="UTF-8"></script>-->
+<!--		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>-->
 		<script type="text/javascript" src="/js/marked.js" charset="UTF-8"></script>
+		<!--动画-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.4.3/js/jquery.animsition.min.js"></script>
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
 		<!--利用thymeleaf传数据给bootstrap生成js函数-->
 		<input type="hidden" th:value="${exam}" id="exam-questions"/>
 
-		<div class="m-container-small">
+		<div class="m-container-small animation">
 			<form class="form m-form" method="post" role="form">
 				<h1 id="add-title">查看考试</h1>
 				<br>
@@ -113,8 +118,7 @@
 							<div class="form-group">
 								<label for="question-info">题干</label>
 								<!--<input type="text" id="question-info" class="form-control" placeholder="题干" required autofocus>-->
-								<textarea id="question-info" class="form-control" placeholder="题干" required
-								          autofocus></textarea>
+								<textarea id="question-info" class="form-control" placeholder="题干" rows="10" required></textarea>
 							</div>
 							<div class="form-group" id="question-edit-answer-A">
 								<label for="answer">选项A</label>
@@ -271,6 +275,30 @@
 
 	</body>
 	<script>
+        $(document).ready(function() {
+            $(".animation").animsition({
+                inClass       :   'fade-in',
+                outClass      :   'fade-out',
+                inDuration    :    1500,
+                outDuration   :    800,
+                linkElement: '.animsition-link',
+                // e.g. linkElement: 'a:not([target="_blank"]):not([href^="#"])'
+                loading: true,
+                loadingParentElement: 'body', //animsition wrapper element
+                loadingClass: 'animsition-loading',
+                loadingInner: '<p> fdafsdaffaf </p>', // e.g ''
+                timeout: false,
+                timeoutCountdown: 5000,
+                onLoadEvent: true,
+                browser: [ 'animation-duration', '-webkit-animation-duration'],
+                // "browser" option allows you to disable the "animsition" in case the css property in the array is not supported by your browser.
+                // The default setting is to disable the "animsition" in a browser that does not support "animation-duration".
+                overlay : false,
+                overlayClass : 'animsition-overlay-slide',
+                overlayParentElement : 'body',
+                transition: function(url){ window.location.href = url; }
+            });
+        });
         /*数据回显*/
         let examValue = $("#exam-questions").val();
 
@@ -321,9 +349,10 @@
                 sortable: true,
                 sortOrder: "asc",
                 width: 360,
-				formatter: function(val, col, index){
-					return marked(val)
-				}
+	            formatter: function (value, col, index) {
+                    return marked(value);
+                }
+
             }, {
                 field: 'type',
                 title: '题目类型',
