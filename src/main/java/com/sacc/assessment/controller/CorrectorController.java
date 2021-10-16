@@ -108,12 +108,28 @@ public class CorrectorController {
         return "../static/html/corrector/correctorExam.html";
     }
 
+    @ResponseBody
+    @GetMapping("/getQuestion")
+    public RestResult<Question> getQuestion(@RequestParam Integer answerId){
+        Answer answer = scoreService.getAnswer(answerId);
+        Question question = questionService.selectQuestion(answer.getQuestionId());
+        return RestResult.success(question);
+    }
+
     @Secured({"ROLE_CORRECTOR"})
     @GetMapping("/corrector/getExam")
     public String getExam(@RequestParam Integer examId, Model model){
         ExamPaper exam = examPaperService.getExam(examId);
         model.addAttribute("exam",exam);
         return "../static/html/corrector/exam-questions.html";
+    }
+
+    @Secured({"ROLE_CORRECTOR"})
+    @ResponseBody
+    @PostMapping("/corrector/getExam")
+    public RestResult<ExamPaper> postExam(@RequestParam Integer examId){
+        ExamPaper exam = examPaperService.getExam(examId);
+        return RestResult.success(exam);
     }
 
     @Secured({"ROLE_CORRECTOR"})

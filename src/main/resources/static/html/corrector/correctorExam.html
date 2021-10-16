@@ -13,6 +13,12 @@
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+		<script type="text/javascript" src="/js/marked.js" charset="UTF-8"></script>
+		<style>
+			textarea{
+				width: 100%;
+			}
+		</style>
 	</head>
 	<body th:id="${examPageId}" class="body">
 		<nav th:replace="../static/html/common/fragments.html::corrector_menu(1)"></nav>
@@ -24,19 +30,18 @@
 			<form class="form m-form">
 				<div class="form-group">
 					<label for="usr">用户名称</label>
-					<input type="text" disabled class="form-control" id="usr" th:value="${username}">
+					<div class="form-control" id="usr" th:text="${username}"></div>
 				</div>
-				<div class="form-group">
-					<label for="question-info" th:text="'问题题干（' + ${question.score} + '分）'">问题题干</label>
+				<div class="form-group" id = "infoTextContent">
+					<!--<label for="question-info" th:text="'问题题干（' + ${question.score} + '分）'">问题题干</label>
 					<input type="text" disabled class="form-control" id="question-info"
-					       th:value="${question.infoTextContent}">
+					       th:value="${question.infoTextContent}">-->
 				</div>
 				<div th:id="${paperAnswer}" class="a form-group">
 					<label th:for="${answer.id}">用户答案</label>
-					<input type="text" disabled class="answer form-control" th:id="${answer.id}"
-					       th:value="${answer.answer}">
+					<textarea  disabled class="answer form-control" th:id="${answer.id}" th:text="${answer.answer}"></textarea>
 				</div>
-				<div class="form-group">
+				<div class="form-group" id = "correctAnswer">
 					<label th:for="check-answer">题目参考答案</label>
 					<input type="text" disabled class="form-control" th:id="check-answer"
 					       th:value="${question.correctAnswer}">
@@ -84,6 +89,27 @@
 		</div>
 	</body>
 	<script>
+		window.onload = function () {
+			let answerId = getQueryVariable("answerId")
+			$.ajax({
+				"url":"/getQuestion?answerId="+answerId,
+				"type":"get"
+			}).done(function (res){
+				let q = res.data
+				let inf = document.getElementById("infoTextContent")
+				let lab1 = document.createElement("label")
+				lab1.setAttribute("for","question-info")
+				lab1.innerText = "问题题干（"+q.score+"分）"
+				let inp1 = document.createElement("div")
+				//inp1.setAttribute("type","radio")
+				inp1.setAttribute("disabled","")
+				//inp1.setAttribute("class","form-control")
+				inp1.setAttribute("id","question-info")
+				inp1.innerHTML = marked(q.infoTextContent)
+				lab1.appendChild(inp1)
+				inf.appendChild(lab1)
+			})
+		}
         $("#btn").click(function () {
             let form = JSON.stringify({
                 "examPaperAnswerId": $(".a").attr("id"),
@@ -116,5 +142,16 @@
             else
                 window.location.href = "/getAnswer?answerId=" + nextId + "&examPageId=" + $(".body").attr("id")
         })
+		function getQueryVariable(variable) {
+			let query = window.location.search.substring(1);
+			let vars = query.split("&");
+			for (let i = 0; i < vars.length; i++) {
+				let pair = vars[i].split("=");
+				if (pair[0] === variable) {
+					return pair[1];
+				}
+			}
+			return false;
+		}
 	</script>
 </html>

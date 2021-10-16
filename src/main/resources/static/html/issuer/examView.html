@@ -1,331 +1,302 @@
 <!DOCTYPE html>
-<!--试卷预览页面-->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-	<head>
-		<meta charset="UTF-8">
-		<title>试卷预览</title>
-		<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-		      rel="stylesheet">
-		<link rel="stylesheet" href="/css/me.css">
-		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-		<!--基础js-->
-		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<!--BootStrap Table-->
-		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-		<!--markdown-->
-		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
-		<style>
+<head>
+	<meta charset="UTF-8">
+	<title>考试系统-考试</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+		  rel="stylesheet">
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+	<link rel="stylesheet" href="/css/me.css">
+	<!--基础js-->
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!--BootStrap Table-->
+	<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+	<!--markdown-->
+	<!--<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>-->
+	<script type="text/javascript" src="/js/marked.js" charset="UTF-8"></script>
+	<style>
 
-            div {
-                color: black;
-                margin-top: 2px;
-            }
+		input[type="radio"] {
+			width: 16px;
+			height: 16px;
+		}
 
-            .exam {
-                /* text-align: center; */
-            }
+		input[type="checkbox"] {
+			width: 16px;
+			height: 16px;
+		}
 
-            input[type="radio"] {
-                width: 16px;
-                height: 16px;
-            }
+		.question {
+			margin-top: 10px;
+			margin-left: 10px;
+		}
 
-            input[type="checkbox"] {
-                width: 16px;
-                height: 16px;
-            }
+		label {
+			font-size: 17px;
+		}
 
-            .question {
-                margin-top: 10px;
-                margin-left: 10px;
-            }
+		span {
+			margin-left: 5px;
+			font-size: 17px;
+			font-family: 宋体;
+		}
 
-            label {
-                font-size: 17px;
-            }
+		.question>ul>li {
+			display: inline-block;
+			list-style: none;
+		}
 
-            span {
-                margin-left: 5px;
-                font-size: 17px;
-                font-family: 宋体;
-            }
+		.d1 {
+			border-radius: 25px;
+			background-color: rgba(255,255,255,0.6);
+			padding: 20px;
+			margin: 6px;
+			font-family: "sans-serif";
+		}
 
-            li {
-                display: inline-block;
-                list-style: none;
-            }
+		hr {
+			color: grey;
+			size: 10px;
+		}
 
-            .d1 {
-                box-shadow: 1px 1px 1px 1px grey;
-                border-radius: 25px;
-                border: 1px solid #96C2F1;
-                background-color: #F5F5F5;
-                padding: 6px;
-                margin: 6px;
-            }
+		code {
 
-            hr {
-                color: grey;
-                size: 10px;
-            }
+			/*元素内的空白保留，并允许换行*/
+			white-space: pre-wrap !important;
+			/*是否允许在单词内断句*/
+			word-wrap: break-word !important;
+			/*强调怎么样断句*/
+			/*word-break: break-all !important;*/
+			background-color: #F5F5F5;
+		}
+		td,
+		th {
+			border: solid #add9c0;
+			border-width: 0 1px 1px 0;
+		}
 
-            .btn1 {
-                padding: 10px;
-                margin: 10px;
-            }
+		table {
+			border: solid #add9c0;
+			border-width: 1px 0 0 1px;
+		}
+		img{
+			max-width: 600px;
+			max-height: 400px;
+		}
+	</style>
+</head>
+<body style="position: relative;">
+<!-- // md -->
+<nav th:replace="../static/html/common/fragments.html::member_menu(1)"></nav>
+<h1  style="text-align: center; margin-top: 5px; margin-bottom: 10px"  th:text="${exam.getName()}"><strong></strong></h1>
+<!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
+<div style="text-align: center; display: inline"> <p th:text="'考试时间 : ' +  ${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')} + ' - ' +     ${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')+'考试时间内均可提交,请及时提交以保存答案'}"></p></div>
+<div class="exam_container "  th:id="'exam_'+${exam.getId()}" style="width: 70%;left: 15%;position: relative;">
+	<h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px"><strong>通 识 题</strong></h2>
+	<form id="general-questions-answer-form" class="d1" ></form>
+	<h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px"><strong>专 项 题</strong></h2>
+	<form id="special-questions-answer-form" class="d1" ></form>
+</div>
 
-            code {
+<!--       提交按钮-->
+<div style="text-align: center">
+	<button type="button" id="btn" class="btn m-button" style="text-align: center; margin-top: 10px">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+			 class="bi bi-patch-check" viewBox="0 0 16 16">
+			<path fill-rule="evenodd"
+				  d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z">
+			</path>
+			<path
+					d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z">
+			</path>
+		</svg>
+		返回
+	</button>
+</div>
 
-                /*元素内的空白保留，并允许换行*/
-                white-space: pre-wrap !important;
-                /*是否允许在单词内断句*/
-                word-wrap: break-word !important;
-                /*强调怎么样断句*/
-                /*word-break: break-all !important;*/
-                background-color: #F5F5F5;
-            }
-		</style>
-	</head>
+</div>
+</body>
+<script>
+	$("#btn").click(function () {
+		window.location.href = "/issuer/updateExam/" + $(".exam_container").attr("id")
+	})
 
-	<body>
-		<!-- // md -->
-		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
-		<h1 style="text-align: center; margin-top: 5px; margin-bottom: 10px" th:text="${exam.getName()}">
-			<strong></strong></h1>
-		<!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
-		<div style="text-align: center; display: inline"><p
-				th:text="'考试时间:' + ${exam.getStartTime()} + ' - ' + ${exam.getEndTime()}"></p></div>
-		<div class="exam_container " th:id="${exam.getId()}">
-			<form id="answer-form" class="d1"></form>
-		</div>
+	$(function () {
+		$.ajax({
+			url: '/getExam?examId='+$(".exam_container").attr("id").substring(5),
+			type: 'get',
+		}).done(function (res) {
+			if (res.code === 200) {
+				console.log(res)
+				let q = res.data.questions
+				// console.log(q)
+				for (let i = 0; i < q.length; i++) {
+					let form;
+					if(q[i].questionType==='generalQuestions')
+						form = document.getElementById('general-questions-answer-form')
+					else
+						form = document.getElementById('special-questions-answer-form')
+					let answerNum=0
+					// 创建div用于存放 解析后的 .md 格式的文档 以及普通文本样式的题目
+					let qe = document.createElement('div')
+					qe.setAttribute('class', 'form-group question')
+					qe.setAttribute('id', 'question-' + q[i].id)
 
-		<!--    <div class="exam"">-->
-		<!--       <div th:each="question :${exam.getQuestions()}" th:id="${question.getId()}" class="question container">-->
-		<!--            <form class="form-group">-->
-		<!--                <label th:for="question-info" th:text="${question.getInfoTextContent()}"></label>-->
-		<!--                <textarea class="an form-control" th:id="question-info" placeholder="填入你的答案" rows="2"></textarea>-->
-		<!--            </form>-->
-		<!--        </div>-->
+					//创建label标签
+					let label = document.createElement('label')
+					label.setAttribute('for', q[i].id)
+					/*let markdown = new Reader(res.data.questions[i].infoTextContent)
+                    console.log(markdown)*/
+					//转为md格式
+					//let converter = new Markdown.Converter();
+					console.log(res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)')
+					let inn = marked( res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)')
+					console.log(inn)
+					label.innerHTML =   inn;
+					// 插入元素
+					qe.insertBefore(label,null)
+					form.insertBefore(qe, null)
+					form.insertBefore(document.createElement('hr'),null);
 
-		<!--       提交按钮-->
-		<div style="text-align: center">
-			<button type="button" id="btn" class="btn btn-primary btn1" style="text-align: center">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-				     class="bi bi-patch-check" viewBox="0 0 16 16">
-					<path fill-rule="evenodd"
-					      d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z">
-					</path>
-					<path
-							d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z">
-					</path>
-				</svg>
-				返回
-			</button>
-		</div>
+					if (q[i].type === 'SINGLE_CHOICE') {
+						// 创建单选题的题目和答案
+						qe.setAttribute('question_type','SINGLE_CHOICE')
+						let ul = document.createElement('ul')
+						for (let j = 0; j < 4; j++) {
+							let li = document.createElement('li')
+							let s = document.createElement('input')
+							s.setAttribute('type', 'radio')
+							s.setAttribute('name', q[i].id)
+							s.setAttribute('id', q[i].id+'_'+j)
+							s.setAttribute('class','a')
+							s.addEventListener('click', function () {
+								for(let k=0;k<4;k++)
+									document.getElementById(q[i].id+'_'+k).setAttribute('class','a')
+								this.setAttribute('class','an')
+								// console.log(this.value)
+							})
 
-		</div>
-	</body>
-	<script>
-        $("#btn").click(function () {
-            window.location.href = "/issuer/updateExam/" + $(".exam_container").attr("id")
-        })
+							let span = document.createElement('span')
+							li.appendChild(s)
+							li.appendChild(span)
+							ul.appendChild(li)
+							ul.appendChild(document.createElement('br'))
+							qe.appendChild(ul)
+							// div.insertBefore(span, div1[1])
+							switch (j) {
 
-        function mk_choice(choice_name, choice_id, choice_val) {
-            let divv = document.createElement('div')
-            let labell = document.createElement('label')
-            let inputt = document.createElement('input')
-            divv.setAttribute('class', 'form-check')
-            labell.setAttribute('class', 'form-check-label')
-            inputt.setAttribute('type', 'checkbox')
-            inputt.setAttribute('class', 'form-check-input')
-            inputt.setAttribute('value', choice_val)
-            inputt.setAttribute('name', choice_id)
-            inputt.setAttribute('id', choice_id)
-            let tmpNode = document.createElement("div");
-            tmpNode.appendChild(inputt.cloneNode(true));
-            let str = tmpNode.innerHTML;
-            inputt.addEventListener('click', function () {
-                this.setAttribute('class', 'an')
-                // console.log(this.value)
-            })
+								case 0:
+									s.setAttribute('value', 'A');
+									span.innerText = 'A.' + q[i].option1;
+									break
+								case 1:
+									s.setAttribute('value', 'B');
+									span.innerText = 'B.' + q[i].option2;
+									break
+								case 2:
+									s.setAttribute('value', 'C');
+									span.innerText = 'C.' + q[i].option3;
+									break
+								case 3:
+									s.setAttribute('value', 'D');
+									span.innerText = 'D.' + q[i].option4;
+									break
+							}
+						}
 
-            tmpNode = null; // prevent memory leaks in IE
-            labell.innerHTML = str + choice_name
-            divv.insertBefore(labell, null)
-            return divv
+						// var s1 = document.createElement('input')
+						// var s2 = document.createElement('input')
+						// var s3 = document.createElement('input')
+						// var s4 = document.createElement('input')
 
-        }
+						// s1.setAttribute('type', 'radio')
+						// s1.setAttribute('name', q[i].id)
+						// s2.setAttribute('type', 'radio')
+						// s2.setAttribute('name', q[i].id)
+						// s3.setAttribute('type', 'radio')
+						// s3.setAttribute('name', q[i].id)
+						// s4.setAttribute('type', 'radio')
+						// s4.setAttribute('name', q[i].id)
+						// div.insertBefore(s1, div1[1])
+						// div.insertBefore(s2, div1[1])
+						// div.insertBefore(s3, div1[1])
+						// div.insertBefore(s4, div1[1])
 
-        $(function () {
-            $.ajax({
-                url: '/getExam?examId=' + $(".exam_container").attr("id"),
-                type: 'get',
-            }).done(function (res) {
-                if (res.code === 200) {
-                    console.log(res)
-                    let q = res.data.questions
-                    let form = document.getElementById('answer-form')
-                    // console.log(q)
-                    for (let i = 0; i < q.length; i++) {
-                        let answerNum = 0
-                        // 创建div用于存放 解析后的 .md 格式的文档 以及普通文本样式的题目
-                        let qe = document.createElement('div')
-                        qe.setAttribute('class', 'form-group question')
-                        qe.setAttribute('id', 'question-' + q[i].id)
+					} else if (q[i].type === 'MULTIPLE_CHOICE') {
+						// 创建多选题的题目和答案
+						qe.setAttribute('question_type', 'MULTIPLE_CHOICE')
+						let ul = document.createElement('ul')
+						for (let j = 0; j < 4; j++) {
 
-                        //创建label标签
-                        let label = document.createElement('label')
-                        label.setAttribute('for', q[i].id)
-                        /*let markdown = new Reader(res.data.questions[i].infoTextContent)
-						console.log(markdown)*/
-                        //转为md格式
-                        let converter = new Markdown.Converter();
-                        label.innerHTML = converter.makeHtml(q[i].id + ' . ' + res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)');
-                        // 插入元素
-                        qe.insertBefore(label, null)
-                        form.insertBefore(qe, null)
-                        form.insertBefore(document.createElement('hr'), null);
+							let li = document.createElement('li')
+							let m = document.createElement('input')
+							m.setAttribute('type', 'checkbox')
+							m.setAttribute('class', 'a')
+							m.addEventListener('click', function () {
+								if (this.getAttribute('class') === 'an')
+									this.setAttribute('class', 'a')
+								else
+									this.setAttribute('class', 'an')
+								// console.log(this.value)
+							})
 
+							let span = document.createElement('span')
+							li.appendChild(m)
+							li.appendChild(span)
+							// li.addEventListener('click',function () {
+							//     console.log(this.index)
+							// })
+							ul.appendChild(li)
+							ul.appendChild(document.createElement('br'))
+							qe.appendChild(ul)
+							// div.insertBefore(span, div1[1])
+							switch (j) {
+								case 0:
+									m.setAttribute('value', 'A');
+									span.innerText = 'A.' + q[i].option1;
+									m.checked = false;
+									break
+								case 1:
+									m.setAttribute('value', 'B');
+									span.innerText = 'B.' + q[i].option2;
+									m.checked = false;
+									break
+								case 2:
+									m.setAttribute('value', 'C');
+									span.innerText = 'C.' + q[i].option3;
+									m.checked = false;
+									break
+								case 3:
+									m.setAttribute('value', 'D');
+									span.innerText = 'D.' + q[i].option4;
+									m.checked = false;
+									break
+							}
+						}
+					} else if (q[i].type === 'FILL_BLANK') {
+						// 创建简答题的题目和答案
+						qe.setAttribute('question_type', 'FILL_BLANK')
+						let ta = document.createElement('textarea')
+						ta.setAttribute('placeholder', '请在此处输入答案')
+						ta.setAttribute('id', q[i].id)
+						ta.setAttribute('class', 'an form-control')
+						// var answer = ta.innerHTML
+						// console.log(answer)
+						// setInterval(function () {
+						//     console.log($('#1').val())
+						// },1000)
+						qe.appendChild(ta)
+					}
 
-                        if (q[i].type === 'SINGLE_CHOICE') {
-                            // 创建单选题的题目和答案
-                            qe.setAttribute('question_type', 'SINGLE_CHOICE')
-                            let ul = document.createElement('ul')
-                            for (let j = 0; j < 4; j++) {
-                                let li = document.createElement('li')
-                                let s = document.createElement('input')
-                                s.setAttribute('type', 'radio')
-                                s.setAttribute('name', q[i].id)
-                                s.setAttribute('id', q[i].id + '_' + j)
-                                s.setAttribute('class', 'a')
-                                s.addEventListener('click', function () {
-                                    for (let k = 0; k < 4; k++)
-                                        document.getElementById(q[i].id + '_' + k).setAttribute('class', 'a')
-                                    this.setAttribute('class', 'an')
-                                    // console.log(this.value)
-                                })
-
-                                let span = document.createElement('span')
-                                li.appendChild(s)
-                                li.appendChild(span)
-                                ul.appendChild(li)
-                                ul.appendChild(document.createElement('br'))
-                                qe.appendChild(ul)
-                                // div.insertBefore(span, div1[1])
-                                switch (j) {
-                                    case 0:
-                                        s.setAttribute('value', 'A');
-                                        span.innerText = 'A.' + q[i].option1;
-                                        break
-                                    case 1:
-                                        s.setAttribute('value', 'B');
-                                        span.innerText = 'B.' + q[i].option2;
-                                        break
-                                    case 2:
-                                        s.setAttribute('value', 'C');
-                                        span.innerText = 'C.' + q[i].option3;
-                                        break
-                                    case 3:
-                                        s.setAttribute('value', 'D');
-                                        span.innerText = 'D.' + q[i].option4;
-                                        break
-                                }
-                            }
-
-                            // var s1 = document.createElement('input')
-                            // var s2 = document.createElement('input')
-                            // var s3 = document.createElement('input')
-                            // var s4 = document.createElement('input')
-
-                            // s1.setAttribute('type', 'radio')
-                            // s1.setAttribute('name', q[i].id)
-                            // s2.setAttribute('type', 'radio')
-                            // s2.setAttribute('name', q[i].id)
-                            // s3.setAttribute('type', 'radio')
-                            // s3.setAttribute('name', q[i].id)
-                            // s4.setAttribute('type', 'radio')
-                            // s4.setAttribute('name', q[i].id)
-                            // div.insertBefore(s1, div1[1])
-                            // div.insertBefore(s2, div1[1])
-                            // div.insertBefore(s3, div1[1])
-                            // div.insertBefore(s4, div1[1])
-
-                        } else if (q[i].type === 'MULTIPLE_CHOICE') {
-                            // 创建多选题的题目和答案
-                            qe.setAttribute('question_type', 'MULTIPLE_CHOICE')
-                            let ul = document.createElement('ul')
-                            for (let j = 0; j < 4; j++) {
-
-                                let li = document.createElement('li')
-                                let m = document.createElement('input')
-                                m.setAttribute('type', 'checkbox')
-                                m.setAttribute('class', 'a')
-                                m.addEventListener('click', function () {
-                                    if (this.getAttribute('class') === 'an')
-                                        this.setAttribute('class', 'a')
-                                    else
-                                        this.setAttribute('class', 'an')
-                                    // console.log(this.value)
-                                })
-
-                                let span = document.createElement('span')
-                                li.appendChild(m)
-                                li.appendChild(span)
-                                // li.addEventListener('click',function () {
-                                //     console.log(this.index)
-                                // })
-                                ul.appendChild(li)
-                                ul.appendChild(document.createElement('br'))
-                                qe.appendChild(ul)
-                                // div.insertBefore(span, div1[1])
-                                switch (j) {
-                                    case 0:
-                                        m.setAttribute('value', 'A');
-                                        span.innerText = 'A.' + q[i].option1;
-                                        m.checked = false;
-                                        break
-                                    case 1:
-                                        m.setAttribute('value', 'B');
-                                        span.innerText = 'B.' + q[i].option2;
-                                        m.checked = false;
-                                        break
-                                    case 2:
-                                        m.setAttribute('value', 'C');
-                                        span.innerText = 'C.' + q[i].option3;
-                                        m.checked = false;
-                                        break
-                                    case 3:
-                                        m.setAttribute('value', 'D');
-                                        span.innerText = 'D.' + q[i].option4;
-                                        m.checked = false;
-                                        break
-                                }
-                            }
-                        } else if (q[i].type === 'FILL_BLANK') {
-                            // 创建简答题的题目和答案
-                            qe.setAttribute('question_type', 'FILL_BLANK')
-                            let ta = document.createElement('textarea')
-                            ta.setAttribute('placeholder', '请在此处输入答案')
-                            ta.setAttribute('id', q[i].id)
-                            ta.setAttribute('class', 'an form-control')
-                            // var answer = ta.innerHTML
-                            // console.log(answer)
-                            // setInterval(function () {
-                            //     console.log($('#1').val())
-                            // },1000)
-                            qe.appendChild(ta)
-                        }
-
-                    }
-                }
-            }).fail(function (err) {
-                console.log(err)
-            })
-        })
-	</script>
-
+				}
+			}
+		}).fail(function (err) {
+			console.log(err)
+		})
+	})
+	// $('div')[0].appendChild()
+</script>
 </html>

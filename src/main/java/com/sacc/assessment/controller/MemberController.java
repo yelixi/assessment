@@ -57,16 +57,15 @@ public class MemberController {
 
     @Secured({"ROLE_MEMBER"})
     @GetMapping("/Exam")
-    public String exam(@RequestParam Integer examId, Model model){
+    public String exam(@RequestParam Integer examId, Model model) {
         ExamPaper examPaper = examPaperService.getExam(examId);
-        if(examPaper.getStartTime().isBefore(LocalDateTime.now())&&examPaper.getEndTime().isAfter(LocalDateTime.now())) {
-            model.addAttribute("exam", examPaper);
-            return "../static/html/member/exam.html";
-        }
-        else if(examPaper.getStartTime().isAfter(LocalDateTime.now()))
+        if (examPaper.getStartTime().isAfter(LocalDateTime.now())) {
             model.addAttribute("error", ResultEnum.EXAM_IS_NOT_START);
-        else model.addAttribute("error", ResultEnum.EXAM_IS_END);
-        return "../static/html/error.html";
+            return "../static/html/error.html";
+        }
+        model.addAttribute("exam", examPaper);
+        return "../static/html/member/exam.html";
+
     }
 
     @Secured({"ROLE_MEMBER"})

@@ -20,8 +20,7 @@
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 		<!--markdown解析-->
-		<script type="text/javascript" src="/js/marked.min.js" charset="UTF-8"></script>
-		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+		<script type="text/javascript" src="/js/marked.js" charset="UTF-8"></script>
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
@@ -322,7 +321,9 @@
                 sortable: true,
                 sortOrder: "asc",
                 width: 360,
-
+				formatter: function(val, col, index){
+					return marked(val)
+				}
             }, {
                 field: 'type',
                 title: '题目类型',

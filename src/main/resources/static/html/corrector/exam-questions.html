@@ -15,7 +15,7 @@
 		<!--BootStrap Table-->
 		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 		<!--md解析js-->
-		<script src="http://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+		<script type="text/javascript" src="/js/marked.js" charset="UTF-8"></script>
 		<style>
             code {
 
@@ -27,6 +27,12 @@
                 /*word-break: break-all !important;*/
                 background-color: #F5F5F5;
             }
+			td{
+				text-align: left;
+			}
+			th{
+				max-height: 20px;
+			}
 		</style>
 	</head>
 	<body>
@@ -35,7 +41,7 @@
 			<h1><strong>试卷的所有题目</strong></h1>
 			<br>
 			<table
-					th:id="${exam.id}" class="t table">
+					th:id="'exam-'+${exam.id}" class="table table-hover">
 				<thead class="table-thead">
 					<tr>
 						<th>题目编号</th>
@@ -44,8 +50,8 @@
 						<th data-width="10px">状态</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr th:each="question,loopStatus: ${exam.questions}">
+				<tbody id="tbody">
+					<!--<tr th:each="question,loopStatus: ${exam.questions}">
 						<td th:text="第+${loopStatus.count}+题"></td>
 						<td th:text="${question.infoTextContent}" class="md"></td>
 						<td th:text="${question.type}"></td>
@@ -54,26 +60,66 @@
 							        onclick="getAnswer(this.id)">批改
 							</button>
 						</td>
-					</tr>
+					</tr>-->
 				</tbody>
 			</table>
 		</div>
 
 	</body>
-	<script>
-        let examPaperId = $(".t").attr("id")
+	<script th:inline="javascript">
+		let examPaperId = $(".table").attr("id").substring(5)
+
+		window.onload = function (){
+			$.ajax({
+				url: '/corrector/getExam?examId='+examPaperId,
+				type: 'post',
+			}).done(function (res){
+				if(res.code===200){
+					let q = res.data.questions
+					console.log(q)
+					let tbody = document.getElementById("tbody")
+					for(let i=0;i<q.length;i++){
+						let tr = document.createElement("tr")
+						let td1 = document.createElement("td")
+						let td2 = document.createElement("td")
+						let td3 = document.createElement("td")
+						let td4 = document.createElement("td")
+						td1.innerText = "第"+(i+1)+"题"
+						td2.innerHTML = marked(q[i].infoTextContent)
+						if(q[i].type==="FILL_BLANK")
+							td3.innerText = "简答题"
+						if(q[i].type === "SINGLE_CHOICE")
+							td3.innerText = "单选题"
+						if(q[i].type === "MULTIPLE_CHOICE")
+							td3.innerText = "多选题"
+						let btn = document.createElement("button")
+						btn.setAttribute("type","button")
+						btn.setAttribute("class","btn m-button-color")
+						btn.setAttribute("id",q[i].id)
+						btn.setAttribute("onclick","getAnswer(this.id)")
+						btn.innerText = "批改"
+						td4.appendChild(btn)
+						tr.appendChild(td1)
+						tr.appendChild(td2)
+						tr.appendChild(td3)
+						tr.appendChild(td4)
+						tbody.appendChild(tr)
+					}
+				}
+			})
+		}
 
         function getAnswer(questionId) {
             window.location.href = "/answer?questionId=" + questionId + "&examPaperId=" + examPaperId
         }
 
-        $(function () {
+        /*$(function () {
             let m = $(".md")
             for (let i = 0; i < m.length; i++) {
                 let converter = new Markdown.Converter();
                 m[i].innerHTML = converter.makeHtml(m[i].innerText)
             }
-        })
+        })*/
 
         $("#" + examPaperId).bootstrapTable({
             search: true,
