@@ -10,15 +10,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class PasswordEncodeTool {
 
     public static void main(String[] args) {
-        /*BCryptPasswordEncoder passwordEncode = new BCryptPasswordEncoder();
-        String s = "2790673868@qq.comsacc";
-        String s1 = passwordEncode.encode(s);
-        System.out.println(passwordEncode.matches(s,s1));
-        //System.out.println(passwordEncode.encode("B19031432sacc"));*/
-        System.getProperties().remove("http.proxyHost");
-        System.getProperties().remove("http.proxyPort");
-        System.getProperties().remove("https.proxyHost");
-        System.getProperties().remove("https.proxyPort");
+        BCryptPasswordEncoder passwordEncode = new BCryptPasswordEncoder();
+        //String s = "Clannad0629+";
+        //String s1 = passwordEncode.encode(s);
+        //System.out.println(passwordEncode.matches(s,"$2a$10$p7aqwIMdo3aQ6ApqjORhjuqz3XZuQo3GEBwgFgzlXS0e58IA8Y5p6"));
+        System.out.println(passwordEncode.encode("123456"));
 
     }
 }

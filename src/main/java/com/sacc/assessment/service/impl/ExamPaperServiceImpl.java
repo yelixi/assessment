@@ -28,6 +28,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -129,16 +131,27 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         if(examPaperAnswers==null)
             return false;
         //获取问题列表
+        List<Question> questionList = examPaper.getQuestions();
         List<Integer> questionIdList = new ArrayList<>();
         ExamPaperAnswer e = examPaperAnswers.get(0);
         e.getAnswers().forEach(answer -> questionIdList.add(answer.getQuestionId()));
-        String[] questionNumber = {"第一题","第二题","第三题","第四题","第五题","第六题","第七题", "第八题","第九题",
-                "第十题","第十一题","第十二题","第十三题","第十四题","第十五题","第十六题","第十七题","第十八题","第十九题","第二十题"};
+        String[] questionNumber = {"后端通识第一题","后端通识第二题","后端通识第二题","后端通识第二题","后端通识第三题","前端通识第一题","前端通识第二题","前端通识第三题", "python组通识第一题",
+                "python组通识第二题","python组通识第三题", "后端专项第一题","后端专项第二题", "后端专项第三题","后端专项第四题","后端专项第四题","后端专项第四题","后端专项第四题","安全通识第一题","安全通识第二题","安全通识第二题",
+                "安全通识第三题","前端专项第一题","前端专项第二题","前端专项第三题","前端专项第四题","前端专项第五题","前端专项第五题","算法专项第一题","算法专项第二题",
+                "算法专项第三题","算法专项第三题","算法专项第三题","算法专项第三题","python组专项第一题","python组专项第二题","python组专项第二题","python组专项第二题","安全组第一题","安全组第二题","安全组第三题"};
         XSSFWorkbook workbook = new XSSFWorkbook();
         // 创建工作表
         XSSFSheet sheet = workbook.createSheet("sheet");
+        HashSet<String> set =new HashSet<>();
+        set.add("back-2");
+        set.add("Back-4");
+        set.add("an-2");
+        set.add("Front-5");
+        set.add("Python-2");
+        set.add("Su-3");
 
         for(int row = 0;row <examPaperAnswers.size()+1;row++){
+            //List<ExamPaperAnswer> examPaperAnswerList = examPaperAnswerRepository.findAllByExamPaperId(examPaperId);
             XSSFRow sheetRow = sheet.createRow(row);
             if (row == 0){
                 sheetRow.createCell(0).setCellValue("学号");
@@ -146,20 +159,63 @@ public class ExamPaperServiceImpl implements ExamPaperService {
                 for(int i=0;i< questionIdList.size();i++){
                     sheetRow.createCell(i+2).setCellValue(questionNumber[i]);
                 }
-                sheetRow.createCell(questionIdList.size()+2).setCellValue("总分");
+                sheetRow.createCell(questionIdList.size()+2).setCellValue("通识题总分");
+                sheetRow.createCell(questionIdList.size()+3).setCellValue("后端专项总分");
+                sheetRow.createCell(questionIdList.size()+4).setCellValue("前端专项总分");
+                sheetRow.createCell(questionIdList.size()+5).setCellValue("算法专项总分");
+                sheetRow.createCell(questionIdList.size()+6).setCellValue("python专项总分");
+                sheetRow.createCell(questionIdList.size()+7).setCellValue("安全专项总分");
             }else{
                 ExamPaperAnswer examPaperAnswer = examPaperAnswers.get(row-1);
                 User user = userRepository.getOne(examPaperAnswer.getUserId());
                 sheetRow.createCell(0).setCellValue(user.getStudentId());
                 sheetRow.createCell(1).setCellValue(user.getUsername());
                 List<Answer> answers = examPaperAnswer.getAnswers();
+                System.out.println(answers.size());
+                System.out.println(questionIdList.size());
+                System.out.println(examPaperAnswer.getId());
+                //System.out.println(row-1);
                 int totalScore = 0;
+                int backScore = 0;
+                int frontScore = 0;
+                int suScore = 0;
+                int pythonScore = 0;
+                int anScore = 0;
                 for(int i=0;i< questionIdList.size();i++){
                     Answer a = answers.get(i);
-                    sheetRow.createCell(i+2).setCellValue(a.getScore().getGrade());
-                    totalScore+=a.getScore().getGrade();
+                    int score = 0;
+                    if(a.getScore()!=null&&a.getScore().getGrade()!=null)
+                        score = a.getScore().getGrade();
+                    sheetRow.createCell(i+2).setCellValue(score);
+                    if(questionList.get(i).getGroupType().startsWith("B"))
+                        backScore+=score;
+                    else if(questionList.get(i).getGroupType().startsWith("F"))
+                        frontScore+=score;
+                    else if(questionList.get(i).getGroupType().startsWith("S"))
+                        suScore+=score;
+                    else if(questionList.get(i).getGroupType().startsWith("P"))
+                        pythonScore+=score;
+                    else if(questionList.get(i).getGroupType().startsWith("A"))
+                        anScore+=score;
+                    else totalScore+=score;
                 }
+                /*int k = 0;
+                for(int i=0;i< questionList.size();i++){
+                    Answer answer = answers.get(i);
+                    int s = 0;
+                    if(answer.getScore()!=null)
+                        s=answer.getScore().getGrade();
+                    if(set.contains(questionList.get(i).getGroupType())&&score==0){
+                        sheetRow.createCell(k+2).setCellValue(score);
+                    }
+                }
+                sheetRow.createCell(questionIdList.size()+2).setCellValue(totalScore);*/
                 sheetRow.createCell(questionIdList.size()+2).setCellValue(totalScore);
+                sheetRow.createCell(questionIdList.size()+3).setCellValue(backScore);
+                sheetRow.createCell(questionIdList.size()+4).setCellValue(frontScore);
+                sheetRow.createCell(questionIdList.size()+5).setCellValue(suScore);
+                sheetRow.createCell(questionIdList.size()+6).setCellValue(pythonScore);
+                sheetRow.createCell(questionIdList.size()+7).setCellValue(anScore);
             }
         }
         ByteArrayOutputStream os = new ByteArrayOutputStream();

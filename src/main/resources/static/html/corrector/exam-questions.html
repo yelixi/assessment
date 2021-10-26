@@ -7,7 +7,7 @@
 		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
 		      rel="stylesheet">
 		<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-		<link rel="stylesheet" href="/css/table.css">
+		<!--<link rel="stylesheet" href="/css/table.css">-->
 		<link rel="stylesheet" href="/css/me.css">
 		<!--基础js-->
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
@@ -33,6 +33,30 @@
 			th{
 				max-height: 20px;
 			}
+			.Table{
+				width: 1000px;
+			}
+			.title_num{
+				width: 140px;
+				height: 40px;
+			}
+			.title_content{
+				width: 600px;
+				height: 40px;
+			}
+			.title_type,.title_status {
+				width: 135px;
+				height: 40px;
+			}
+			.main_tb{
+				width: 600px;
+
+			}
+			img{
+				max-height: 400px;
+				max-width: 600px;
+			}
+
 		</style>
 	</head>
 	<body>
@@ -40,17 +64,27 @@
 		<div class="container">
 			<h1><strong>试卷的所有题目</strong></h1>
 			<br>
-			<table
-					th:id="'exam-'+${exam.id}" class="table table-hover">
-				<thead class="table-thead">
+			<h2 style="text-align: center"><strong>通识题</strong></h2>
+			<div class="Table">
+				<table
+						th:id="'exam-'+${exam.id}" class="table">
+					<thead class="table-thead">
 					<tr>
-						<th>题目编号</th>
-						<th>题目内容</th>
-						<th>问题类型</th>
-						<th data-width="10px">状态</th>
+<!--						<div class="title_num">-->
+<!--							<th>题目编号</th>-->
+<!--						</div>-->
+<!--						<div class="title_content">-->
+<!--							<th>题目内容</th>-->
+<!--						</div>>-->
+<!--						<div class="title_type"><th>问题类型</th></div>>-->
+<!--						<div class="title_status"><th data-width="10px" >状态</th></div>>-->
+						<th class="title_num">题目编号</th>
+						<th class="title_content">题目内容</th>
+						<th class="title_type">问题类型</th>
+						<th  class="title_status">状态</th>
 					</tr>
-				</thead>
-				<tbody id="tbody">
+					</thead>
+					<tbody id="tbody1">
 					<!--<tr th:each="question,loopStatus: ${exam.questions}">
 						<td th:text="第+${loopStatus.count}+题"></td>
 						<td th:text="${question.infoTextContent}" class="md"></td>
@@ -61,8 +95,43 @@
 							</button>
 						</td>
 					</tr>-->
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
+			<h2 style="text-align: center"><strong>专项题</strong></h2>
+			<div class="Table">
+				<table
+						th:id="'exam-'+${exam.id}+'-'" class="table">
+					<thead class="table-thead">
+					<tr>
+						<!--						<div class="title_num">-->
+						<!--							<th>题目编号</th>-->
+						<!--						</div>-->
+						<!--						<div class="title_content">-->
+						<!--							<th>题目内容</th>-->
+						<!--						</div>>-->
+						<!--						<div class="title_type"><th>问题类型</th></div>>-->
+						<!--						<div class="title_status"><th data-width="10px" >状态</th></div>>-->
+						<th class="title_num">题目编号</th>
+						<th class="title_content">题目内容</th>
+						<th class="title_type">问题类型</th>
+						<th  class="title_status">状态</th>
+					</tr>
+					</thead>
+					<tbody id="tbody2">
+					<!--<tr th:each="question,loopStatus: ${exam.questions}">
+						<td th:text="第+${loopStatus.count}+题"></td>
+						<td th:text="${question.infoTextContent}" class="md"></td>
+						<td th:text="${question.type}"></td>
+						<td>
+							<button type="button" class="btn m-button-color" th:id="${question.id}"
+							        onclick="getAnswer(this.id)">批改
+							</button>
+						</td>
+					</tr>-->
+					</tbody>
+				</table>
+			</div>
 		</div>
 
 	</body>
@@ -77,7 +146,8 @@
 				if(res.code===200){
 					let q = res.data.questions
 					console.log(q)
-					let tbody = document.getElementById("tbody")
+					let tbody = document.getElementById("tbody1")
+					let tbody2 = document.getElementById("tbody2")
 					for(let i=0;i<q.length;i++){
 						let tr = document.createElement("tr")
 						let td1 = document.createElement("td")
@@ -85,13 +155,17 @@
 						let td3 = document.createElement("td")
 						let td4 = document.createElement("td")
 						td1.innerText = "第"+(i+1)+"题"
+						//td1.setAttribute("style","text-align: center;")
 						td2.innerHTML = marked(q[i].infoTextContent)
+						console.log(q[i].type)
+						td2.setAttribute("class","main_tb")
 						if(q[i].type==="FILL_BLANK")
 							td3.innerText = "简答题"
 						if(q[i].type === "SINGLE_CHOICE")
 							td3.innerText = "单选题"
 						if(q[i].type === "MULTIPLE_CHOICE")
 							td3.innerText = "多选题"
+						//td3.setAttribute("style","text-align: center;")
 						let btn = document.createElement("button")
 						btn.setAttribute("type","button")
 						btn.setAttribute("class","btn m-button-color")
@@ -99,11 +173,16 @@
 						btn.setAttribute("onclick","getAnswer(this.id)")
 						btn.innerText = "批改"
 						td4.appendChild(btn)
+						//td4.setAttribute("style","text-align: center;")
 						tr.appendChild(td1)
 						tr.appendChild(td2)
 						tr.appendChild(td3)
 						tr.appendChild(td4)
-						tbody.appendChild(tr)
+						console.log(q[i].questionType)
+						if(q[i].questionType==="generalQuestions")
+							tbody.appendChild(tr)
+						else if(q[i].questionType==="specialQuestions")
+							tbody2.appendChild(tr)
 					}
 				}
 			})

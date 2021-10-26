@@ -37,9 +37,10 @@ public class User{
     @Column(nullable = false)
     private Role role;
 
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
     @CreatedDate
     private LocalDateTime createdAt;

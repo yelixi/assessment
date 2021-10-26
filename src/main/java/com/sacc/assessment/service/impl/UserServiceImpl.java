@@ -1,6 +1,5 @@
 package com.sacc.assessment.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
 import com.sacc.assessment.entity.User;
 import com.sacc.assessment.enums.ResultEnum;
 import com.sacc.assessment.enums.Role;
@@ -31,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +54,7 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         log.error("username=" + username);
         User u = userRepository.findByStudentId(username);
         if (u==null)
-            throw new BusinessException(ResultEnum.USER_IS_EXIT);
+            throw new BusinessException(ResultEnum.USER_IS_NOT_EXIT);
         log.error(u.toString());
 //        u.get(0).setPassword("******");
         return new UserDetail(u);
@@ -64,6 +62,12 @@ public class UserServiceImpl implements UserDetailsService,UserService {
 
     @Override
     public boolean register(User user) {
+        if(userRepository.findByEmail(user.getEmail())!=null)
+            throw new BusinessException(ResultEnum.EMAIL_IS_EXIT);
+        if(userRepository.findByStudentId(user.getStudentId())!=null)
+            throw new BusinessException(ResultEnum.STUDENT_ID_IS_EXIT);
+        if(user.getRole()==null)
+            user.setRole(Role.MEMBER);
         System.out.println(passwordEncoder.getClass().getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());

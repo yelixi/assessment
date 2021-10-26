@@ -1,6 +1,7 @@
 package com.sacc.assessment.controller;
 
 import com.sacc.assessment.entity.ExamPaper;
+import com.sacc.assessment.entity.User;
 import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.service.ExamPaperAnswerService;
 import com.sacc.assessment.service.ExamPaperService;
@@ -54,6 +55,12 @@ public class UserController {
     @GetMapping("/register")
     public String register(){
         return "../static/html/register.html";
+    }
+
+    @PostMapping("/register")
+    @ResponseBody
+    public RestResult<Boolean> doRegister(@RequestBody User user){
+        return RestResult.success(userService.register(user));
     }
 
     @Secured({"ROLE_ROOT"})

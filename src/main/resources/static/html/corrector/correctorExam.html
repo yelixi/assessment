@@ -43,8 +43,13 @@
 				</div>
 				<div class="form-group" id = "correctAnswer">
 					<label th:for="check-answer">题目参考答案</label>
-					<input type="text" disabled class="form-control" th:id="check-answer"
-					       th:value="${question.correctAnswer}">
+					<textarea type="text" disabled class="form-control" th:id="check-answer"
+							  th:value="${question.correctAnswer}"></textarea>
+				</div>
+				<div class="form-group" id = "sc">
+					<label th:for="check-score">题目总分</label>
+					<input type="text" disabled class="form-control" th:id="check-score"
+							  th:value="${question.score}">
 				</div>
 				<div class="form-group">
 					<label for="score">分数</label>
@@ -96,6 +101,7 @@
 				"type":"get"
 			}).done(function (res){
 				let q = res.data
+				console.log(q)
 				let inf = document.getElementById("infoTextContent")
 				let lab1 = document.createElement("label")
 				lab1.setAttribute("for","question-info")
@@ -106,6 +112,20 @@
 				//inp1.setAttribute("class","form-control")
 				inp1.setAttribute("id","question-info")
 				inp1.innerHTML = marked(q.infoTextContent)
+				if(q.type==="SINGLE_CHOICE") {
+					let A = document.createElement("div")
+					let B = document.createElement("div")
+					let C = document.createElement("div")
+					let D = document.createElement("div")
+					A.innerText = "A."+q.option1;
+					B.innerText = "B."+q.option2;
+					C.innerText = "C."+q.option3;
+					D.innerText = "D."+q.option4;
+					lab1.appendChild(A)
+					lab1.appendChild(B)
+					lab1.appendChild(C)
+					lab1.appendChild(D)
+				}
 				lab1.appendChild(inp1)
 				inf.appendChild(lab1)
 			})
@@ -124,8 +144,10 @@
                 type: "post",
                 data: form
             }).done(function (data) {
-                if (data.code === 200)
-                    alert("成功")
+                if (data.code === 200) {
+					alert("成功")
+					window.history.go(-1);
+				}
             })
         })
         $(".pre").click(function () {

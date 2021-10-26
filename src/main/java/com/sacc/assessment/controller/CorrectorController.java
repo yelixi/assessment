@@ -7,6 +7,7 @@ import com.sacc.assessment.model.RestResult;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.service.*;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

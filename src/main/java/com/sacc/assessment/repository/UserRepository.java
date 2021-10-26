@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<User,Integer>, JpaSpecific
     @Transactional
     void deleteByStudentId(String studentId);
 
+    User findByEmail(String email);
+
 }

@@ -28,11 +28,15 @@ public enum  ResultEnum {
     ,
     EXAM_IS_END(603,"考试已结束,可继续参与考试但无法提交")
     ,
-    USER_IS_EXIT(604,"用户不存在")
+    USER_IS_NOT_EXIT(604,"用户不存在")
     ,
     NEW_PASSWORD_ID_NOT_EQUAL_CONFIRM_PASSWORD(605,"新密码与确认密码不相同")
     ,
     OLD_PASSWORD_ERROR(606,"旧密码错误")
+    ,
+    STUDENT_ID_IS_EXIT(607,"学号已存在")
+    ,
+    EMAIL_IS_EXIT(608,"邮箱已存在")
     ;
 
 

@@ -73,6 +73,7 @@ public class Question {
     @Column(nullable = false)
     private String questionType;
 
+    private String groupType;
 
     /**
      * 创建时间
