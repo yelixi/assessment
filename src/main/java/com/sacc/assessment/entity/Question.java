@@ -64,14 +64,6 @@ public class Question {
     private String option3;
     private String option4;
 
-    /**
-     * 是否弃用
-     */
-    @Column(nullable = false)
-    private boolean isDeleted;
-
-    @Column(nullable = false)
-    private String questionType;
 
     private String groupType;
 
@@ -86,6 +78,8 @@ public class Question {
      */
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    private Integer questionType;
 
 
 }

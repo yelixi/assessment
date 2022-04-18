@@ -255,8 +255,7 @@
 							<div class="form-group">
 								<label for="question-add_type">题目类型</label>
 								<select id="question-add_type" class="form-control">
-									<option th:value="generalQuestions">通识题</option>
-									<option th:value="specialQuestions">专项题</option>
+
 								</select>
 							</div>
 						</form>
@@ -303,6 +302,20 @@
         let examValue = $("#exam-questions").val();
 
         let exam = JSON.parse(examValue);
+
+        let question_type = exam.questionType;
+        console.log(question_type)
+        console.log(exam)
+
+        let question_add_type = document.getElementById("question-add_type");
+        let question_types = question_type.split(';')
+		for(let i=0;i<question_types.length;i++){
+			let option = document.createElement('option')
+			option.setAttribute('value',i.toString());
+			option.innerText = question_types[i];
+			question_add_type.insertBefore(option,null)
+		}
+
         $("#exam-id").val(exam.id);
         $("#exam-name").val(exam.name);
         //日期切割成最小单位为分
@@ -571,7 +584,7 @@
                 "option4": $("#question-add-answer-input-D").val(),
                 "type": $("#question-add-type").val(),
                 "correctAnswer": $("#question-add-answer").val(),
-				"questionType": $("#question-add_type").val() === "通识题" ? "generalQuestions" : "specialQuestions",
+				"questionType": $("#question-add_type").val(),
                 "deleted": $("#canUse").val() == "是" ? false : true
             });
             let s = JSON.stringify(exam.questions);
@@ -594,7 +607,7 @@
                 "option4": $("#question-edit-answer-input-D").val(),
                 "score": $("#score").val(),
                 "type": $("#question-edit-type").val(),
-				"questionType": $("#question_type").val()==="通识题"?"generalQuestions":"specialQuestions",
+				"questionType": $("#question_type").val(),
                 "correctAnswer": $("#answer").val(),
                 "deleted": $("#delete").val() === "是",
             })

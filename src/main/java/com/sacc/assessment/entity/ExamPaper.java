@@ -72,4 +72,9 @@ public class ExamPaper {
     @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
+    /**
+     * 试卷题目类型(如：选择题、填空题等，使用分号隔开)
+     */
+    private String questionType;
 }

@@ -63,6 +63,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         examPaper.setExamTime(Math.toIntExact(LocalDateTimeUtil.between(examPaper.getStartTime(), examPaper.getEndTime()).toMinutes()));
         examPaper.setExamTotalScore(totalScore);
         examPaperRepository.save(examPaper);
+        System.out.println(examPaper.toString());
         return examPaper;
     }
 
@@ -136,8 +137,8 @@ public class ExamPaperServiceImpl implements ExamPaperService {
         ExamPaperAnswer e = examPaperAnswers.get(0);
         e.getAnswers().forEach(answer -> questionIdList.add(answer.getQuestionId()));
         String[] questionNumber = {"后端通识第一题","后端通识第二题","后端通识第二题","后端通识第二题","后端通识第三题","前端通识第一题","前端通识第二题","前端通识第三题", "python组通识第一题",
-                "python组通识第二题","python组通识第三题", "后端专项第一题","后端专项第二题", "后端专项第三题","后端专项第四题","后端专项第四题","后端专项第四题","后端专项第四题","安全通识第一题","安全通识第二题","安全通识第二题",
-                "安全通识第三题","前端专项第一题","前端专项第二题","前端专项第三题","前端专项第四题","前端专项第五题","前端专项第五题","算法专项第一题","算法专项第二题",
+                "python组通识第二题","python组通识第三题","安全通识第一题","安全通识第二题","安全通识第二题", "安全通识第三题",
+                "后端专项第一题","后端专项第二题", "后端专项第三题","后端专项第四题","后端专项第四题","后端专项第四题","后端专项第四题","前端专项第一题","前端专项第二题","前端专项第三题","前端专项第四题","前端专项第五题","前端专项第五题","算法专项第一题","算法专项第二题",
                 "算法专项第三题","算法专项第三题","算法专项第三题","算法专项第三题","python组专项第一题","python组专项第二题","python组专项第二题","python组专项第二题","安全组第一题","安全组第二题","安全组第三题"};
         XSSFWorkbook workbook = new XSSFWorkbook();
         // 创建工作表
@@ -165,6 +166,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
                 sheetRow.createCell(questionIdList.size()+5).setCellValue("算法专项总分");
                 sheetRow.createCell(questionIdList.size()+6).setCellValue("python专项总分");
                 sheetRow.createCell(questionIdList.size()+7).setCellValue("安全专项总分");
+                sheetRow.createCell(questionIdList.size()+8).setCellValue("exam_paper_answer_id");
             }else{
                 ExamPaperAnswer examPaperAnswer = examPaperAnswers.get(row-1);
                 User user = userRepository.getOne(examPaperAnswer.getUserId());
@@ -186,16 +188,17 @@ public class ExamPaperServiceImpl implements ExamPaperService {
                     int score = 0;
                     if(a.getScore()!=null&&a.getScore().getGrade()!=null)
                         score = a.getScore().getGrade();
-                    sheetRow.createCell(i+2).setCellValue(score);
-                    if(questionList.get(i).getGroupType().startsWith("B"))
+                    sheetRow.createCell(i+2).setCellValue(score/*+" "+a.getQuestionId()*/);
+                    Question question = findQuestion(questionList,a.getQuestionId());
+                    if(question.getGroupType().startsWith("B"))
                         backScore+=score;
-                    else if(questionList.get(i).getGroupType().startsWith("F"))
+                    else if(question.getGroupType().startsWith("F"))
                         frontScore+=score;
-                    else if(questionList.get(i).getGroupType().startsWith("S"))
+                    else if(question.getGroupType().startsWith("S"))
                         suScore+=score;
-                    else if(questionList.get(i).getGroupType().startsWith("P"))
+                    else if(question.getGroupType().startsWith("P"))
                         pythonScore+=score;
-                    else if(questionList.get(i).getGroupType().startsWith("A"))
+                    else if(question.getGroupType().startsWith("A"))
                         anScore+=score;
                     else totalScore+=score;
                 }
@@ -216,6 +219,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
                 sheetRow.createCell(questionIdList.size()+5).setCellValue(suScore);
                 sheetRow.createCell(questionIdList.size()+6).setCellValue(pythonScore);
                 sheetRow.createCell(questionIdList.size()+7).setCellValue(anScore);
+                sheetRow.createCell(questionIdList.size()+8).setCellValue(examPaperAnswer.getId());
             }
         }
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -236,6 +240,14 @@ public class ExamPaperServiceImpl implements ExamPaperService {
             System.out.println(ex.getMessage());
         }
         return true;
+    }
+
+    Question findQuestion(List<Question> questionList,Integer id){
+        for (Question question : questionList) {
+            if (question.getId().equals(id))
+                return question;
+        }
+        return null;
     }
 
     @Override

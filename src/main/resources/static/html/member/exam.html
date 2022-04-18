@@ -95,10 +95,18 @@
 <!--    <p th:text="${#dates.format(exam.getEndTime(), 'yyyy-MM-dd')}"></p>-->
     <div style="text-align: center; display: inline"> <p th:text="'考试时间 : ' +  ${#temporals.format(exam.getStartTime(),'yyyy-MM-dd HH:mm')} + ' - ' +     ${#temporals.format(exam.getEndTime(),'yyyy-MM-dd HH:ss')+'考试时间内均可提交,请及时提交以保存答案'}"></p></div>
     <div class="exam_container "  th:id="'exam_'+${exam.getId()}" style="width: 70%;left: 15%;position: relative;">
-        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px"><strong>通 识 题</strong></h2>
-        <form id="general-questions-answer-form" class="d1" ></form>
-        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px"><strong>专 项 题</strong></h2>
-        <form id="special-questions-answer-form" class="d1" ></form>
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px;  display: none" id="h-0"><strong></strong></h2>
+        <form id="0-questions-answer-form" class="d1" style="display: none"></form>
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px; display: none" id="h-1"><strong></strong></h2>
+        <form id="1-questions-answer-form" class="d1" style="display: none"></form>
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px;  display: none" id="h-2"><strong></strong></h2>
+        <form id="2-questions-answer-form" class="d1" style="display: none"></form>
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px; display: none" id="h-3"><strong></strong></h2>
+        <form id="3-questions-answer-form" class="d1" style="display: none"></form>
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px;  display: none" id="h-4"><strong></strong></h2>
+        <form id="4-questions-answer-form" class="d1" style="display: none"></form>
+        <h2  style="text-align: center; margin-top: 5px; margin-bottom: 10px; display: none" id="h-5"><strong></strong></h2>
+        <form id="5-questions-answer-form" class="d1" style="display: none"></form>
     </div>
 
 		<!--       提交按钮-->
@@ -130,7 +138,7 @@
         for (let i = 0; i < question.length; i++) {
             let o = {}
             //获得ID
-            o.questionId = new String(question[i].id).substr(9)
+            o.questionId = String(question[i].id).substr(9)
             console.log(question[i].querySelectorAll('.an'))
             for (let j = 0; j < question[i].querySelectorAll('.an').length; j++) {
                 arr.push( question[i].querySelectorAll('.an')[j].value)
@@ -181,7 +189,7 @@
     escape = function (str) {
         return str
             .replace(/[\\]/g, '\\\\')
-            .replace(/[\"]/g, '\\\"')
+            .replace(/[\\"]/g, '\\\"')
             .replace(/[\/]/g, '\\/')
             .replace(/[\b]/g, '\\b')
             .replace(/[\f]/g, '\\f')
@@ -200,7 +208,6 @@
             .replace(/\\f/g, "\\f");
     };
 
-
     $(function () {
         $.ajax({
             url: '/getExam?examId='+$(".exam_container").attr("id").substring(5),
@@ -209,13 +216,29 @@
             if (res.code === 200) {
                 console.log(res)
                 let q = res.data.questions
+                let question_type = res.data.questionType
+                let question_types = question_type.split(';')
+                //let body = document.getElementsByClassName('exam_container')[0]
+                //console.log(question_types)
+                for(let i=0;i<question_types.length;i++){
+                    let h_name = 'h-'+i;
+                    let h = document.getElementById(h_name)
+                    h.style.display = ''
+                    //console.log(h.style.display)
+                    h.innerHTML='<strong>'+question_types[i]+'</strong>'
+                    let form_name = i+'-questions-answer-form'
+                    let form = document.getElementById(form_name)
+                    form.style.display = ''
+                }
                 // console.log(q)
                 for (let i = 0; i < q.length; i++) {
                     let form;
-                    if(q[i].questionType==='generalQuestions')
+                    let questionAnswerType = q[i].questionType+'-questions-answer-form'
+                    /*if(q[i].questionType==='generalQuestions')
                         form = document.getElementById('general-questions-answer-form')
                     else
-                        form = document.getElementById('special-questions-answer-form')
+                        form = document.getElementById('special-questions-answer-form')*/
+                    form = document.getElementById(questionAnswerType)
                     let answerNum=0
                     // 创建div用于存放 解析后的 .md 格式的文档 以及普通文本样式的题目
                     let qe = document.createElement('div')
@@ -231,7 +254,10 @@
                     //let converter = new Markdown.Converter();
                     label.innerHTML =  marked( res.data.questions[i].infoTextContent + ' (' + res.data.questions[i].score + '分)') ;
                     // 插入元素
+                    //console.log(label)
                     qe.insertBefore(label,null)
+                    //console.log(qe)
+                    //console.log(form)
                     form.insertBefore(qe, null)
                     form.insertBefore(document.createElement('hr'),null);
 
@@ -383,17 +409,17 @@
                 if(res.code === 200){
                     let preAnswers=res.data.answers
                     let num = 0
-                    console.log(preAnswers.length)
+                    //console.log(preAnswers.length)
                     for(let i=0;i<preAnswers.length;i++){
                         let q_id = preAnswers[i].questionId
                         let q_class_id = 'question-'+q_id
                         //console.log(q_class_id)
                         let d = document.getElementById(q_class_id)
                         //let d = document.getElementById('question-1')
-                        console.log(q_class_id)
-                        console.log(d)
+                        //console.log(q_class_id)
+                        //console.log(d)
 
-                        console.log(d.getAttribute('question_type'))
+                        //console.log(d.getAttribute('question_type'))
                         switch (d.getAttribute('question_type')) {
                             case 'SINGLE_CHOICE':
                                 console.log("这里是单选题")

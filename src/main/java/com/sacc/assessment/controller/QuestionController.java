@@ -82,7 +82,7 @@ public class QuestionController {
     @Secured({"ROLE_ISSUER","ROLE_ROOT"})
     public RestResult<Boolean> deleteQuestions(@PathVariable Integer id){
         Question question = questionService.selectQuestion(id);
-        question.setDeleted(true);
+        //question.setDeleted(true);
         questionService.deleteQuesionById(id);
         return RestResult.success(200 ,Boolean.TRUE);
 //        return RestResult.success(questionService.updateQuestion(question));

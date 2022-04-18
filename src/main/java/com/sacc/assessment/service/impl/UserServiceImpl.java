@@ -6,7 +6,6 @@ import com.sacc.assessment.enums.Role;
 import com.sacc.assessment.exception.BusinessException;
 import com.sacc.assessment.model.UserDetail;
 import com.sacc.assessment.repository.UserRepository;
-import com.sacc.assessment.service.MailService;
 import com.sacc.assessment.service.UserService;
 import com.sacc.assessment.util.ExcelUtils;
 import com.sacc.assessment.vo.ChangePasswordVo;
@@ -46,8 +45,8 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     @Resource
     private UserRepository userRepository;
 
-    @Resource
-    private MailService mailService;
+    /*@Resource
+    private MailService mailService;*/
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

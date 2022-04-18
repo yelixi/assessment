@@ -16,7 +16,8 @@
 		<script type="text/javascript" src="/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 		<!--BootStrap Table-->
-		<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+		<!--<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>-->
+		<script type="text/javascript" src="/js/bootstrap-table.min.js" charset="UTF-8"></script>
 	</head>
 	<body>
 		<nav th:replace="../static/html/common/fragments.html::issuer_menu(3)"></nav>
@@ -29,6 +30,13 @@
 					<div class="co-sm-10">
 						<input type="text" id="exam-name" class="form-control m-input" style="width: 488px"
 						       placeholder="给这场考试起个名字" required autofocus>
+					</div>
+				</div>
+				<div class="m-formGroup-margin">
+					<label for="exam-name" class="control-label col-sm-2 m-userinfo-label" th:width="10px">考试名称</label>
+					<div class="co-sm-10">
+						<input type="text" id="exam-question-type" class="form-control m-input" style="width: 488px"
+							   placeholder="试卷所有题型，使用分号隔开，如：选择题;填空题" required autofocus>
 					</div>
 				</div>
 				<div class="m-formGroup-margin">
@@ -83,7 +91,8 @@
                 "name": $("#exam-name").val(),
                 "questions": [],
                 "startTime": $("#start_time").val() + ":00",
-                "endTime": $("#end_time").val() + ":00"
+                "endTime": $("#end_time").val() + ":00",
+				"questionType": $("#exam-question-type").val()
             });
             $.ajax({
                 url: "/issuer/createExam",
@@ -92,7 +101,7 @@
                 data: formData,
                 dataType: "json"
             }).done(function (result) {
-                if (result.code == 200) {
+                if (result.code === 200) {
                     alert("保存试卷成功,赶紧去为考试添加问题吧!");
                     location.reload();
                     location.href = "/issuer/updateExam/" + result.data.id;
